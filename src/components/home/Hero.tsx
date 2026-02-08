@@ -1,30 +1,31 @@
 import { Link } from "react-router-dom";
-import { LazyImage } from "@/components/LazyImage";
 import { motion } from "framer-motion";
 import { Briefcase, Mail } from "lucide-react";
 
 export function Hero() {
   return (
-    <section className="relative min-h-screen flex items-center overflow-hidden">
+    <section className="relative h-screen flex items-center overflow-hidden">
       {/* Background pattern image */}
       <div className="absolute inset-0">
-        <LazyImage
+        <img
           src="/images/home/hero.jpg"
-          alt="Background pattern"
-          className="w-full h-full"
-          fill
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-background/30 to-background" />
+        {/* Gradient: dark on bottom to blend with page */}
+        <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-background/50 to-background" />
+        {/* Gradient: dark on right side for person contrast */}
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-background/60" />
       </div>
 
-      <div className="container mx-auto px-6 relative z-10 pt-24">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-8">
-          {/* Left: Text content */}
+      <div className="container mx-auto px-6 relative z-10">
+        <div className="flex items-end md:items-center min-h-[80vh]">
+          {/* Left: Text content — vertically centered */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="max-w-xl md:w-1/2"
+            className="relative z-20 max-w-xl pb-24 md:pb-0"
           >
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
@@ -67,22 +68,22 @@ export function Hero() {
 
           {/* Right: Person image with violet glow */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
-            className="relative md:w-1/2 flex justify-center md:justify-end"
+            className="absolute right-0 bottom-0 md:right-[5%] z-10 pointer-events-none"
           >
             {/* Violet glow behind the person */}
             <div className="absolute inset-0 flex items-center justify-center">
               <div
-                className="w-[80%] h-[80%] rounded-full blur-[100px] opacity-40"
+                className="w-[70%] h-[70%] rounded-full blur-[120px] opacity-50"
                 style={{ background: "radial-gradient(circle, hsl(var(--primary)) 0%, transparent 70%)" }}
               />
             </div>
             <img
               src="/images/home/hero-person.png"
               alt="Mahtamun Hoque Fahim"
-              className="relative z-10 h-[60vh] md:h-[75vh] object-contain object-bottom drop-shadow-2xl"
+              className="relative h-[65vh] md:h-[85vh] object-contain object-bottom drop-shadow-2xl"
             />
           </motion.div>
         </div>

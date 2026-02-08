@@ -2,8 +2,18 @@ import { Link } from "react-router-dom";
 
 export function Footer() {
   return (
-    <footer className="border-t border-border bg-card">
-      <div className="container mx-auto px-6 py-16">
+    <footer className="relative border-t border-border overflow-hidden">
+      {/* Subtle background pattern */}
+      <div className="absolute inset-0">
+        <img
+          src="/images/home/hero.jpg"
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover opacity-[0.08]"
+        />
+        <div className="absolute inset-0 bg-card/90" />
+      </div>
+
+      <div className="container mx-auto px-6 py-16 relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           <div>
             <Link to="/" className="font-display text-2xl font-bold tracking-tight text-foreground">

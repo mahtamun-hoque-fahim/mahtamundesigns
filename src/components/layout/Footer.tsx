@@ -7,10 +7,10 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
           <div>
             <Link to="/" className="font-display text-2xl font-bold tracking-tight text-foreground">
-              STUDIO<span className="text-primary">.</span>
+              MAHTAMUN<span className="text-primary">.</span>
             </Link>
             <p className="mt-4 text-sm text-muted-foreground max-w-xs">
-              Crafting bold visual identities and memorable design experiences for ambitious brands.
+              Crafting bold visual identities and memorable brand experiences for ambitious companies across Bangladesh.
             </p>
           </div>
 
@@ -39,13 +39,13 @@ export function Footer() {
               <a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">Instagram</a>
               <a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">Behance</a>
               <a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">Dribbble</a>
-              <a href="mailto:hello@studio.design" className="text-sm text-muted-foreground hover:text-primary transition-colors">hello@studio.design</a>
+              <a href="mailto:hello@mahtamun.design" className="text-sm text-muted-foreground hover:text-primary transition-colors">hello@mahtamun.design</a>
             </div>
           </div>
         </div>
 
         <div className="mt-16 pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-xs text-muted-foreground">© 2024 Studio. All rights reserved.</p>
+          <p className="text-xs text-muted-foreground">© 2024 Mahtamun. All rights reserved.</p>
           <p className="text-xs text-muted-foreground">Designed with passion in Bangladesh</p>
         </div>
       </div>

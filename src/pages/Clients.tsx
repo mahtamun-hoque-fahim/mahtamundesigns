@@ -6,6 +6,19 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { ArrowRight } from "lucide-react";
 
+// Asymmetric grid: varying column spans for visual interest
+const gridSpans = [
+  "md:col-span-8",  // large
+  "md:col-span-4",  // small
+  "md:col-span-5",  // medium
+  "md:col-span-7",  // large
+  "md:col-span-4",  // small
+  "md:col-span-4",  // small
+  "md:col-span-4",  // small
+  "md:col-span-7",  // large
+  "md:col-span-5",  // medium
+];
+
 const Clients = () => {
   return (
     <div className="min-h-screen bg-background">
@@ -19,30 +32,31 @@ const Clients = () => {
             className="mb-16"
           >
             <h1 className="text-4xl md:text-6xl font-display font-bold tracking-tight">
-              Our <span className="text-primary">Clients</span>
+              Our <span className="text-primary">Portfolio</span>
             </h1>
             <p className="mt-4 text-lg text-muted-foreground max-w-xl">
               Brands we've had the pleasure of working with, creating lasting visual impact.
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
             {companies.map((company, i) => (
               <motion.div
                 key={company.id}
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
+                transition={{ duration: 0.5, delay: i * 0.08 }}
+                className={gridSpans[i] || "md:col-span-4"}
               >
                 <Link
                   to={`/clients/${company.slug}`}
                   className="group block bg-card rounded-xl overflow-hidden border border-border/50 hover:border-primary/30 transition-all duration-500"
                 >
-                  <div className="relative h-48 overflow-hidden">
+                  <div className="relative h-48 md:h-56 overflow-hidden">
                     <LazyImage
                       src={company.featuredImage}
                       alt={company.name}
-                      className="w-full h-full"
+                      className="w-full h-full grayscale group-hover:grayscale-0 transition-all duration-700"
                       fill
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-card to-transparent" />

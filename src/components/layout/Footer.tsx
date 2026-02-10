@@ -1,12 +1,14 @@
 import { Link } from "react-router-dom";
 
+const WHATSAPP_URL = "https://wa.me/8801795931345";
+
 export function Footer() {
   return (
     <footer className="relative border-t border-border overflow-hidden">
       {/* Subtle background pattern */}
       <div className="absolute inset-0">
         <img
-          src="/images/home/hero.jpg"
+          src="/images/home/hero-bg.png"
           alt=""
           className="absolute inset-0 w-full h-full object-cover opacity-[0.08]"
         />
@@ -29,7 +31,7 @@ export function Footer() {
             <nav className="flex flex-col gap-3">
               {[
                 { label: "Home", path: "/" },
-                { label: "Clients", path: "/clients" },
+                { label: "Portfolio", path: "/clients" },
                 { label: "Reviews", path: "/reviews" },
               ].map((link) => (
                 <Link
@@ -40,6 +42,14 @@ export function Footer() {
                   {link.label}
                 </Link>
               ))}
+              <a
+                href={WHATSAPP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm text-muted-foreground hover:text-primary transition-colors"
+              >
+                Book a Meeting
+              </a>
             </nav>
           </div>
 
@@ -49,7 +59,7 @@ export function Footer() {
               <a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">Instagram</a>
               <a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">Behance</a>
               <a href="#" className="text-sm text-muted-foreground hover:text-primary transition-colors">Dribbble</a>
-              <a href="mailto:hello@mahtamun.design" className="text-sm text-muted-foreground hover:text-primary transition-colors">hello@mahtamun.design</a>
+              <a href="mailto:mahtamunhoquefahim@pm.me" className="text-sm text-muted-foreground hover:text-primary transition-colors">mahtamunhoquefahim@pm.me</a>
             </div>
           </div>
         </div>

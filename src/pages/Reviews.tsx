@@ -4,10 +4,39 @@ import { reviews } from "@/data/reviews";
 import { LazyImage } from "@/components/LazyImage";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { Quote, X } from "lucide-react";
+import { Quote, X, Star } from "lucide-react";
+
+// Complex grid: varying spans for visual interest
+const cardSpans = [
+  "md:col-span-5",
+  "md:col-span-4",
+  "md:col-span-3",
+  "md:col-span-6",
+  "md:col-span-6",
+  "md:col-span-4",
+  "md:col-span-3",
+  "md:col-span-5",
+  "md:col-span-5",
+  "md:col-span-4",
+  "md:col-span-3",
+];
+
+function StarRating({ rating }: { rating: number }) {
+  return (
+    <div className="flex gap-1">
+      {Array.from({ length: 5 }, (_, i) => (
+        <Star
+          key={i}
+          className={`w-4 h-4 ${i < rating ? "fill-primary text-primary" : "text-muted-foreground/30"}`}
+        />
+      ))}
+    </div>
+  );
+}
 
 const Reviews = () => {
   const [expanded, setExpanded] = useState<string | null>(null);
+  const expandedReview = reviews.find((r) => r.id === expanded);
 
   return (
     <div className="min-h-screen bg-background">
@@ -28,73 +57,95 @@ const Reviews = () => {
             </p>
           </motion.div>
 
-          <div className="columns-1 md:columns-2 lg:columns-3 gap-6 space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
             {reviews.map((review, i) => (
               <motion.div
                 key={review.id}
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="break-inside-avoid"
+                transition={{ duration: 0.5, delay: i * 0.06 }}
+                className={cardSpans[i] || "md:col-span-4"}
               >
-                <AnimatePresence mode="wait">
-                  {expanded === review.id ? (
-                    <motion.div
-                      key="expanded"
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.95 }}
-                      transition={{ duration: 0.3 }}
-                      className="bg-card border border-primary/20 rounded-xl p-8 cursor-pointer"
-                      onClick={() => setExpanded(null)}
-                    >
-                      <div className="flex items-start justify-between mb-6">
-                        <div className="flex items-center gap-4">
-                          <div className="w-16 h-16 rounded-full overflow-hidden flex-shrink-0">
-                            <LazyImage src={review.avatar} alt={review.clientName} aspectRatio="square" />
-                          </div>
-                          <div>
-                            <p className="font-display font-semibold">{review.clientName}</p>
-                            <p className="text-sm text-muted-foreground">{review.role}</p>
-                            <p className="text-xs text-primary">{review.company}</p>
-                          </div>
-                        </div>
-                        <button className="text-muted-foreground hover:text-foreground transition-colors">
-                          <X className="w-5 h-5" />
-                        </button>
-                      </div>
-                      <Quote className="w-6 h-6 text-primary/30 mb-4" />
-                      <p className="text-foreground leading-relaxed italic">"{review.text}"</p>
-                    </motion.div>
-                  ) : (
-                    <motion.div
-                      key="collapsed"
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.95 }}
-                      transition={{ duration: 0.3 }}
-                      className="bg-card border border-border/50 rounded-xl p-6 cursor-pointer hover:border-primary/30 transition-colors duration-300"
-                      onClick={() => setExpanded(review.id)}
-                    >
-                      <div className="flex items-center gap-4 mb-4">
-                        <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0">
-                          <LazyImage src={review.avatar} alt={review.clientName} aspectRatio="square" />
-                        </div>
-                        <div>
-                          <p className="font-display font-semibold text-sm">{review.clientName}</p>
-                          <p className="text-xs text-muted-foreground">{review.role}, {review.company}</p>
-                        </div>
-                      </div>
-                      <p className="text-sm text-muted-foreground italic">"{review.shortText}"</p>
-                      <p className="text-xs text-primary mt-3 font-display">Read more →</p>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                <div
+                  className="bg-card border border-border/50 rounded-xl p-6 cursor-pointer hover:border-primary/30 hover:-translate-y-1 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300"
+                  onClick={() => setExpanded(review.id)}
+                >
+                  <div className="flex items-center gap-4 mb-4">
+                    <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0">
+                      <LazyImage src={review.avatar} alt={review.clientName} aspectRatio="square" />
+                    </div>
+                    <div>
+                      <p className="font-display font-semibold text-sm">{review.clientName}</p>
+                      <p className="text-xs text-muted-foreground">{review.role}, {review.company}</p>
+                    </div>
+                  </div>
+                  <StarRating rating={review.rating} />
+                  <p className="text-sm text-muted-foreground italic mt-3">"{review.shortText}"</p>
+                  <p className="text-xs text-primary mt-3 font-display">Read more →</p>
+                </div>
               </motion.div>
             ))}
           </div>
         </div>
       </main>
+
+      {/* Modal popup */}
+      <AnimatePresence>
+        {expandedReview && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm p-4"
+            onClick={() => setExpanded(null)}
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.92, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.92, y: 20 }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+              className="bg-card border border-border rounded-2xl overflow-hidden w-full max-w-3xl max-h-[85vh] flex flex-col md:flex-row shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Left: Image (40% width) */}
+              <div className="hidden md:block w-[40%] relative flex-shrink-0">
+                <img
+                  src={expandedReview.expandedImage}
+                  alt={expandedReview.company}
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent to-card/20" />
+              </div>
+
+              {/* Right: Content (60% width) */}
+              <div className="flex-1 p-8 md:p-10 flex flex-col justify-center overflow-y-auto">
+                <button
+                  onClick={() => setExpanded(null)}
+                  className="absolute top-4 right-4 md:relative md:top-auto md:right-auto md:self-end text-muted-foreground hover:text-foreground transition-colors mb-6"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+
+                <Quote className="w-8 h-8 text-primary/30 mb-4" />
+
+                <p className="text-foreground leading-relaxed italic text-base md:text-lg mb-6">
+                  "{expandedReview.text}"
+                </p>
+
+                <StarRating rating={expandedReview.rating} />
+
+                <div className="mt-6 pt-6 border-t border-border">
+                  <p className="font-display font-bold text-lg">{expandedReview.clientName}</p>
+                  <p className="text-sm text-muted-foreground">{expandedReview.role}</p>
+                  <p className="text-sm text-primary">{expandedReview.company}</p>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       <Footer />
     </div>
   );

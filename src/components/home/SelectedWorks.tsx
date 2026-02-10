@@ -48,7 +48,7 @@ export function SelectedWorks() {
                     <LazyImage
                       src={company.featuredImage}
                       alt={company.name}
-                      className="w-full h-full"
+                      className="w-full h-full grayscale group-hover:grayscale-0 transition-all duration-700"
                       fill
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity duration-500" />

@@ -15,17 +15,17 @@ export function Hero() {
         {/* Gradient: dark on bottom to blend with page */}
         <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-background/50 to-background" />
         {/* Gradient: dark on right side for person contrast */}
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-background/60" />
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-background/60 hidden md:block" />
       </div>
 
       <div className="container mx-auto px-6 relative z-10">
-        <div className="flex items-end md:items-center min-h-[80vh]">
-          {/* Left: Text content — vertically centered */}
+        <div className="flex items-center justify-center md:justify-start min-h-[80vh]">
+          {/* Text content — centered on mobile, offset on desktop */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="relative z-20 max-w-xl pb-24 md:pb-0"
+            className="relative z-20 max-w-xl text-center md:text-left md:ml-[10%] lg:ml-[15%]"
           >
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
@@ -47,7 +47,7 @@ export function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.5 }}
-              className="mt-10 flex gap-4"
+              className="mt-10 flex gap-4 justify-center md:justify-start"
             >
               <Link
                 to="/clients"
@@ -66,12 +66,12 @@ export function Hero() {
             </motion.div>
           </motion.div>
 
-          {/* Right: Person image with violet glow */}
+          {/* Right: Person image with violet glow — hidden on mobile */}
           <motion.div
             initial={{ opacity: 0, x: 40 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1, delay: 0.3, ease: "easeOut" }}
-            className="absolute right-0 bottom-0 md:right-[5%] z-10 pointer-events-none"
+            className="absolute right-0 bottom-0 md:right-[5%] z-10 pointer-events-none hidden md:block"
           >
             {/* Violet glow behind the person */}
             <div className="absolute inset-0 flex items-center justify-center">
@@ -83,7 +83,7 @@ export function Hero() {
             <img
               src="/images/home/hero-person.png"
               alt="Mahtamun Hoque Fahim"
-              className="relative h-[65vh] md:h-[85vh] object-contain object-bottom drop-shadow-2xl"
+              className="relative h-[85vh] object-contain object-bottom drop-shadow-2xl"
             />
           </motion.div>
         </div>

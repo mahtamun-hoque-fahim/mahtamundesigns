@@ -1,14 +1,15 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
   { label: "Home", path: "/" },
-  { label: "Clients", path: "/clients" },
+  { label: "Portfolio", path: "/clients" },
   { label: "Reviews", path: "/reviews" },
 ];
+
+const WHATSAPP_URL = "https://wa.me/8801795931345";
 
 export function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -34,9 +35,14 @@ export function Header() {
               {link.label}
             </Link>
           ))}
-          <Button variant="hero" size="sm" asChild>
-            <Link to="/clients">View Portfolio</Link>
-          </Button>
+          <a
+            href={WHATSAPP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center h-9 px-4 rounded-md bg-primary text-primary-foreground text-sm font-display font-semibold tracking-wide hover:bg-primary/90 transition-all duration-300"
+          >
+            Book a Meeting
+          </a>
         </nav>
 
         <button
@@ -64,9 +70,15 @@ export function Header() {
                 {link.label}
               </Link>
             ))}
-            <Button variant="hero" size="sm" asChild className="w-fit">
-              <Link to="/clients" onClick={() => setMobileOpen(false)}>View Portfolio</Link>
-            </Button>
+            <a
+              href={WHATSAPP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setMobileOpen(false)}
+              className="inline-flex items-center justify-center h-9 px-4 rounded-md bg-primary text-primary-foreground text-sm font-display font-semibold tracking-wide hover:bg-primary/90 transition-all duration-300 w-fit"
+            >
+              Book a Meeting
+            </a>
           </nav>
         </div>
       )}

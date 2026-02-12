@@ -10,7 +10,7 @@ export function Hero() {
         <img
           src="/images/home/hero-bg.png"
           alt=""
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full object-cover object-left md:object-center"
         />
         {/* Dark overlay for text readability */}
         <div className="absolute inset-0 bg-background/40" />
@@ -18,13 +18,13 @@ export function Hero() {
       </div>
 
       <div className="container mx-auto px-6 relative z-10">
-        <div className="flex items-center justify-center min-h-[80vh]">
-          {/* Text content — centered */}
+        <div className="flex items-center justify-between min-h-[80vh]">
+          {/* Text content */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className="relative z-20 max-w-2xl text-center"
+            className="relative z-20 max-w-2xl text-center md:text-left mx-auto md:mx-0 md:ml-[5%]"
           >
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
@@ -46,7 +46,7 @@ export function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.5 }}
-              className="mt-10 flex gap-4 justify-center"
+              className="mt-10 flex gap-4 justify-center md:justify-start"
             >
               <Link
                 to="/clients"
@@ -56,13 +56,29 @@ export function Hero() {
                 Portfolio
               </Link>
               <Link
-                to="/reviews"
+                to="/contact"
                 className="inline-flex items-center justify-center gap-2.5 h-12 px-8 rounded-md border border-white/30 bg-transparent text-foreground font-display font-semibold tracking-wide hover:bg-white/10 transition-all duration-300 text-sm"
               >
                 <Mail className="w-4 h-4" />
                 Contact
               </Link>
             </motion.div>
+          </motion.div>
+
+          {/* Personal image — hidden on mobile */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="hidden md:block relative flex-shrink-0 mr-[5%]"
+          >
+            <div className="w-[320px] lg:w-[400px] h-[420px] lg:h-[520px] relative">
+              <img
+                src="/images/home/hero-person.png"
+                alt="Mahtamun"
+                className="w-full h-full object-contain object-bottom drop-shadow-2xl"
+              />
+            </div>
           </motion.div>
         </div>
       </div>

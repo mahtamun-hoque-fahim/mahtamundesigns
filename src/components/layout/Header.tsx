@@ -7,6 +7,7 @@ const navLinks = [
   { label: "Home", path: "/" },
   { label: "Portfolio", path: "/clients" },
   { label: "Reviews", path: "/reviews" },
+  { label: "Contact", path: "/contact" },
 ];
 
 const WHATSAPP_URL = "https://wa.me/8801795931345";

@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { RouteIndicator } from "@/components/layout/RouteIndicator";
+import { FloatingNav } from "@/components/layout/FloatingNav";
 import Index from "./pages/Index";
 import Clients from "./pages/Clients";
 import CompanyShowcase from "./pages/CompanyShowcase";
@@ -20,6 +21,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <RouteIndicator />
+        <FloatingNav />
         <Routes>
           <Route path="/" element={<Index />} />
           <Route path="/clients" element={<Clients />} />

@@ -4,7 +4,10 @@ import { companies } from "@/data/companies";
 import { LazyImage } from "@/components/LazyImage";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, MessageCircle, Mail } from "lucide-react";
+import { Button } from "@/components/ui/button";
+
+const WHATSAPP_URL = "https://wa.me/8801795931345";
 
 const CompanyShowcase = () => {
   const { slug } = useParams();
@@ -105,6 +108,7 @@ const CompanyShowcase = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
+            className="mb-16"
           >
             <h2 className="text-2xl md:text-3xl font-display font-bold mb-8">
               Design <span className="text-primary">Showcase</span>
@@ -116,11 +120,7 @@ const CompanyShowcase = () => {
             }>
               {company.designs.map((design, i) => {
                 const complexGridClass = [
-                  "md:col-span-8",
-                  "md:col-span-4",
-                  "md:col-span-6",
-                  "md:col-span-6",
-                  "md:col-span-12",
+                  "md:col-span-8", "md:col-span-4", "md:col-span-6", "md:col-span-6", "md:col-span-12",
                 ][i % 5];
 
                 return (
@@ -137,6 +137,35 @@ const CompanyShowcase = () => {
                   </motion.div>
                 );
               })}
+            </div>
+          </motion.section>
+
+          {/* CTA Section */}
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+            className="bg-card border border-border/50 rounded-2xl p-8 md:p-12 text-center"
+          >
+            <h2 className="text-2xl md:text-3xl font-display font-bold mb-3">
+              Interested in working <span className="text-primary">together?</span>
+            </h2>
+            <p className="text-muted-foreground mb-8 max-w-md mx-auto">
+              Let's discuss your project and bring your vision to life.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button variant="hero" size="lg" asChild className="h-12 px-8">
+                <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
+                  <MessageCircle className="w-4 h-4 mr-2" />
+                  Book Meeting
+                </a>
+              </Button>
+              <Button variant="heroOutline" size="lg" asChild className="h-12 px-8">
+                <Link to="/contact">
+                  <Mail className="w-4 h-4 mr-2" />
+                  Contact
+                </Link>
+              </Button>
             </div>
           </motion.section>
         </div>

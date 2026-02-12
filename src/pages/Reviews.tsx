@@ -4,31 +4,23 @@ import { reviews } from "@/data/reviews";
 import { LazyImage } from "@/components/LazyImage";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { Quote, X, Star } from "lucide-react";
+import { Quote, X, Star, MessageCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
-// Complex grid: varying spans for visual interest
+const WHATSAPP_URL = "https://wa.me/8801795931345";
+
 const cardSpans = [
-  "md:col-span-5",
-  "md:col-span-4",
-  "md:col-span-3",
-  "md:col-span-6",
-  "md:col-span-6",
-  "md:col-span-4",
-  "md:col-span-3",
-  "md:col-span-5",
-  "md:col-span-5",
-  "md:col-span-4",
-  "md:col-span-3",
+  "md:col-span-5", "md:col-span-4", "md:col-span-3",
+  "md:col-span-6", "md:col-span-6",
+  "md:col-span-4", "md:col-span-3", "md:col-span-5",
+  "md:col-span-5", "md:col-span-4", "md:col-span-3",
 ];
 
 function StarRating({ rating }: { rating: number }) {
   return (
     <div className="flex gap-1">
       {Array.from({ length: 5 }, (_, i) => (
-        <Star
-          key={i}
-          className={`w-4 h-4 ${i < rating ? "fill-primary text-primary" : "text-muted-foreground/30"}`}
-        />
+        <Star key={i} className={`w-4 h-4 ${i < rating ? "fill-primary text-primary" : "text-muted-foreground/30"}`} />
       ))}
     </div>
   );
@@ -139,6 +131,16 @@ const Reviews = () => {
                   <p className="font-display font-bold text-lg">{expandedReview.clientName}</p>
                   <p className="text-sm text-muted-foreground">{expandedReview.role}</p>
                   <p className="text-sm text-primary">{expandedReview.company}</p>
+                </div>
+
+                {/* Book Meeting CTA */}
+                <div className="mt-8 pt-6 border-t border-border">
+                  <Button variant="hero" size="lg" asChild className="w-full h-12">
+                    <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
+                      <MessageCircle className="w-4 h-4 mr-2" />
+                      Book Meeting
+                    </a>
+                  </Button>
                 </div>
               </div>
             </motion.div>

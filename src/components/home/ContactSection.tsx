@@ -1,11 +1,7 @@
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { motion } from "framer-motion";
 import { useInView } from "@/hooks/useInView";
-import { Send, Instagram, Globe, Dribbble, Mail } from "lucide-react";
-import { useToast } from "@/hooks/use-toast";
+import { Instagram, Globe, Dribbble, Mail } from "lucide-react";
+import { ContactForm } from "@/components/shared/ContactForm";
 
 const socials = [
   { icon: Instagram, label: "Instagram", href: "#" },
@@ -15,27 +11,7 @@ const socials = [
 ];
 
 export function ContactSection() {
-  const [form, setForm] = useState({ name: "", email: "", message: "" });
-  const [sending, setSending] = useState(false);
   const { ref, isInView } = useInView();
-  const { toast } = useToast();
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!form.name.trim() || !form.email.trim() || !form.message.trim()) return;
-
-    setSending(true);
-    try {
-      const mailtoUrl = `mailto:mahtamunhoquefahim@pm.me?subject=${encodeURIComponent(`Portfolio Contact from ${form.name}`)}&body=${encodeURIComponent(`Name: ${form.name}\nEmail: ${form.email}\n\nMessage:\n${form.message}`)}`;
-      window.open(mailtoUrl, "_blank");
-      toast({ title: "Message ready!", description: "Your email client should open shortly." });
-      setForm({ name: "", email: "", message: "" });
-    } catch {
-      toast({ title: "Something went wrong", description: "Please try again.", variant: "destructive" });
-    } finally {
-      setSending(false);
-    }
-  };
 
   return (
     <section ref={ref} className="py-24 md:py-32 bg-card border-y border-border/50">
@@ -71,43 +47,13 @@ export function ContactSection() {
           </motion.div>
 
           {/* Right: Form */}
-          <motion.form
-            onSubmit={handleSubmit}
+          <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={isInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="flex flex-col gap-5"
           >
-            <Input
-              placeholder="Your Name"
-              value={form.name}
-              onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
-              required
-              maxLength={100}
-              className="bg-background border-border h-12"
-            />
-            <Input
-              type="email"
-              placeholder="Your Email"
-              value={form.email}
-              onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
-              required
-              maxLength={255}
-              className="bg-background border-border h-12"
-            />
-            <Textarea
-              placeholder="Your Message"
-              value={form.message}
-              onChange={(e) => setForm((f) => ({ ...f, message: e.target.value }))}
-              required
-              maxLength={1000}
-              className="bg-background border-border min-h-[140px] resize-none"
-            />
-            <Button variant="hero" type="submit" disabled={sending} className="self-start h-12 px-8">
-              <Send className="w-4 h-4 mr-2" />
-              {sending ? "Sending..." : "Send Message"}
-            </Button>
-          </motion.form>
+            <ContactForm className="flex flex-col" />
+          </motion.div>
         </div>
       </div>
     </section>

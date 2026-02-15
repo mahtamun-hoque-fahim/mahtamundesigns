@@ -1,6 +1,7 @@
 import { useLocation, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronRight, Home } from "lucide-react";
+import { useEffect, useState, useRef, useCallback } from "react";
 
 const routeLabels: Record<string, string> = {
   "/": "Home",
@@ -12,6 +13,39 @@ const routeLabels: Record<string, string> = {
 export function RouteIndicator() {
   const location = useLocation();
   const path = location.pathname;
+  const [bottomOffset, setBottomOffset] = useState(24);
+  const rafRef = useRef<number>(0);
+
+  const updatePosition = useCallback(() => {
+    const footer = document.querySelector("footer");
+    if (!footer) return;
+    const footerRect = footer.getBoundingClientRect();
+    const viewportHeight = window.innerHeight;
+    const desiredBottom = 24;
+
+    if (footerRect.top < viewportHeight) {
+      // Footer is visible — push indicator above it
+      const overlap = viewportHeight - footerRect.top + desiredBottom;
+      setBottomOffset(overlap);
+    } else {
+      setBottomOffset(desiredBottom);
+    }
+  }, []);
+
+  useEffect(() => {
+    const onScroll = () => {
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = requestAnimationFrame(updatePosition);
+    };
+    updatePosition();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      cancelAnimationFrame(rafRef.current);
+    };
+  }, [updatePosition]);
 
   // Extract company slug if on a company page
   const isCompanyPage = path.startsWith("/clients/");
@@ -19,7 +53,7 @@ export function RouteIndicator() {
 
   const crumbs: { label: string; path: string }[] = [];
 
-  if (path === "/") return null; // Don't show on home
+  if (path === "/") return null;
 
   crumbs.push({ label: "Home", path: "/" });
 
@@ -35,10 +69,11 @@ export function RouteIndicator() {
   return (
     <AnimatePresence>
       <motion.div
-        initial={{ opacity: 0, y: -10 }}
+        initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -10 }}
-        className="fixed top-20 left-6 z-40"
+        exit={{ opacity: 0, y: 10 }}
+        style={{ bottom: `${bottomOffset}px` }}
+        className="fixed left-1/2 -translate-x-1/2 z-40 transition-[bottom] duration-300 ease-out"
       >
         <div className="flex items-center gap-1.5 bg-card/90 backdrop-blur-md border border-border/50 rounded-full px-4 py-2 shadow-lg">
           {crumbs.map((crumb, i) => (

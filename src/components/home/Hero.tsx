@@ -10,7 +10,7 @@ export function Hero() {
         <img
           src="/images/home/hero-bg.png"
           alt=""
-          className="absolute inset-0 w-full h-full object-cover object-left md:object-center grayscale"
+          className="absolute inset-0 w-full h-full object-cover object-left md:object-center"
         />
         {/* Dark overlay for text readability */}
         <div className="absolute inset-0 bg-background/40" />

@@ -72,7 +72,7 @@ export function Hero() {
             transition={{ duration: 0.8, delay: 0.3 }}
             className="hidden md:block relative flex-shrink-0 mr-[5%]"
           >
-            <div className="w-[320px] lg:w-[400px] h-[420px] lg:h-[520px] relative">
+            <div className="w-[480px] lg:w-[580px] h-[560px] lg:h-[680px] relative">
               <img
                 src="/images/home/hero-person.png"
                 alt="Mahtamun"

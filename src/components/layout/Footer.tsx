@@ -33,6 +33,7 @@ export function Footer() {
                 { label: "Home", path: "/" },
                 { label: "Portfolio", path: "/clients" },
                 { label: "Reviews", path: "/reviews" },
+                { label: "Contact", path: "/contact" },
               ].map((link) => (
                 <Link
                   key={link.path}

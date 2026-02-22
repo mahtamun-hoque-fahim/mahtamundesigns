@@ -3,7 +3,6 @@ import { LogoStrip } from "@/components/home/LogoStrip";
 import { SelectedWorks } from "@/components/home/SelectedWorks";
 import { ReviewsPreview } from "@/components/home/ReviewsPreview";
 import { StatsSection } from "@/components/home/StatsSection";
-import { ContactSection } from "@/components/home/ContactSection";
 import { CtaSection } from "@/components/home/CtaSection";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
@@ -18,7 +17,7 @@ const Index = () => {
         <SelectedWorks />
         <ReviewsPreview />
         <StatsSection />
-        <ContactSection />
+        <CtaSection />
         <CtaSection />
       </main>
       <Footer />

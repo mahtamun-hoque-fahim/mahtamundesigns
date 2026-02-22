@@ -53,7 +53,7 @@ export function RouteIndicator() {
 
   const crumbs: { label: string; path: string }[] = [];
 
-  if (path === "/" || path === "/contact") return null;
+  if (path === "/" || path === "/contact" || path.startsWith("/admin")) return null;
 
   crumbs.push({ label: "Home", path: "/" });
 

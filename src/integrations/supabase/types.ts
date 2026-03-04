@@ -14,6 +14,69 @@ export type Database = {
   }
   public: {
     Tables: {
+      companies: {
+        Row: {
+          category: string
+          contributions: string[]
+          cover_url: string | null
+          created_at: string
+          design_urls: string[]
+          featured: boolean
+          featured_image_url: string | null
+          full_description: string
+          id: string
+          impact: string
+          logo_url: string | null
+          name: string
+          role: string
+          short_description: string
+          slug: string
+          sort_order: number
+          tagline: string
+          updated_at: string
+        }
+        Insert: {
+          category?: string
+          contributions?: string[]
+          cover_url?: string | null
+          created_at?: string
+          design_urls?: string[]
+          featured?: boolean
+          featured_image_url?: string | null
+          full_description?: string
+          id?: string
+          impact?: string
+          logo_url?: string | null
+          name: string
+          role?: string
+          short_description?: string
+          slug: string
+          sort_order?: number
+          tagline?: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          contributions?: string[]
+          cover_url?: string | null
+          created_at?: string
+          design_urls?: string[]
+          featured?: boolean
+          featured_image_url?: string | null
+          full_description?: string
+          id?: string
+          impact?: string
+          logo_url?: string | null
+          name?: string
+          role?: string
+          short_description?: string
+          slug?: string
+          sort_order?: number
+          tagline?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       media_assets: {
         Row: {
           category: string
@@ -43,6 +106,81 @@ export type Database = {
           label?: string
           public_url?: string | null
           slot_key?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      reviews: {
+        Row: {
+          avatar_url: string | null
+          client_name: string
+          company: string
+          created_at: string
+          expanded_image_url: string | null
+          id: string
+          rating: number
+          review_text: string
+          role: string
+          short_text: string
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          avatar_url?: string | null
+          client_name: string
+          company?: string
+          created_at?: string
+          expanded_image_url?: string | null
+          id?: string
+          rating?: number
+          review_text?: string
+          role?: string
+          short_text?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          avatar_url?: string | null
+          client_name?: string
+          company?: string
+          created_at?: string
+          expanded_image_url?: string | null
+          id?: string
+          rating?: number
+          review_text?: string
+          role?: string
+          short_text?: string
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      site_content: {
+        Row: {
+          content_key: string
+          content_value: string
+          created_at: string
+          id: string
+          page: string
+          section: string
+          updated_at: string
+        }
+        Insert: {
+          content_key: string
+          content_value?: string
+          created_at?: string
+          id?: string
+          page: string
+          section: string
+          updated_at?: string
+        }
+        Update: {
+          content_key?: string
+          content_value?: string
+          created_at?: string
+          id?: string
+          page?: string
+          section?: string
           updated_at?: string
         }
         Relationships: []

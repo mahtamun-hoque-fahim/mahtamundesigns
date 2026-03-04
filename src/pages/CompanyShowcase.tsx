@@ -1,17 +1,19 @@
 import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { companies } from "@/data/companies";
+import { useCompanies } from "@/hooks/useCompaniesData";
+import { useCms } from "@/hooks/useSiteContent";
 import { LazyImage } from "@/components/LazyImage";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { ArrowLeft, MessageCircle, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-const WHATSAPP_URL = "https://wa.me/8801795931345";
-
 const CompanyShowcase = () => {
   const { slug } = useParams();
-  const company = companies.find((c) => c.slug === slug);
+  const companies = useCompanies();
+  const c = useCms();
+  const company = companies.find((co) => co.slug === slug);
+  const whatsappUrl = c('showcase', 'cta', 'whatsapp_url', 'https://wa.me/8801795931345');
 
   if (!company) {
     return (
@@ -34,7 +36,6 @@ const CompanyShowcase = () => {
     <div className="min-h-screen bg-background">
       <Header />
       <main>
-        {/* Social-media style header */}
         <div className="relative">
           <div className="h-[300px] md:h-[400px] relative overflow-hidden">
             <LazyImage src={company.cover} alt={`${company.name} cover`} className="w-full h-full" fill />
@@ -43,12 +44,7 @@ const CompanyShowcase = () => {
           <div className="container mx-auto px-6">
             <div className="relative -mt-16 flex items-end gap-6">
               <div className="w-24 h-24 md:w-32 md:h-32 rounded-2xl overflow-hidden border-4 border-background bg-card flex items-center justify-center">
-                <img
-                  src={company.logo}
-                  alt={`${company.name} logo`}
-                  className="w-full h-full object-contain p-3 brightness-0 invert"
-                  loading="lazy"
-                />
+                <img src={company.logo} alt={`${company.name} logo`} className="w-full h-full object-contain p-3 brightness-0 invert" loading="lazy" />
               </div>
               <div className="pb-2">
                 <h1 className="text-2xl md:text-4xl font-display font-bold">{company.name}</h1>
@@ -59,22 +55,13 @@ const CompanyShowcase = () => {
         </div>
 
         <div className="container mx-auto px-6 pt-12 pb-24">
-          <Link
-            to="/clients"
-            className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors mb-12"
-          >
+          <Link to="/clients" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors mb-12">
             <ArrowLeft className="w-4 h-4" /> Back to Clients
           </Link>
 
-          {/* About section */}
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-            className="mb-16"
-          >
+          <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }} className="mb-16">
             <h2 className="text-2xl md:text-3xl font-display font-bold mb-6">
-              About <span className="text-primary">My Work</span>
+              {c('showcase', 'about', 'title', 'About My Work')}
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="md:col-span-2">
@@ -88,10 +75,8 @@ const CompanyShowcase = () => {
                 <div>
                   <p className="text-xs uppercase tracking-wider text-primary mb-2 font-display">Contributions</p>
                   <div className="flex flex-wrap gap-2">
-                    {company.contributions.map((c) => (
-                      <span key={c} className="text-xs bg-muted px-3 py-1 rounded-full text-muted-foreground">
-                        {c}
-                      </span>
+                    {company.contributions.map((co) => (
+                      <span key={co} className="text-xs bg-muted px-3 py-1 rounded-full text-muted-foreground">{co}</span>
                     ))}
                   </div>
                 </div>
@@ -103,34 +88,15 @@ const CompanyShowcase = () => {
             </div>
           </motion.section>
 
-          {/* Design showcase */}
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="mb-16"
-          >
+          <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.4 }} className="mb-16">
             <h2 className="text-2xl md:text-3xl font-display font-bold mb-8">
-              Design <span className="text-primary">Showcase</span>
+              {c('showcase', 'designs', 'title', 'Design Showcase')}
             </h2>
-            <div className={
-              isComplexGrid
-                ? "grid grid-cols-1 md:grid-cols-12 gap-4"
-                : "grid grid-cols-1 md:grid-cols-2 gap-4"
-            }>
+            <div className={isComplexGrid ? "grid grid-cols-1 md:grid-cols-12 gap-4" : "grid grid-cols-1 md:grid-cols-2 gap-4"}>
               {company.designs.map((design, i) => {
-                const complexGridClass = [
-                  "md:col-span-8", "md:col-span-4", "md:col-span-6", "md:col-span-6", "md:col-span-12",
-                ][i % 5];
-
+                const complexGridClass = ["md:col-span-8", "md:col-span-4", "md:col-span-6", "md:col-span-6", "md:col-span-12"][i % 5];
                 return (
-                  <motion.div
-                    key={i}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.5 + i * 0.1 }}
-                    className={isComplexGrid ? complexGridClass : ""}
-                  >
+                  <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.5 + i * 0.1 }} className={isComplexGrid ? complexGridClass : ""}>
                     <div className="relative overflow-hidden rounded-lg bg-card h-[300px] md:h-[400px]">
                       <LazyImage src={design} alt={`${company.name} design ${i + 1}`} className="w-full h-full" fill />
                     </div>
@@ -140,30 +106,24 @@ const CompanyShowcase = () => {
             </div>
           </motion.section>
 
-          {/* CTA Section */}
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.6 }}
-            className="bg-card border border-border/50 rounded-2xl p-8 md:p-12 text-center"
-          >
+          <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.6 }} className="bg-card border border-border/50 rounded-2xl p-8 md:p-12 text-center">
             <h2 className="text-2xl md:text-3xl font-display font-bold mb-3">
-              Interested in working <span className="text-primary">together?</span>
+              {c('showcase', 'cta', 'title', 'Interested in working together?')}
             </h2>
             <p className="text-muted-foreground mb-8 max-w-md mx-auto">
-              Let's discuss your project and bring your vision to life.
+              {c('showcase', 'cta', 'description', "Let's discuss your project and bring your vision to life.")}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button variant="hero" size="lg" asChild className="h-12 px-8">
-                <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">
+                <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
                   <MessageCircle className="w-4 h-4 mr-2" />
-                  Book Meeting
+                  {c('showcase', 'cta', 'button_meeting', 'Book Meeting')}
                 </a>
               </Button>
               <Button variant="heroOutline" size="lg" asChild className="h-12 px-8">
                 <Link to="/contact">
                   <Mail className="w-4 h-4 mr-2" />
-                  Contact
+                  {c('showcase', 'cta', 'button_contact', 'Contact')}
                 </Link>
               </Button>
             </div>

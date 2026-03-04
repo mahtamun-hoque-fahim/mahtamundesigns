@@ -18,7 +18,6 @@ const Index = () => {
         <ReviewsPreview />
         <StatsSection />
         <CtaSection />
-        <CtaSection />
       </main>
       <Footer />
     </div>

@@ -38,6 +38,87 @@ export type Database = {
         }
         Relationships: []
       }
+      admin_sessions: {
+        Row: {
+          browser: string | null
+          device_type: string | null
+          id: string
+          ip_address: string | null
+          is_active: boolean
+          last_active: string
+          location: string | null
+          login_time: string
+          os: string | null
+          session_token: string
+          terminated_at: string | null
+          terminated_reason: string | null
+          user_id: string
+        }
+        Insert: {
+          browser?: string | null
+          device_type?: string | null
+          id?: string
+          ip_address?: string | null
+          is_active?: boolean
+          last_active?: string
+          location?: string | null
+          login_time?: string
+          os?: string | null
+          session_token: string
+          terminated_at?: string | null
+          terminated_reason?: string | null
+          user_id: string
+        }
+        Update: {
+          browser?: string | null
+          device_type?: string | null
+          id?: string
+          ip_address?: string | null
+          is_active?: boolean
+          last_active?: string
+          location?: string | null
+          login_time?: string
+          os?: string | null
+          session_token?: string
+          terminated_at?: string | null
+          terminated_reason?: string | null
+          user_id?: string
+        }
+        Relationships: []
+      }
+      admin_settings: {
+        Row: {
+          created_at: string
+          id: string
+          recovery_code_expires_at: string | null
+          recovery_email: string | null
+          recovery_email_verified: boolean
+          recovery_verification_code: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          recovery_code_expires_at?: string | null
+          recovery_email?: string | null
+          recovery_email_verified?: boolean
+          recovery_verification_code?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          recovery_code_expires_at?: string | null
+          recovery_email?: string | null
+          recovery_email_verified?: boolean
+          recovery_verification_code?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       companies: {
         Row: {
           category: string
@@ -98,6 +179,45 @@ export type Database = {
           sort_order?: number
           tagline?: string
           updated_at?: string
+        }
+        Relationships: []
+      }
+      login_history: {
+        Row: {
+          browser: string | null
+          device_type: string | null
+          failure_reason: string | null
+          id: string
+          ip_address: string | null
+          location: string | null
+          login_time: string
+          os: string | null
+          success: boolean
+          user_id: string
+        }
+        Insert: {
+          browser?: string | null
+          device_type?: string | null
+          failure_reason?: string | null
+          id?: string
+          ip_address?: string | null
+          location?: string | null
+          login_time?: string
+          os?: string | null
+          success?: boolean
+          user_id: string
+        }
+        Update: {
+          browser?: string | null
+          device_type?: string | null
+          failure_reason?: string | null
+          id?: string
+          ip_address?: string | null
+          location?: string | null
+          login_time?: string
+          os?: string | null
+          success?: boolean
+          user_id?: string
         }
         Relationships: []
       }

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Lock, Mail, ArrowLeft } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { recordLogin, recordFailedLogin } from "@/hooks/useSessionManager";
 
 const AdminLogin = () => {
   const [email, setEmail] = useState("");
@@ -18,8 +19,16 @@ const AdminLogin = () => {
     e.preventDefault();
     setError("");
     setLoading(true);
-    const { error: authError } = await supabase.auth.signInWithPassword({ email, password });
-    if (authError) { setError(authError.message); setLoading(false); return; }
+    const { data, error: authError } = await supabase.auth.signInWithPassword({ email, password });
+    if (authError) {
+      setError(authError.message);
+      recordFailedLogin(null, authError.message);
+      setLoading(false);
+      return;
+    }
+    if (data.session) {
+      await recordLogin(data.session.user.id);
+    }
     navigate("/admin");
   };
 

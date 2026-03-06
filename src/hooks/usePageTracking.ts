@@ -46,6 +46,10 @@ export function usePageTracking() {
 
     const record = async () => {
       try {
+        // Exclude logged-in admins/owners from analytics
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session) return;
+
         await (supabase as any).from("page_views").insert({
           page_path: location.pathname,
           referrer: document.referrer || "",

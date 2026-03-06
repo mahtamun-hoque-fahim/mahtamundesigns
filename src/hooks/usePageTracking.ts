@@ -1,6 +1,26 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+
+const BOT_PATTERNS = [
+  /bot/i, /crawl/i, /spider/i, /slurp/i, /mediapartners/i,
+  /googlebot/i, /bingbot/i, /duckduckbot/i, /baiduspider/i, /yandexbot/i,
+  /applebot/i, /semrushbot/i, /ahrefsbot/i, /mj12bot/i, /dotbot/i,
+  /chatgpt/i, /gptbot/i, /claudebot/i, /perplexitybot/i, /ccbot/i,
+  /bytespider/i, /amazonbot/i, /meta-externalagent/i,
+  /uptimerobot/i, /pingdom/i, /statuscake/i, /newrelic/i, /datadog/i,
+  /phantomjs/i, /headlesschrome/i, /puppeteer/i, /playwright/i, /selenium/i,
+  /lighthouse/i, /pagespeed/i, /gtmetrix/i,
+];
+
+function isBot(): boolean {
+  const ua = navigator.userAgent;
+  if (BOT_PATTERNS.some((p) => p.test(ua))) return true;
+  // Headless browser signals
+  if ((navigator as any).webdriver) return true;
+  if (!window.outerWidth && !window.outerHeight) return true;
+  return false;
+}
 
 function getDeviceType(): string {
   const ua = navigator.userAgent;
@@ -37,19 +57,47 @@ function getSessionId() {
   return sessionId;
 }
 
+// Rate-limit: track last record time per session
+let lastRecordTime = 0;
+const MIN_INTERVAL_MS = 2000; // at least 2s between page views
+
 export function usePageTracking() {
   const location = useLocation();
+  const humanVerified = useRef(false);
+
+  // Wait for a real human interaction before allowing tracking
+  useEffect(() => {
+    if (humanVerified.current) return;
+    const mark = () => { humanVerified.current = true; };
+    const events = ["scroll", "mousemove", "touchstart", "keydown", "click"] as const;
+    events.forEach((e) => window.addEventListener(e, mark, { once: true, passive: true }));
+    return () => { events.forEach((e) => window.removeEventListener(e, mark)); };
+  }, []);
 
   useEffect(() => {
-    // Don't track admin pages
     if (location.pathname.startsWith("/admin")) return;
+    if (isBot()) return;
 
     const record = async () => {
+      // Wait up to 10s for a human interaction signal
+      const start = Date.now();
+      while (!humanVerified.current && Date.now() - start < 10000) {
+        await new Promise((r) => setTimeout(r, 250));
+      }
+      if (!humanVerified.current) return;
+
+      // Rate-limit rapid page loads
+      const now = Date.now();
+      if (now - lastRecordTime < MIN_INTERVAL_MS) return;
+      lastRecordTime = now;
+
+      // Exclude logged-in admins
       try {
-        // Exclude logged-in admins/owners from analytics
         const { data: { session } } = await supabase.auth.getSession();
         if (session) return;
+      } catch { /* continue */ }
 
+      try {
         await (supabase as any).from("page_views").insert({
           page_path: location.pathname,
           referrer: document.referrer || "",

@@ -45,7 +45,7 @@ export function AdminSidebar({ activeTab, onTabChange, onLogout, collapsed }: Ad
         </div>
         {!collapsed && (
           <span className="ml-3 font-display font-bold text-sidebar-foreground text-sm truncate">
-            CMS Dashboard
+            Dashboard
           </span>
         )}
       </div>

@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { RefreshCw, Menu } from "lucide-react";
 import { AdminSidebar } from "@/components/admin/AdminSidebar";
+import { isSessionValid, heartbeat, terminateCurrentSession } from "@/hooks/useSessionManager";
 import { DashboardOverview } from "@/components/admin/DashboardOverview";
 import { ContentEditor } from "@/components/admin/ContentEditor";
 import { CompaniesEditor } from "@/components/admin/CompaniesEditor";
@@ -30,14 +31,42 @@ const AdminDashboard = () => {
   const [collapsed, setCollapsed] = useState(false);
   const navigate = useNavigate();
 
+  const heartbeatRef = useRef<ReturnType<typeof setInterval>>();
+
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (!session) navigate("/admin/login");
-      else setLoading(false);
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
+      if (!session) { navigate("/admin/login"); return; }
+      // Validate this session is still active (single-device enforcement)
+      const valid = await isSessionValid(session.user.id);
+      if (!valid) {
+        await supabase.auth.signOut();
+        navigate("/admin/login");
+        return;
+      }
+      setLoading(false);
+      // Heartbeat every 60s
+      heartbeatRef.current = setInterval(() => heartbeat(session.user.id), 60000);
     });
+    return () => { if (heartbeatRef.current) clearInterval(heartbeatRef.current); };
+  }, [navigate]);
+
+  // Check session validity periodically (detect if another device logged in)
+  useEffect(() => {
+    const check = setInterval(async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) return;
+      const valid = await isSessionValid(session.user.id);
+      if (!valid) {
+        await supabase.auth.signOut();
+        navigate("/admin/login");
+      }
+    }, 30000);
+    return () => clearInterval(check);
   }, [navigate]);
 
   const handleLogout = async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (session) await terminateCurrentSession(session.user.id);
     await supabase.auth.signOut();
     navigate("/admin/login");
   };

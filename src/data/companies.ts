@@ -52,6 +52,7 @@ export const companies: Company[] = [
     featured: true,
     featuredImage: "/images/home/selected-works-2.jpg",
     category: "Packaging Design",
+    layoutMode: "simple",
   },
   {
     id: "3",

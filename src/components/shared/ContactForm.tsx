@@ -35,7 +35,7 @@ export function ContactForm({ className, sourcePage = "/contact" }: ContactFormP
 
       // Trigger notification edge function (fire-and-forget)
       supabase.functions.invoke("notify-contact", {
-        body: { name: form.name.trim(), email: form.email.trim(), subject: form.subject.trim() },
+        body: { name: form.name.trim(), email: form.email.trim(), subject: form.subject.trim(), message: form.message.trim() },
       }).catch(() => {});
 
       setSent(true);

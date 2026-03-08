@@ -26,11 +26,6 @@ export function CtaSection() {
           {/* Dot pattern overlay */}
           <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(circle, hsl(var(--foreground)) 1px, transparent 1px)', backgroundSize: '16px 16px' }} />
 
-          {/* Bottom purple glow */}
-          <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-[90%] h-48 pointer-events-none">
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_100%,hsl(263_70%_58%/0.8)_0%,hsl(263_60%_55%/0.5)_30%,hsl(263_50%_50%/0.2)_60%,transparent_80%)] blur-2xl" />
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_90%,hsl(263_80%_65%/0.4)_0%,transparent_60%)] blur-3xl" />
-          </div>
 
           <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center gap-10 md:gap-16">
             {/* Left: Headline + CTAs */}

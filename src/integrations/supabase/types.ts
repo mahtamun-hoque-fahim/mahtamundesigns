@@ -190,6 +190,7 @@ export type Database = {
           id: string
           ip_address: string | null
           location: string | null
+          login_method: string
           login_time: string
           os: string | null
           success: boolean
@@ -202,6 +203,7 @@ export type Database = {
           id?: string
           ip_address?: string | null
           location?: string | null
+          login_method?: string
           login_time?: string
           os?: string | null
           success?: boolean
@@ -214,6 +216,7 @@ export type Database = {
           id?: string
           ip_address?: string | null
           location?: string | null
+          login_method?: string
           login_time?: string
           os?: string | null
           success?: boolean

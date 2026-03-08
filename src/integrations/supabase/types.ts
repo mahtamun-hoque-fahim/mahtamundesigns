@@ -338,6 +338,54 @@ export type Database = {
         }
         Relationships: []
       }
+      security_alerts: {
+        Row: {
+          alert_type: string
+          browser: string | null
+          created_at: string
+          details: string | null
+          device_type: string | null
+          id: string
+          ip_address: string | null
+          is_read: boolean
+          location: string | null
+          os: string | null
+          severity: string
+          title: string
+          user_id: string
+        }
+        Insert: {
+          alert_type: string
+          browser?: string | null
+          created_at?: string
+          details?: string | null
+          device_type?: string | null
+          id?: string
+          ip_address?: string | null
+          is_read?: boolean
+          location?: string | null
+          os?: string | null
+          severity?: string
+          title: string
+          user_id: string
+        }
+        Update: {
+          alert_type?: string
+          browser?: string | null
+          created_at?: string
+          details?: string | null
+          device_type?: string | null
+          id?: string
+          ip_address?: string | null
+          is_read?: boolean
+          location?: string | null
+          os?: string | null
+          severity?: string
+          title?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       site_content: {
         Row: {
           content_key: string

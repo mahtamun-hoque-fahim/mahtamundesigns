@@ -28,7 +28,7 @@ export function CtaSection() {
 
           <div className="relative z-10 flex flex-col md:flex-row items-center gap-10 md:gap-16">
             {/* Left: Headline + CTAs */}
-            <div className="flex-1 min-w-0">
+            <div className="flex-1 min-w-0 md:pl-8">
               <h2 className="text-3xl md:text-4xl font-display font-bold tracking-tight mb-4 text-foreground">
                 {c('home', 'cta', 'title', 'Still Thinking?')}
               </h2>

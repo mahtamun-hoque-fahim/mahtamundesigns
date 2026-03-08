@@ -178,7 +178,7 @@ async function saveSecurityAlerts(
  * 3. Logs to login_history
  * 4. Detects suspicious login activity
  */
-export async function recordLogin(userId: string) {
+export async function recordLogin(userId: string, method: string = "email") {
   const sessionToken = getOrCreateSessionToken();
   const { ip, location } = await fetchIP();
   const deviceInfo = {
@@ -203,20 +203,32 @@ export async function recordLogin(userId: string) {
     ...deviceInfo,
   });
 
-  // Log to login_history
+  // Log to login_history with method
   await (supabase as any).from("login_history").insert({
     user_id: userId,
     ...deviceInfo,
     success: true,
+    login_method: method,
   });
 
   // Detect and save suspicious login alerts
   const alerts = await detectSuspiciousLogin(userId, deviceInfo);
+
+  // Always create an alert for emergency logins
+  if (method === "emergency") {
+    alerts.push({
+      alert_type: "emergency_login",
+      severity: "critical",
+      title: "Emergency Master Credential Used",
+      details: `The emergency master credential was used to access the dashboard from ${deviceInfo.device_type} · ${deviceInfo.browser} · ${deviceInfo.os} at ${deviceInfo.location || "unknown location"}`,
+    });
+  }
+
   await saveSecurityAlerts(userId, alerts, deviceInfo);
 }
 
 /** Record a failed login attempt */
-export async function recordFailedLogin(userId: string | null, reason: string) {
+export async function recordFailedLogin(userId: string | null, reason: string, method: string = "email") {
   const { ip, location } = await fetchIP();
   await (supabase as any).from("login_history").insert({
     user_id: userId || "00000000-0000-0000-0000-000000000000",
@@ -227,6 +239,7 @@ export async function recordFailedLogin(userId: string | null, reason: string) {
     location,
     success: false,
     failure_reason: reason,
+    login_method: method,
   });
 }
 

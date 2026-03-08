@@ -142,6 +142,7 @@ export const companies: Company[] = [
     featured: false,
     featuredImage: "/images/home/selected-works-2.jpg",
     category: "Motion Design",
+    layoutMode: "simple",
   },
   {
     id: "8",

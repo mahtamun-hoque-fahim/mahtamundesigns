@@ -9,6 +9,7 @@ import { ContentEditor } from "@/components/admin/ContentEditor";
 import { CompaniesEditor } from "@/components/admin/CompaniesEditor";
 import { ReviewsEditor } from "@/components/admin/ReviewsEditor";
 import { MediaManager } from "@/components/admin/MediaManager";
+import { MediaStoreManager } from "@/components/admin/MediaStoreManager";
 import { AnalyticsDashboard } from "@/components/admin/AnalyticsDashboard";
 import { ActivityLogViewer } from "@/components/admin/ActivityLogViewer";
 import { AdminSettings } from "@/components/admin/AdminSettings";

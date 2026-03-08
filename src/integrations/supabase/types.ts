@@ -131,6 +131,7 @@ export type Database = {
           full_description: string
           id: string
           impact: string
+          layout_mode: string
           logo_url: string | null
           name: string
           role: string
@@ -151,6 +152,7 @@ export type Database = {
           full_description?: string
           id?: string
           impact?: string
+          layout_mode?: string
           logo_url?: string | null
           name: string
           role?: string
@@ -171,6 +173,7 @@ export type Database = {
           full_description?: string
           id?: string
           impact?: string
+          layout_mode?: string
           logo_url?: string | null
           name?: string
           role?: string
@@ -257,6 +260,89 @@ export type Database = {
         }
         Relationships: []
       }
+      media_store: {
+        Row: {
+          assigned: boolean
+          category: string
+          company_id: string | null
+          created_at: string
+          file_path: string
+          filename: string
+          group_id: string | null
+          id: string
+          public_url: string
+          updated_at: string
+        }
+        Insert: {
+          assigned?: boolean
+          category?: string
+          company_id?: string | null
+          created_at?: string
+          file_path?: string
+          filename?: string
+          group_id?: string | null
+          id?: string
+          public_url?: string
+          updated_at?: string
+        }
+        Update: {
+          assigned?: boolean
+          category?: string
+          company_id?: string | null
+          created_at?: string
+          file_path?: string
+          filename?: string
+          group_id?: string | null
+          id?: string
+          public_url?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "media_store_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "media_store_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "project_groups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      media_tags: {
+        Row: {
+          created_at: string
+          id: string
+          media_id: string
+          tag: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          media_id: string
+          tag?: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          media_id?: string
+          tag?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "media_tags_media_id_fkey"
+            columns: ["media_id"]
+            isOneToOne: false
+            referencedRelation: "media_store"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       page_views: {
         Row: {
           browser: string | null
@@ -295,6 +381,83 @@ export type Database = {
           user_agent?: string | null
         }
         Relationships: []
+      }
+      project_groups: {
+        Row: {
+          company_id: string
+          created_at: string
+          id: string
+          sort_order: number
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          company_id: string
+          created_at?: string
+          id?: string
+          sort_order?: number
+          title?: string
+          updated_at?: string
+        }
+        Update: {
+          company_id?: string
+          created_at?: string
+          id?: string
+          sort_order?: number
+          title?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_groups_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      project_images: {
+        Row: {
+          company_id: string
+          created_at: string
+          group_id: string | null
+          id: string
+          image_url: string
+          sort_order: number
+        }
+        Insert: {
+          company_id: string
+          created_at?: string
+          group_id?: string | null
+          id?: string
+          image_url?: string
+          sort_order?: number
+        }
+        Update: {
+          company_id?: string
+          created_at?: string
+          group_id?: string | null
+          id?: string
+          image_url?: string
+          sort_order?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_images_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "project_images_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "project_groups"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       reviews: {
         Row: {

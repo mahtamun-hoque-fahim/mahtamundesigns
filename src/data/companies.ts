@@ -124,6 +124,7 @@ export const companies: Company[] = [
     featured: false,
     featuredImage: "/images/home/selected-works-1.jpg",
     category: "UI/UX Design",
+    layoutMode: "simple",
   },
   {
     id: "7",

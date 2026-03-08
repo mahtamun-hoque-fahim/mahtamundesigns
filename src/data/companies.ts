@@ -70,6 +70,7 @@ export const companies: Company[] = [
     featured: true,
     featuredImage: "/images/home/selected-works-3.jpg",
     category: "Campaign Design",
+    layoutMode: "simple",
   },
   {
     id: "4",

@@ -228,7 +228,7 @@ export async function recordLogin(userId: string, method: string = "email") {
 }
 
 /** Record a failed login attempt */
-export async function recordFailedLogin(userId: string | null, reason: string) {
+export async function recordFailedLogin(userId: string | null, reason: string, method: string = "email") {
   const { ip, location } = await fetchIP();
   await (supabase as any).from("login_history").insert({
     user_id: userId || "00000000-0000-0000-0000-000000000000",
@@ -239,6 +239,7 @@ export async function recordFailedLogin(userId: string | null, reason: string) {
     location,
     success: false,
     failure_reason: reason,
+    login_method: method,
   });
 }
 

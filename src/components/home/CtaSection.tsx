@@ -20,9 +20,8 @@ export function CtaSection() {
         >
           {/* Gradient blob */}
           <div className="absolute top-0 right-0 w-[70%] h-full pointer-events-none">
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_60%_40%,hsl(var(--primary)/0.5)_0%,hsl(var(--primary)/0.2)_40%,transparent_70%)] blur-2xl" />
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_80%_70%,hsl(330_80%_60%/0.35)_0%,hsl(340_70%_50%/0.15)_50%,transparent_75%)] blur-3xl" />
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_70%_60%,hsl(var(--primary)/0.15)_0%,hsl(320_80%_55%/0.2)_40%,transparent_70%)] blur-xl" />
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_80%_70%,hsl(330_80%_60%/0.45)_0%,hsl(320_75%_55%/0.2)_40%,transparent_70%)] blur-2xl" />
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_60%_40%,hsl(var(--primary)/0.5)_0%,hsl(var(--primary)/0.15)_50%,transparent_75%)] blur-3xl" />
           </div>
 
           <div className="relative z-10 max-w-lg">

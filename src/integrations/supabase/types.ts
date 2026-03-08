@@ -185,6 +185,42 @@ export type Database = {
         }
         Relationships: []
       }
+      contact_messages: {
+        Row: {
+          created_at: string
+          email: string
+          email_notified: boolean
+          id: string
+          is_read: boolean
+          message: string
+          name: string
+          source_page: string
+          subject: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+          email_notified?: boolean
+          id?: string
+          is_read?: boolean
+          message: string
+          name: string
+          source_page?: string
+          subject?: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
+          email_notified?: boolean
+          id?: string
+          is_read?: boolean
+          message?: string
+          name?: string
+          source_page?: string
+          subject?: string
+        }
+        Relationships: []
+      }
       login_history: {
         Row: {
           browser: string | null

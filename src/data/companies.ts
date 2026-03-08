@@ -14,6 +14,7 @@ export interface Company {
   featured: boolean;
   featuredImage: string;
   category: string;
+  layoutMode: "grouped" | "simple";
 }
 
 export const companies: Company[] = [

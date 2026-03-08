@@ -14,6 +14,7 @@ export interface Company {
   featured: boolean;
   featuredImage: string;
   category: string;
+  layoutMode: "grouped" | "simple";
 }
 
 export const companies: Company[] = [
@@ -33,6 +34,7 @@ export const companies: Company[] = [
     featured: true,
     featuredImage: "/images/home/selected-works-1.jpg",
     category: "Brand Identity",
+    layoutMode: "simple",
   },
   {
     id: "2",
@@ -50,6 +52,7 @@ export const companies: Company[] = [
     featured: true,
     featuredImage: "/images/home/selected-works-2.jpg",
     category: "Packaging Design",
+    layoutMode: "simple",
   },
   {
     id: "3",
@@ -67,6 +70,7 @@ export const companies: Company[] = [
     featured: true,
     featuredImage: "/images/home/selected-works-3.jpg",
     category: "Campaign Design",
+    layoutMode: "simple",
   },
   {
     id: "4",
@@ -84,6 +88,7 @@ export const companies: Company[] = [
     featured: true,
     featuredImage: "/images/home/selected-works-4.jpg",
     category: "Social Media",
+    layoutMode: "simple",
   },
   {
     id: "5",
@@ -101,6 +106,7 @@ export const companies: Company[] = [
     featured: true,
     featuredImage: "/images/home/selected-works-5.jpg",
     category: "Editorial Design",
+    layoutMode: "simple",
   },
   {
     id: "6",
@@ -118,6 +124,7 @@ export const companies: Company[] = [
     featured: false,
     featuredImage: "/images/home/selected-works-1.jpg",
     category: "UI/UX Design",
+    layoutMode: "simple",
   },
   {
     id: "7",
@@ -135,6 +142,7 @@ export const companies: Company[] = [
     featured: false,
     featuredImage: "/images/home/selected-works-2.jpg",
     category: "Motion Design",
+    layoutMode: "simple",
   },
   {
     id: "8",
@@ -152,6 +160,7 @@ export const companies: Company[] = [
     featured: false,
     featuredImage: "/images/home/selected-works-3.jpg",
     category: "Environmental Design",
+    layoutMode: "simple",
   },
   {
     id: "9",
@@ -169,6 +178,7 @@ export const companies: Company[] = [
     featured: false,
     featuredImage: "/images/home/selected-works-4.jpg",
     category: "Brand Identity",
+    layoutMode: "simple",
   },
 ];
 

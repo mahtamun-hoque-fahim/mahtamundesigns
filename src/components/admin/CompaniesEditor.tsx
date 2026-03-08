@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { ImageUpload } from "./ImageUpload";
+import { ProjectGroupsEditor } from "./ProjectGroupsEditor";
 import { Plus, Trash2, Save, RefreshCw, ChevronDown, ChevronUp } from "lucide-react";
 
 interface DbCompany {
@@ -21,6 +22,7 @@ interface DbCompany {
   featured_image_url: string | null;
   category: string;
   sort_order: number;
+  layout_mode: string;
 }
 
 export function CompaniesEditor() {
@@ -99,6 +101,9 @@ function CompanyCard({ company: c, expanded, onToggle, onUpdate, onDelete, savin
           <p className="font-display font-semibold text-sm truncate">{c.name}</p>
           <p className="text-xs text-muted-foreground">{c.category} · {c.slug}</p>
         </div>
+        <span className={`text-xs px-2 py-0.5 rounded-full ${c.layout_mode === 'grouped' ? 'bg-primary/10 text-primary' : 'bg-muted text-muted-foreground'}`}>
+          {c.layout_mode === 'grouped' ? 'Grouped' : 'Simple'}
+        </span>
         {c.featured && <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full">Featured</span>}
         {expanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
       </div>
@@ -118,9 +123,22 @@ function CompanyCard({ company: c, expanded, onToggle, onUpdate, onDelete, savin
           <Field label="Impact" value={form.impact} onChange={v => set("impact", v)} multiline />
           <Field label="Contributions (comma-separated)" value={(form.contributions || []).join(", ")} onChange={v => set("contributions", v.split(",").map(s => s.trim()).filter(Boolean))} />
 
-          <div className="flex items-center gap-3">
-            <label className="text-xs text-muted-foreground">Featured</label>
-            <input type="checkbox" checked={form.featured} onChange={e => set("featured", e.target.checked)} className="accent-primary" />
+          <div className="flex items-center gap-6">
+            <div className="flex items-center gap-3">
+              <label className="text-xs text-muted-foreground">Featured</label>
+              <input type="checkbox" checked={form.featured} onChange={e => set("featured", e.target.checked)} className="accent-primary" />
+            </div>
+            <div className="flex items-center gap-3">
+              <label className="text-xs text-muted-foreground">Layout Mode</label>
+              <select
+                value={form.layout_mode}
+                onChange={e => set("layout_mode", e.target.value)}
+                className="px-3 py-1.5 text-xs bg-background border border-border rounded-md focus:ring-2 focus:ring-primary/50 focus:outline-none"
+              >
+                <option value="simple">Simple Image Gallery</option>
+                <option value="grouped">Grouped by Project</option>
+              </select>
+            </div>
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -129,19 +147,9 @@ function CompanyCard({ company: c, expanded, onToggle, onUpdate, onDelete, savin
             <div><p className="text-xs text-muted-foreground mb-2">Featured Image</p><ImageUpload currentUrl={form.featured_image_url} onUpload={url => set("featured_image_url", url)} folder="companies/featured" className="h-20" /></div>
           </div>
 
-          <div>
-            <p className="text-xs text-muted-foreground mb-2">Design Images</p>
-            <div className="flex gap-3 flex-wrap">
-              {(form.design_urls || []).map((url, i) => (
-                <div key={i} className="relative">
-                  <ImageUpload currentUrl={url || null} onUpload={newUrl => { const u = [...form.design_urls]; u[i] = newUrl; set("design_urls", u); }} folder="companies/designs" className="w-24 h-20" />
-                  <button onClick={() => set("design_urls", form.design_urls.filter((_, j) => j !== i))} className="absolute -top-2 -right-2 w-5 h-5 bg-destructive text-destructive-foreground rounded-full text-xs flex items-center justify-center">×</button>
-                </div>
-              ))}
-              <button onClick={() => set("design_urls", [...(form.design_urls || []), ""])} className="w-24 h-20 border border-dashed border-border rounded-lg flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary transition-colors">
-                <Plus className="w-5 h-5" />
-              </button>
-            </div>
+          {/* Project Groups / Simple Images Editor */}
+          <div className="border-t border-border pt-4">
+            <ProjectGroupsEditor companyId={c.id} layoutMode={form.layout_mode as "grouped" | "simple"} />
           </div>
 
           <div className="flex gap-3 pt-4 border-t border-border">

@@ -9,6 +9,7 @@ import { ContentEditor } from "@/components/admin/ContentEditor";
 import { CompaniesEditor } from "@/components/admin/CompaniesEditor";
 import { ReviewsEditor } from "@/components/admin/ReviewsEditor";
 import { MediaManager } from "@/components/admin/MediaManager";
+import { MediaStoreManager } from "@/components/admin/MediaStoreManager";
 import { AnalyticsDashboard } from "@/components/admin/AnalyticsDashboard";
 import { ActivityLogViewer } from "@/components/admin/ActivityLogViewer";
 import { AdminSettings } from "@/components/admin/AdminSettings";
@@ -18,6 +19,7 @@ const PAGE_TITLES: Record<string, string> = {
   pages: "Page Content Manager",
   blocks: "Dynamic Content Blocks",
   media: "Media Library",
+  "media-store": "Media Store",
   reviews: "Reviews Manager",
   clients: "Clients Manager",
   analytics: "Visitor Analytics",
@@ -108,6 +110,7 @@ const AdminDashboard = () => {
           {activeTab === "pages" && <ContentEditor />}
           {activeTab === "blocks" && <ContentBlocksView />}
           {activeTab === "media" && <MediaManager />}
+          {activeTab === "media-store" && <MediaStoreManager />}
           {activeTab === "reviews" && <ReviewsEditor />}
           {activeTab === "clients" && <CompaniesEditor />}
           {activeTab === "analytics" && <AnalyticsDashboard />}

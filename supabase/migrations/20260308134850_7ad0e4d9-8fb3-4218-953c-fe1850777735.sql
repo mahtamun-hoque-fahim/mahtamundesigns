@@ -1,0 +1,1 @@
+ALTER TABLE public.login_history ADD COLUMN IF NOT EXISTS login_method text NOT NULL DEFAULT 'email';

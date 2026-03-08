@@ -41,7 +41,6 @@ async function fetchIP(): Promise<{ ip: string; location: string }> {
   }
 }
 
-/** Generate a unique token for this browser session */
 function getOrCreateSessionToken(): string {
   let token = sessionStorage.getItem("admin_session_token");
   if (!token) {
@@ -56,10 +55,128 @@ export function getSessionToken(): string {
 }
 
 /**
+ * Detect suspicious login activity by comparing against login history.
+ * Returns array of alert objects if suspicious patterns found.
+ */
+async function detectSuspiciousLogin(
+  userId: string,
+  deviceInfo: { device_type: string; browser: string; os: string; ip_address: string; location: string }
+): Promise<Array<{ alert_type: string; severity: string; title: string; details: string }>> {
+  const alerts: Array<{ alert_type: string; severity: string; title: string; details: string }> = [];
+
+  // Fetch recent successful logins
+  const { data: history } = await (supabase as any)
+    .from("login_history")
+    .select("device_type, browser, os, ip_address, location, login_time")
+    .eq("user_id", userId)
+    .eq("success", true)
+    .order("login_time", { ascending: false })
+    .limit(50);
+
+  if (!history || history.length === 0) {
+    // First ever login — no alerts
+    return alerts;
+  }
+
+  const knownDevices = new Set(history.map((h: any) => `${h.device_type}|${h.browser}|${h.os}`));
+  const knownLocations = new Set(history.map((h: any) => h.location).filter(Boolean));
+  const knownBrowsers = new Set(history.map((h: any) => h.browser).filter(Boolean));
+  const knownIPs = new Set(history.map((h: any) => h.ip_address).filter(Boolean));
+
+  const currentDeviceKey = `${deviceInfo.device_type}|${deviceInfo.browser}|${deviceInfo.os}`;
+
+  // 1. New device detection
+  if (!knownDevices.has(currentDeviceKey)) {
+    alerts.push({
+      alert_type: "new_device",
+      severity: "high",
+      title: "New Device Login Detected",
+      details: `Login from a new device: ${deviceInfo.device_type} · ${deviceInfo.browser} · ${deviceInfo.os}`,
+    });
+  }
+
+  // 2. New location detection
+  if (deviceInfo.location && !knownLocations.has(deviceInfo.location)) {
+    alerts.push({
+      alert_type: "new_location",
+      severity: "high",
+      title: "Login From New Location",
+      details: `Login from an unrecognized location: ${deviceInfo.location}`,
+    });
+  }
+
+  // 3. New browser detection (only if device isn't already flagged)
+  if (deviceInfo.browser && !knownBrowsers.has(deviceInfo.browser) && !alerts.find(a => a.alert_type === "new_device")) {
+    alerts.push({
+      alert_type: "new_browser",
+      severity: "medium",
+      title: "New Browser Detected",
+      details: `Login using a new browser: ${deviceInfo.browser}`,
+    });
+  }
+
+  // 4. New IP detection
+  if (deviceInfo.ip_address && !knownIPs.has(deviceInfo.ip_address) && !alerts.find(a => a.alert_type === "new_location")) {
+    alerts.push({
+      alert_type: "new_ip",
+      severity: "medium",
+      title: "Login From New IP Address",
+      details: `Login from an unrecognized IP: ${deviceInfo.ip_address}`,
+    });
+  }
+
+  // 5. Multiple failed attempts detection (last 15 minutes)
+  const { data: recentFails } = await (supabase as any)
+    .from("login_history")
+    .select("id")
+    .eq("success", false)
+    .gte("login_time", new Date(Date.now() - 15 * 60 * 1000).toISOString())
+    .limit(10);
+
+  if (recentFails && recentFails.length >= 3) {
+    alerts.push({
+      alert_type: "failed_attempts",
+      severity: "high",
+      title: "Multiple Failed Login Attempts",
+      details: `${recentFails.length} failed login attempts detected in the last 15 minutes before this successful login.`,
+    });
+  }
+
+  return alerts;
+}
+
+/**
+ * Save security alerts to the database
+ */
+async function saveSecurityAlerts(
+  userId: string,
+  alerts: Array<{ alert_type: string; severity: string; title: string; details: string }>,
+  deviceInfo: { device_type: string; browser: string; os: string; ip_address: string; location: string }
+) {
+  if (alerts.length === 0) return;
+
+  const rows = alerts.map((a) => ({
+    user_id: userId,
+    alert_type: a.alert_type,
+    severity: a.severity,
+    title: a.title,
+    details: a.details,
+    device_type: deviceInfo.device_type,
+    browser: deviceInfo.browser,
+    os: deviceInfo.os,
+    ip_address: deviceInfo.ip_address,
+    location: deviceInfo.location,
+  }));
+
+  await (supabase as any).from("security_alerts").insert(rows);
+}
+
+/**
  * Called on successful admin login.
  * 1. Terminates all other active sessions (single-device enforcement)
  * 2. Creates a new session record
  * 3. Logs to login_history
+ * 4. Detects suspicious login activity
  */
 export async function recordLogin(userId: string) {
   const sessionToken = getOrCreateSessionToken();
@@ -92,6 +209,10 @@ export async function recordLogin(userId: string) {
     ...deviceInfo,
     success: true,
   });
+
+  // Detect and save suspicious login alerts
+  const alerts = await detectSuspiciousLogin(userId, deviceInfo);
+  await saveSecurityAlerts(userId, alerts, deviceInfo);
 }
 
 /** Record a failed login attempt */

@@ -40,7 +40,7 @@ const AdminDashboard = () => {
       const valid = await isSessionValid(session.user.id);
       if (!valid) {
         await supabase.auth.signOut();
-        navigate("/admin/login");
+        navigate("/admin/login?reason=session_terminated");
         return;
       }
       setLoading(false);

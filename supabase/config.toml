@@ -1,1 +1,7 @@
 project_id = "zaqbtdpupkabeffpyfyj"
+
+[functions.notify-contact]
+verify_jwt = false
+
+[functions.daily-contact-summary]
+verify_jwt = false

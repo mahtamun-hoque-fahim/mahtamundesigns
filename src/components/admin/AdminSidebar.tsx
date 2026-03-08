@@ -10,10 +10,12 @@ import {
   Settings,
   LogOut,
   FolderOpen,
+  Inbox,
 } from "lucide-react";
 
 const navItems = [
   { id: "overview", label: "Dashboard", icon: LayoutDashboard },
+  { id: "messages", label: "Messages", icon: Inbox },
   { id: "pages", label: "Pages", icon: FileText },
   { id: "blocks", label: "Content Blocks", icon: Layers },
   { id: "media", label: "Media Library", icon: Image },

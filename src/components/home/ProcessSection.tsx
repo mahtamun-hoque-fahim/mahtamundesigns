@@ -1,67 +1,155 @@
-import { motion } from "framer-motion";
-import { useInView } from "@/hooks/useInView";
+import { useEffect, useRef, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useCms } from "@/hooks/useSiteContent";
 
+const stepImages = [
+  "/images/home/process-step-1.jpg",
+  "/images/home/process-step-2.jpg",
+  "/images/home/process-step-3.jpg",
+  "/images/home/process-step-4.jpg",
+];
+
 export function ProcessSection() {
-  const { ref, isInView } = useInView();
   const c = useCms();
+  const [activeStep, setActiveStep] = useState(0);
+  const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   const steps = [
     {
       num: "01",
-      title: c('home', 'process', 'step_1_title', 'Discovery Call'),
-      desc: c('home', 'process', 'step_1_desc', 'We discuss your brand vision, target audience, and project goals to create a clear creative brief.'),
+      title: c("home", "process", "step_1_title", "Discovery Call"),
+      desc: c("home", "process", "step_1_desc", "We discuss your brand vision, target audience, and project goals to create a clear creative brief."),
     },
     {
       num: "02",
-      title: c('home', 'process', 'step_2_title', 'Research & Concepts'),
-      desc: c('home', 'process', 'step_2_desc', 'Deep dive into your industry, competitors, and audience. Then craft initial design concepts.'),
+      title: c("home", "process", "step_2_title", "Research & Concepts"),
+      desc: c("home", "process", "step_2_desc", "Deep dive into your industry, competitors, and audience. Then craft initial design concepts."),
     },
     {
       num: "03",
-      title: c('home', 'process', 'step_3_title', 'Design & Refine'),
-      desc: c('home', 'process', 'step_3_desc', 'Develop the chosen direction with revisions until every detail is perfect for your brand.'),
+      title: c("home", "process", "step_3_title", "Design & Refine"),
+      desc: c("home", "process", "step_3_desc", "Develop the chosen direction with revisions until every detail is perfect for your brand."),
     },
     {
       num: "04",
-      title: c('home', 'process', 'step_4_title', 'Final Delivery'),
-      desc: c('home', 'process', 'step_4_desc', 'Receive all files, brand guidelines, and assets ready for immediate use across all platforms.'),
+      title: c("home", "process", "step_4_title", "Final Delivery"),
+      desc: c("home", "process", "step_4_desc", "Receive all files, brand guidelines, and assets ready for immediate use across all platforms."),
     },
   ];
 
+  useEffect(() => {
+    const observers: IntersectionObserver[] = [];
+
+    stepRefs.current.forEach((el, i) => {
+      if (!el) return;
+      const obs = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) setActiveStep(i);
+        },
+        { threshold: 0.6 }
+      );
+      obs.observe(el);
+      observers.push(obs);
+    });
+
+    return () => observers.forEach((o) => o.disconnect());
+  }, []);
+
   return (
-    <section ref={ref} className="py-24 md:py-32 bg-card">
-      <div className="container mx-auto px-6">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.6 }} className="text-center mb-16">
+    <section className="bg-card">
+      <div className="container mx-auto px-6 py-24 md:py-32">
+        {/* Header */}
+        <div className="text-center mb-16 md:mb-24">
           <p className="text-sm uppercase tracking-[0.3em] text-primary font-display mb-4">
-            {c('home', 'process', 'eyebrow', 'How It Works')}
+            {c("home", "process", "eyebrow", "How It Works")}
           </p>
           <h2 className="text-3xl md:text-5xl font-display font-bold tracking-tight mb-4">
-            {c('home', 'process', 'title', 'Simple. Transparent. Effective.')}
+            {c("home", "process", "title", "Simple. Transparent. Effective.")}
           </h2>
           <p className="text-muted-foreground max-w-lg mx-auto">
-            {c('home', 'process', 'subtitle', 'A proven 4-step process that turns your ideas into a brand you\'re proud of.')}
+            {c("home", "process", "subtitle", "A proven 4-step process that turns your ideas into a brand you're proud of.")}
           </p>
-        </motion.div>
+        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8 relative">
-          {/* Connecting line */}
-          <div className="hidden md:block absolute top-10 left-[12.5%] right-[12.5%] h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent" />
-          
-          {steps.map((step, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: i * 0.15 }}
-              className="text-center relative"
-            >
-              <div className="w-20 h-20 rounded-full border-2 border-primary/30 bg-background flex items-center justify-center mx-auto mb-6 relative z-10">
-                <span className="font-display font-bold text-primary text-lg">{step.num}</span>
+        {/* Desktop: sticky image left + scrolling steps right */}
+        <div className="hidden md:grid md:grid-cols-2 gap-16 relative">
+          {/* Sticky image column */}
+          <div className="relative">
+            <div className="sticky top-32 h-[70vh] rounded-2xl overflow-hidden">
+              <AnimatePresence mode="wait">
+                <motion.img
+                  key={activeStep}
+                  src={stepImages[activeStep]}
+                  alt={steps[activeStep].title}
+                  initial={{ opacity: 0, scale: 1.05 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.5 }}
+                  className="w-full h-full object-cover"
+                />
+              </AnimatePresence>
+              {/* Step indicator overlay */}
+              <div className="absolute bottom-6 left-6 flex gap-2">
+                {steps.map((_, i) => (
+                  <div
+                    key={i}
+                    className={`h-1 rounded-full transition-all duration-500 ${
+                      i === activeStep ? "w-8 bg-primary" : "w-3 bg-foreground/30"
+                    }`}
+                  />
+                ))}
               </div>
-              <h3 className="font-display font-semibold text-lg mb-2">{step.title}</h3>
-              <p className="text-sm text-muted-foreground leading-relaxed max-w-xs mx-auto">{step.desc}</p>
-            </motion.div>
+            </div>
+          </div>
+
+          {/* Scrolling steps column */}
+          <div className="flex flex-col">
+            {steps.map((step, i) => (
+              <div
+                key={i}
+                ref={(el) => { stepRefs.current[i] = el; }}
+                className="min-h-[70vh] flex items-center"
+              >
+                <div
+                  className={`transition-opacity duration-500 ${
+                    i === activeStep ? "opacity-100" : "opacity-30"
+                  }`}
+                >
+                  <span className="text-6xl font-display font-bold text-primary/20 block mb-4">
+                    {step.num}
+                  </span>
+                  <h3 className="text-2xl md:text-3xl font-display font-bold mb-4">
+                    {step.title}
+                  </h3>
+                  <p className="text-muted-foreground text-lg leading-relaxed max-w-md">
+                    {step.desc}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Mobile: stacked vertical layout */}
+        <div className="md:hidden flex flex-col gap-12">
+          {steps.map((step, i) => (
+            <div key={i} className="flex flex-col gap-6">
+              <div className="rounded-xl overflow-hidden aspect-square">
+                <img
+                  src={stepImages[i]}
+                  alt={step.title}
+                  loading="lazy"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div>
+                <span className="text-4xl font-display font-bold text-primary/20 block mb-2">
+                  {step.num}
+                </span>
+                <h3 className="text-xl font-display font-bold mb-2">{step.title}</h3>
+                <p className="text-muted-foreground leading-relaxed">{step.desc}</p>
+              </div>
+            </div>
           ))}
         </div>
       </div>

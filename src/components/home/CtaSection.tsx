@@ -64,7 +64,7 @@ export function CtaSection() {
                   ))}
                 </div>
                 <p className="text-sm text-muted-foreground leading-relaxed mb-5 italic">
-                  "{featured.short_text || featured.text}"
+                  "{featured.shortText || featured.text}"
                 </p>
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0">

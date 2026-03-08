@@ -1,8 +1,9 @@
 import { motion } from "framer-motion";
 import { useInView } from "@/hooks/useInView";
 import { useCms } from "@/hooks/useSiteContent";
-import { MessageCircle } from "lucide-react";
+import { MessageCircle, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 
 export function CtaSection() {
   const { ref, isInView } = useInView();
@@ -16,30 +17,75 @@ export function CtaSection() {
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7 }}
-          className="relative overflow-hidden rounded-3xl bg-card p-10 md:p-16 max-w-4xl mx-auto"
+          className="relative overflow-hidden rounded-3xl border border-border/40 bg-card p-10 md:p-14 max-w-5xl mx-auto"
         >
-          {/* Gradient blob */}
-          <div className="absolute top-0 right-0 w-[60%] h-full pointer-events-none">
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_70%_50%,hsl(var(--primary)/0.4)_0%,hsl(280_80%_60%/0.3)_30%,hsl(320_90%_55%/0.25)_60%,transparent_80%)] blur-2xl" />
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_90%_80%,hsl(330_80%_55%/0.3)_0%,hsl(160_60%_40%/0.15)_50%,transparent_80%)] blur-3xl" />
+          {/* Dot pattern overlay */}
+          <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(circle, hsl(var(--foreground)) 1px, transparent 1px)', backgroundSize: '16px 16px' }} />
+
+          {/* Bottom purple glow */}
+          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[80%] h-32 pointer-events-none">
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_100%,hsl(var(--primary)/0.6)_0%,hsl(280_80%_60%/0.3)_40%,transparent_70%)] blur-xl" />
           </div>
 
-          <div className="relative z-10 max-w-lg">
-            <h2 className="text-3xl md:text-5xl font-display font-bold tracking-tight mb-4 text-foreground">
-              {c('home', 'cta', 'title', 'Still Thinking?')}
-            </h2>
-            <p className="text-muted-foreground text-base md:text-lg mb-8">
-              {c('home', 'cta', 'description', "Great design doesn't wait. Let's have a quick chat about your vision — no commitment, just a conversation.")}
-            </p>
-            <Button
-              asChild
-              className="h-14 px-10 text-base font-display font-semibold rounded-full bg-foreground text-background hover:bg-foreground/90 transition-all duration-300"
-            >
-              <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
-                <MessageCircle className="w-5 h-5 mr-2" />
-                {c('home', 'cta', 'button_text', 'Book a Meeting')}
-              </a>
-            </Button>
+          <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center gap-10 md:gap-16">
+            {/* Left: Headline + CTAs */}
+            <div className="flex-1 min-w-0">
+              <h2 className="text-3xl md:text-4xl font-display font-bold tracking-tight mb-4 text-foreground">
+                {c('home', 'cta', 'title', 'Still Thinking?')}
+              </h2>
+              <p className="text-muted-foreground text-base mb-8 max-w-md">
+                {c('home', 'cta', 'description', "Great design doesn't wait. Let's have a quick chat about your vision — no commitment, just a conversation.")}
+              </p>
+              <div className="flex gap-3">
+                <Button
+                  asChild
+                  className="h-12 px-8 text-sm font-display font-semibold rounded-full bg-foreground text-background hover:bg-foreground/90 transition-all duration-300"
+                >
+                  <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
+                    <MessageCircle className="w-4 h-4 mr-1.5" />
+                    {c('home', 'cta', 'button_text', 'Book a Meeting')}
+                  </a>
+                </Button>
+                <Button
+                  asChild
+                  variant="outline"
+                  className="h-12 px-8 text-sm font-display font-semibold rounded-full border-border/60 hover:bg-accent/50 transition-all duration-300"
+                >
+                  <Link to="/clients">
+                    {c('home', 'cta', 'button_secondary', 'View Portfolio')}
+                  </Link>
+                </Button>
+              </div>
+            </div>
+
+            {/* Right: Testimonial card */}
+            <div className="flex-shrink-0 w-full md:w-[380px] rounded-2xl border border-border/40 bg-background/40 backdrop-blur-sm p-6">
+              <div className="flex gap-0.5 mb-3">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="w-4 h-4 fill-amber-500 text-amber-500" />
+                ))}
+              </div>
+              <p className="text-sm text-muted-foreground leading-relaxed mb-5">
+                {c('home', 'cta', 'testimonial_text', '"Mahtamun delivered an exceptional brand identity that truly captured our vision. The attention to detail and creative process was outstanding. Highly recommend for any brand project."')}
+              </p>
+              <div className="flex items-center gap-3">
+                <div className="w-9 h-9 rounded-full bg-muted overflow-hidden">
+                  <img
+                    src={c('home', 'cta', 'testimonial_avatar', '/images/reviews/client-1.jpg')}
+                    alt=""
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div>
+                  <p className="text-sm font-display font-semibold text-foreground">
+                    {c('home', 'cta', 'testimonial_name', 'James Cooper')}
+                  </p>
+                  <p className="text-xs text-primary">
+                    {c('home', 'cta', 'testimonial_role', 'Chief Marketing Officer')}
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </motion.div>
       </div>

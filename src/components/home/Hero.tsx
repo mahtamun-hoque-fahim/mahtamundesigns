@@ -38,7 +38,7 @@ export function Hero() {
             {/* Trust badges inline */}
             <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.45 }} className="mt-5 flex items-center gap-4 justify-center md:justify-start text-xs text-muted-foreground">
               <span className="flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
+                <span className="w-1.5 h-1.5 rounded-full bg-primary" />
                 {c('home', 'hero', 'badge_1', '50+ Projects Delivered')}
               </span>
               <span className="text-border">|</span>

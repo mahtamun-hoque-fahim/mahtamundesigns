@@ -19,9 +19,10 @@ export function CtaSection() {
           className="relative overflow-hidden rounded-3xl bg-card p-10 md:p-16 max-w-4xl mx-auto"
         >
           {/* Gradient blob */}
-          <div className="absolute top-0 right-0 w-[60%] h-full pointer-events-none">
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_70%_50%,hsl(var(--primary)/0.4)_0%,hsl(280_80%_60%/0.3)_30%,hsl(320_90%_55%/0.25)_60%,transparent_80%)] blur-2xl" />
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_90%_80%,hsl(330_80%_55%/0.3)_0%,hsl(160_60%_40%/0.15)_50%,transparent_80%)] blur-3xl" />
+          <div className="absolute top-0 right-0 w-[70%] h-full pointer-events-none">
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_60%_40%,hsl(var(--primary)/0.5)_0%,hsl(var(--primary)/0.2)_40%,transparent_70%)] blur-2xl" />
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_80%_70%,hsl(330_80%_60%/0.35)_0%,hsl(340_70%_50%/0.15)_50%,transparent_75%)] blur-3xl" />
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_70%_60%,hsl(var(--primary)/0.15)_0%,hsl(320_80%_55%/0.2)_40%,transparent_70%)] blur-xl" />
           </div>
 
           <div className="relative z-10 max-w-lg">

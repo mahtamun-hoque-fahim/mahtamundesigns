@@ -38,6 +38,7 @@ function mapToCompany(db: DbCompany): Company {
     featured: db.featured,
     featuredImage: db.featured_image_url || "",
     category: db.category,
+    layoutMode: ((db as any).layout_mode as "grouped" | "simple") || "simple",
   };
 }
 

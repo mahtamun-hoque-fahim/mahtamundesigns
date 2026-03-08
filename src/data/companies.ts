@@ -178,6 +178,7 @@ export const companies: Company[] = [
     featured: false,
     featuredImage: "/images/home/selected-works-4.jpg",
     category: "Brand Identity",
+    layoutMode: "simple",
   },
 ];
 

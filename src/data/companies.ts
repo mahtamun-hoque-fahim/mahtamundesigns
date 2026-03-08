@@ -34,6 +34,7 @@ export const companies: Company[] = [
     featured: true,
     featuredImage: "/images/home/selected-works-1.jpg",
     category: "Brand Identity",
+    layoutMode: "simple",
   },
   {
     id: "2",

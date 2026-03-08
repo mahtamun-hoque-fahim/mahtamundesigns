@@ -48,13 +48,13 @@ export function Hero() {
             </motion.div>
 
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.55 }} className="mt-8 flex gap-4 justify-center md:justify-start">
-              <Button variant="hero" size="lg" asChild className="h-13 px-8 text-sm">
+              <Button variant="hero" size="lg" asChild className="h-14 px-10 text-base">
                 <Link to="/clients">
                   {c('home', 'hero', 'button_portfolio', 'View Portfolio')}
                   <ArrowRight className="w-4 h-4 ml-1" />
                 </Link>
               </Button>
-              <Button variant="heroOutline" size="lg" asChild className="h-13 px-8 text-sm">
+              <Button variant="heroOutline" size="lg" asChild className="h-14 px-10 text-base">
                 <Link to="/contact">
                   {c('home', 'hero', 'button_contact', 'Start a Project')}
                 </Link>

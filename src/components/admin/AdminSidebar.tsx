@@ -9,6 +9,7 @@ import {
   ClipboardList,
   Settings,
   LogOut,
+  FolderOpen,
 } from "lucide-react";
 
 const navItems = [
@@ -16,6 +17,7 @@ const navItems = [
   { id: "pages", label: "Pages", icon: FileText },
   { id: "blocks", label: "Content Blocks", icon: Layers },
   { id: "media", label: "Media Library", icon: Image },
+  { id: "media-store", label: "Media Store", icon: FolderOpen },
   { id: "reviews", label: "Reviews", icon: MessageSquare },
   { id: "clients", label: "Clients", icon: Building2 },
   { id: "analytics", label: "Analytics", icon: BarChart3 },

@@ -110,6 +110,7 @@ const AdminDashboard = () => {
           {activeTab === "pages" && <ContentEditor />}
           {activeTab === "blocks" && <ContentBlocksView />}
           {activeTab === "media" && <MediaManager />}
+          {activeTab === "media-store" && <MediaStoreManager />}
           {activeTab === "reviews" && <ReviewsEditor />}
           {activeTab === "clients" && <CompaniesEditor />}
           {activeTab === "analytics" && <AnalyticsDashboard />}

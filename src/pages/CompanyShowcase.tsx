@@ -1,6 +1,7 @@
 import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useCompanies } from "@/hooks/useCompaniesData";
+import { useProjectGroups } from "@/hooks/useProjectData";
 import { useCms } from "@/hooks/useSiteContent";
 import { LazyImage } from "@/components/LazyImage";
 import { Header } from "@/components/layout/Header";
@@ -14,6 +15,8 @@ const CompanyShowcase = () => {
   const c = useCms();
   const company = companies.find((co) => co.slug === slug);
   const whatsappUrl = c('showcase', 'cta', 'whatsapp_url', 'https://wa.me/8801795931345');
+
+  const { groups, ungroupedImages, loading: projectsLoading } = useProjectGroups(company?.id);
 
   if (!company) {
     return (
@@ -30,7 +33,10 @@ const CompanyShowcase = () => {
     );
   }
 
-  const isComplexGrid = company.designs.length > 2;
+  // Determine which images to show: new project_images system or legacy design_urls
+  const hasProjectImages = groups.length > 0 || ungroupedImages.length > 0;
+  const useGroupedLayout = company.layoutMode === "grouped" && groups.length > 0;
+  const simpleImages = hasProjectImages ? ungroupedImages.map(i => i.image_url) : company.designs;
 
   return (
     <div className="min-h-screen bg-background">
@@ -88,22 +94,42 @@ const CompanyShowcase = () => {
             </div>
           </motion.section>
 
+          {/* Design Showcase - Grouped or Simple */}
           <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.4 }} className="mb-16">
             <h2 className="text-2xl md:text-3xl font-display font-bold mb-8">
               {c('showcase', 'designs', 'title', 'Design Showcase')}
             </h2>
-            <div className={isComplexGrid ? "grid grid-cols-1 md:grid-cols-12 gap-4" : "grid grid-cols-1 md:grid-cols-2 gap-4"}>
-              {company.designs.map((design, i) => {
-                const complexGridClass = ["md:col-span-8", "md:col-span-4", "md:col-span-6", "md:col-span-6", "md:col-span-12"][i % 5];
-                return (
-                  <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.5 + i * 0.1 }} className={isComplexGrid ? complexGridClass : ""}>
-                    <div className="relative overflow-hidden rounded-lg bg-card h-[300px] md:h-[400px]">
-                      <LazyImage src={design} alt={`${company.name} design ${i + 1}`} className="w-full h-full" fill />
-                    </div>
+
+            {useGroupedLayout ? (
+              /* Grouped Layout - Stacked Sections */
+              <div className="space-y-16">
+                {groups.map((group, gi) => (
+                  <motion.div
+                    key={group.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.5 + gi * 0.1 }}
+                  >
+                    <h3 className="text-xl md:text-2xl font-display font-semibold mb-6 flex items-center gap-3">
+                      <span className="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center text-sm font-bold">{gi + 1}</span>
+                      {group.title}
+                    </h3>
+                    <ImageGrid images={group.images.map(i => i.image_url)} companyName={company.name} />
                   </motion.div>
-                );
-              })}
-            </div>
+                ))}
+
+                {/* Show ungrouped images if any exist alongside groups */}
+                {ungroupedImages.length > 0 && (
+                  <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.5 + groups.length * 0.1 }}>
+                    <h3 className="text-xl md:text-2xl font-display font-semibold mb-6 text-muted-foreground">Other Designs</h3>
+                    <ImageGrid images={ungroupedImages.map(i => i.image_url)} companyName={company.name} />
+                  </motion.div>
+                )}
+              </div>
+            ) : (
+              /* Simple Layout */
+              <ImageGrid images={simpleImages} companyName={company.name} animated />
+            )}
           </motion.section>
 
           <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.6 }} className="bg-card border border-border/50 rounded-2xl p-8 md:p-12 text-center">
@@ -134,5 +160,41 @@ const CompanyShowcase = () => {
     </div>
   );
 };
+
+function ImageGrid({ images, companyName, animated }: { images: string[]; companyName: string; animated?: boolean }) {
+  const isComplexGrid = images.length > 2;
+  const gridClasses = ["md:col-span-8", "md:col-span-4", "md:col-span-6", "md:col-span-6", "md:col-span-12"];
+
+  if (images.length === 0) {
+    return <p className="text-muted-foreground text-sm italic">No designs yet.</p>;
+  }
+
+  return (
+    <div className={isComplexGrid ? "grid grid-cols-1 md:grid-cols-12 gap-4" : "grid grid-cols-1 md:grid-cols-2 gap-4"}>
+      {images.map((img, i) => {
+        const complexGridClass = gridClasses[i % 5];
+        const content = (
+          <div className="relative overflow-hidden rounded-lg bg-card h-[300px] md:h-[400px]">
+            <LazyImage src={img} alt={`${companyName} design ${i + 1}`} className="w-full h-full" fill />
+          </div>
+        );
+
+        if (animated) {
+          return (
+            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.5 + i * 0.1 }} className={isComplexGrid ? complexGridClass : ""}>
+              {content}
+            </motion.div>
+          );
+        }
+
+        return (
+          <div key={i} className={isComplexGrid ? complexGridClass : ""}>
+            {content}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
 
 export default CompanyShowcase;

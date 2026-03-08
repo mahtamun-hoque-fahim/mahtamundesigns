@@ -22,11 +22,11 @@ export function CtaSection() {
           transition={{ duration: 0.7 }}
           className="relative overflow-hidden rounded-3xl border border-border/50 bg-card p-10 md:p-14"
         >
-          {/* Bottom glow */}
-          <div className="absolute bottom-0 left-0 right-0 h-40 pointer-events-none">
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_100%,hsl(330_80%_55%/0.4)_0%,hsl(var(--primary)/0.35)_40%,transparent_70%)] blur-xl" />
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_100%,hsl(280_70%_55%/0.25)_0%,transparent_60%)] blur-2xl" />
-          </div>
+          {/* Bottom glow — tight neon band */}
+          <div className="absolute -bottom-2 left-[10%] right-[10%] h-[6px] rounded-full bg-[hsl(280_80%_60%)] blur-[2px] pointer-events-none" />
+          <div className="absolute -bottom-1 left-[15%] right-[15%] h-[4px] rounded-full bg-[hsl(320_90%_65%)] blur-[1px] pointer-events-none" />
+          <div className="absolute bottom-0 left-[5%] right-[5%] h-16 pointer-events-none bg-[radial-gradient(ellipse_at_50%_100%,hsl(300_80%_55%/0.5)_0%,hsl(var(--primary)/0.3)_30%,transparent_70%)] blur-xl" />
+          <div className="absolute bottom-0 left-[10%] right-[10%] h-24 pointer-events-none bg-[radial-gradient(ellipse_at_50%_100%,hsl(330_85%_60%/0.25)_0%,hsl(270_70%_50%/0.15)_40%,transparent_70%)] blur-2xl" />
 
           {/* Dot pattern overlay */}
           <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, hsl(var(--foreground)) 1px, transparent 1px)', backgroundSize: '16px 16px' }} />

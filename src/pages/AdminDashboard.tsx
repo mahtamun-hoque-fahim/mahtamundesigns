@@ -13,9 +13,11 @@ import { MediaStoreManager } from "@/components/admin/MediaStoreManager";
 import { AnalyticsDashboard } from "@/components/admin/AnalyticsDashboard";
 import { ActivityLogViewer } from "@/components/admin/ActivityLogViewer";
 import { AdminSettings } from "@/components/admin/AdminSettings";
+import { MessagesViewer } from "@/components/admin/MessagesViewer";
 
 const PAGE_TITLES: Record<string, string> = {
   overview: "Dashboard Overview",
+  messages: "Contact Messages",
   pages: "Page Content Manager",
   blocks: "Dynamic Content Blocks",
   media: "Media Library",

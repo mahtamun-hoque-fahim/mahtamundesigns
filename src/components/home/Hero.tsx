@@ -54,7 +54,7 @@ export function Hero() {
                   <ArrowRight className="w-4 h-4 ml-1" />
                 </Link>
               </Button>
-              <Button variant="heroOutline" size="lg" asChild className="h-13 px-8 text-sm">
+              <Button variant="heroOutline" size="lg" asChild className="h-14 px-10 text-base">
                 <Link to="/contact">
                   {c('home', 'hero', 'button_contact', 'Start a Project')}
                 </Link>

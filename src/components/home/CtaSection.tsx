@@ -22,11 +22,11 @@ export function CtaSection() {
           transition={{ duration: 0.7 }}
           className="relative overflow-hidden rounded-3xl border border-border/50 bg-card p-10 md:p-14"
         >
-          {/* Bottom glow — tight neon band */}
-          <div className="absolute -bottom-2 left-[10%] right-[10%] h-[6px] rounded-full bg-[hsl(280_80%_60%)] blur-[2px] pointer-events-none" />
-          <div className="absolute -bottom-1 left-[15%] right-[15%] h-[4px] rounded-full bg-[hsl(320_90%_65%)] blur-[1px] pointer-events-none" />
-          <div className="absolute bottom-0 left-[5%] right-[5%] h-16 pointer-events-none bg-[radial-gradient(ellipse_at_50%_100%,hsl(300_80%_55%/0.5)_0%,hsl(var(--primary)/0.3)_30%,transparent_70%)] blur-xl" />
-          <div className="absolute bottom-0 left-[10%] right-[10%] h-24 pointer-events-none bg-[radial-gradient(ellipse_at_50%_100%,hsl(330_85%_60%/0.25)_0%,hsl(270_70%_50%/0.15)_40%,transparent_70%)] blur-2xl" />
+          {/* Bottom glow — blue to violet band */}
+          <div className="absolute -bottom-1 left-[10%] right-[10%] h-[5px] rounded-full bg-[hsl(250_90%_65%)] blur-[2px] pointer-events-none" />
+          <div className="absolute -bottom-0.5 left-[20%] right-[20%] h-[3px] rounded-full bg-[hsl(230_95%_70%)] blur-[1px] pointer-events-none" />
+          <div className="absolute bottom-0 left-[5%] right-[5%] h-20 pointer-events-none bg-[radial-gradient(ellipse_at_50%_100%,hsl(240_80%_60%/0.5)_0%,hsl(260_75%_55%/0.3)_30%,transparent_70%)] blur-xl" />
+          <div className="absolute bottom-0 left-[8%] right-[8%] h-28 pointer-events-none bg-[radial-gradient(ellipse_at_50%_100%,hsl(250_85%_55%/0.25)_0%,hsl(270_70%_50%/0.12)_40%,transparent_70%)] blur-2xl" />
 
           {/* Dot pattern overlay */}
           <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle, hsl(var(--foreground)) 1px, transparent 1px)', backgroundSize: '16px 16px' }} />

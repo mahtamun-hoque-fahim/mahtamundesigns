@@ -88,6 +88,7 @@ export const companies: Company[] = [
     featured: true,
     featuredImage: "/images/home/selected-works-4.jpg",
     category: "Social Media",
+    layoutMode: "simple",
   },
   {
     id: "5",

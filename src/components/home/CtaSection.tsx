@@ -24,7 +24,7 @@ export function CtaSection() {
 
           {/* Bottom purple glow */}
           <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[80%] h-32 pointer-events-none">
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_100%,hsl(var(--primary)/0.6)_0%,hsl(280_80%_60%/0.3)_40%,transparent_70%)] blur-xl" />
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_100%,hsl(263_70%_58%/0.5)_0%,hsl(263_60%_50%/0.25)_40%,transparent_70%)] blur-xl" />
           </div>
 
           <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center gap-10 md:gap-16">

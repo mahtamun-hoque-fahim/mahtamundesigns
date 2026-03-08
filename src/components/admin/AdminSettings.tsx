@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import {
   Lock, Mail, RefreshCw, Monitor, Smartphone, Tablet,
-  Globe, Shield, LogOut, Clock, CheckCircle, XCircle, AlertTriangle
+  Globe, Shield, LogOut, Clock, CheckCircle, XCircle, AlertTriangle, Bell, Eye
 } from "lucide-react";
 import {
   getSessionToken, terminateSession, terminateOtherSessions
@@ -35,10 +35,38 @@ type LoginEntry = {
   failure_reason: string;
 };
 
+type SecurityAlert = {
+  id: string;
+  alert_type: string;
+  severity: string;
+  title: string;
+  details: string;
+  device_type: string;
+  browser: string;
+  os: string;
+  ip_address: string;
+  location: string;
+  is_read: boolean;
+  created_at: string;
+};
+
 function DeviceIcon({ type }: { type: string }) {
   if (/mobile/i.test(type)) return <Smartphone className="w-4 h-4" />;
   if (/tablet/i.test(type)) return <Tablet className="w-4 h-4" />;
   return <Monitor className="w-4 h-4" />;
+}
+
+function SeverityBadge({ severity }: { severity: string }) {
+  const styles = {
+    high: "bg-destructive/10 text-destructive",
+    medium: "bg-amber-500/10 text-amber-600",
+    low: "bg-blue-500/10 text-blue-600",
+  };
+  return (
+    <span className={`px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full ${styles[severity as keyof typeof styles] || styles.medium}`}>
+      {severity}
+    </span>
+  );
 }
 
 export function AdminSettings() {
@@ -47,10 +75,11 @@ export function AdminSettings() {
   const [saving, setSaving] = useState(false);
   const [sessions, setSessions] = useState<Session[]>([]);
   const [loginHistory, setLoginHistory] = useState<LoginEntry[]>([]);
+  const [securityAlerts, setSecurityAlerts] = useState<SecurityAlert[]>([]);
   const [recoveryEmail, setRecoveryEmail] = useState("");
   const [recoveryVerified, setRecoveryVerified] = useState(false);
   const [recoveryInput, setRecoveryInput] = useState("");
-  const [activeSection, setActiveSection] = useState<"password" | "sessions" | "history" | "recovery">("sessions");
+  const [activeSection, setActiveSection] = useState<"password" | "sessions" | "history" | "recovery" | "alerts">("sessions");
   const { toast } = useToast();
   const currentToken = getSessionToken();
 
@@ -74,6 +103,14 @@ export function AdminSettings() {
       .order("login_time", { ascending: false })
       .limit(50);
     if (histData) setLoginHistory(histData);
+
+    const { data: alertsData } = await (supabase as any)
+      .from("security_alerts")
+      .select("*")
+      .eq("user_id", uid)
+      .order("created_at", { ascending: false })
+      .limit(50);
+    if (alertsData) setSecurityAlerts(alertsData);
 
     const { data: settingsData } = await (supabase as any)
       .from("admin_settings")
@@ -139,7 +176,6 @@ export function AdminSettings() {
     const { data: { session } } = await supabase.auth.getSession();
     if (!session) return;
     setSaving(true);
-    // Upsert admin_settings
     const { error } = await (supabase as any)
       .from("admin_settings")
       .upsert({
@@ -156,8 +192,31 @@ export function AdminSettings() {
     setSaving(false);
   };
 
+  const handleMarkAlertRead = async (alertId: string) => {
+    await (supabase as any)
+      .from("security_alerts")
+      .update({ is_read: true })
+      .eq("id", alertId);
+    setSecurityAlerts((prev) => prev.map((a) => a.id === alertId ? { ...a, is_read: true } : a));
+  };
+
+  const handleMarkAllAlertsRead = async () => {
+    const { data: { session } } = await supabase.auth.getSession();
+    if (!session) return;
+    await (supabase as any)
+      .from("security_alerts")
+      .update({ is_read: true })
+      .eq("user_id", session.user.id)
+      .eq("is_read", false);
+    setSecurityAlerts((prev) => prev.map((a) => ({ ...a, is_read: true })));
+    toast({ title: "All alerts marked as read" });
+  };
+
+  const unreadAlerts = securityAlerts.filter((a) => !a.is_read).length;
+
   const tabs = [
     { id: "sessions" as const, label: "Active Sessions", icon: Monitor },
+    { id: "alerts" as const, label: "Security Alerts", icon: Bell, badge: unreadAlerts },
     { id: "history" as const, label: "Login History", icon: Clock },
     { id: "password" as const, label: "Password", icon: Lock },
     { id: "recovery" as const, label: "Recovery Email", icon: Mail },
@@ -173,7 +232,7 @@ export function AdminSettings() {
       </h2>
 
       {/* Tab navigation */}
-      <div className="flex gap-1 mb-6 bg-muted/50 p-1 rounded-lg">
+      <div className="flex gap-1 mb-6 bg-muted/50 p-1 rounded-lg flex-wrap">
         {tabs.map((t) => (
           <button
             key={t.id}
@@ -186,6 +245,11 @@ export function AdminSettings() {
           >
             <t.icon className="w-3.5 h-3.5" />
             {t.label}
+            {t.badge ? (
+              <span className="ml-1 px-1.5 py-0.5 text-[10px] font-bold bg-destructive text-destructive-foreground rounded-full leading-none">
+                {t.badge}
+              </span>
+            ) : null}
           </button>
         ))}
       </div>
@@ -262,6 +326,81 @@ export function AdminSettings() {
               </div>
             );
           })}
+        </div>
+      )}
+
+      {/* Security Alerts */}
+      {activeSection === "alerts" && (
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <p className="text-sm text-muted-foreground">
+              {unreadAlerts > 0 ? `${unreadAlerts} unread alert${unreadAlerts !== 1 ? "s" : ""}` : "No unread alerts"}
+            </p>
+            {unreadAlerts > 0 && (
+              <button
+                onClick={handleMarkAllAlertsRead}
+                className="flex items-center gap-1 px-3 py-1.5 text-xs font-semibold text-primary border border-primary/30 rounded-md hover:bg-primary/10 transition-colors"
+              >
+                <Eye className="w-3 h-3" />
+                Mark All Read
+              </button>
+            )}
+          </div>
+
+          {securityAlerts.length === 0 && (
+            <div className="text-center py-12 text-muted-foreground">
+              <Shield className="w-8 h-8 mx-auto mb-3 opacity-50" />
+              <p className="text-sm">No security alerts. Your account looks safe.</p>
+            </div>
+          )}
+
+          {securityAlerts.map((alert) => (
+            <div
+              key={alert.id}
+              className={`bg-card border rounded-xl p-4 ${
+                !alert.is_read ? "border-amber-500/40 ring-1 ring-amber-500/10" : "border-border opacity-70"
+              }`}
+            >
+              <div className="flex items-start justify-between">
+                <div className="flex items-start gap-3">
+                  <div className={`p-2 rounded-lg ${
+                    alert.severity === "high" ? "bg-destructive/10 text-destructive" : "bg-amber-500/10 text-amber-600"
+                  }`}>
+                    <AlertTriangle className="w-4 h-4" />
+                  </div>
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-semibold text-foreground">{alert.title}</span>
+                      <SeverityBadge severity={alert.severity} />
+                      {!alert.is_read && (
+                        <span className="w-2 h-2 rounded-full bg-primary" />
+                      )}
+                    </div>
+                    <p className="text-xs text-muted-foreground">{alert.details}</p>
+                    <div className="text-xs text-muted-foreground space-y-0.5 mt-2">
+                      <p><DeviceIcon type={alert.device_type} /> {alert.device_type} · {alert.browser} · {alert.os}</p>
+                      {alert.location && (
+                        <p className="flex items-center gap-1">
+                          <Globe className="w-3 h-3" /> {alert.location}
+                        </p>
+                      )}
+                      {alert.ip_address && <p>IP: {alert.ip_address}</p>}
+                      <p>{new Date(alert.created_at).toLocaleString()}</p>
+                    </div>
+                  </div>
+                </div>
+                {!alert.is_read && (
+                  <button
+                    onClick={() => handleMarkAlertRead(alert.id)}
+                    className="flex items-center gap-1 px-3 py-1.5 text-xs font-semibold text-muted-foreground border border-border rounded-md hover:bg-muted/50 transition-colors"
+                  >
+                    <Eye className="w-3 h-3" />
+                    Dismiss
+                  </button>
+                )}
+              </div>
+            </div>
+          ))}
         </div>
       )}
 

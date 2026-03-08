@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
-import { Lock, Mail, ArrowLeft } from "lucide-react";
+import { Lock, Mail, ArrowLeft, AlertTriangle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { recordLogin, recordFailedLogin } from "@/hooks/useSessionManager";
 
@@ -12,12 +12,22 @@ const AdminLogin = () => {
   const [loading, setLoading] = useState(false);
   const [mode, setMode] = useState<"login" | "forgot">("login");
   const [resetSent, setResetSent] = useState(false);
+  const [sessionMessage, setSessionMessage] = useState("");
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { toast } = useToast();
+
+  useEffect(() => {
+    const reason = searchParams.get("reason");
+    if (reason === "session_terminated") {
+      setSessionMessage("Your session was terminated because your account was logged in from another device.");
+    }
+  }, [searchParams]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+    setSessionMessage("");
     setLoading(true);
     const { data, error: authError } = await supabase.auth.signInWithPassword({ email, password });
     if (authError) {
@@ -56,6 +66,13 @@ const AdminLogin = () => {
             {mode === "login" ? "Sign in to manage your site" : "Enter your email to reset password"}
           </p>
         </div>
+
+        {sessionMessage && (
+          <div className="mb-6 p-4 rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-start gap-3">
+            <AlertTriangle className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
+            <p className="text-sm text-foreground">{sessionMessage}</p>
+          </div>
+        )}
 
         {mode === "login" ? (
           <form onSubmit={handleLogin} className="space-y-4">

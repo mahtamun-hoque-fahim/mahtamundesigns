@@ -17,8 +17,12 @@ export function CtaSection() {
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7 }}
-          className="relative overflow-hidden rounded-3xl border border-border/40 bg-card p-10 md:p-14 max-w-5xl mx-auto"
+          className="relative overflow-hidden rounded-3xl border border-border/40 p-10 md:p-14 max-w-5xl mx-auto"
         >
+          {/* Background image */}
+          <img src="/images/home/hero-bg.png" alt="" className="absolute inset-0 w-full h-full object-cover object-center" />
+          <div className="absolute inset-0 bg-background/60" />
+
           {/* Dot pattern overlay */}
           <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(circle, hsl(var(--foreground)) 1px, transparent 1px)', backgroundSize: '16px 16px' }} />
 

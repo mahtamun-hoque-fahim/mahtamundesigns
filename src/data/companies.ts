@@ -160,6 +160,7 @@ export const companies: Company[] = [
     featured: false,
     featuredImage: "/images/home/selected-works-3.jpg",
     category: "Environmental Design",
+    layoutMode: "simple",
   },
   {
     id: "9",

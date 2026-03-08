@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { useInView } from "@/hooks/useInView";
 import { useCms } from "@/hooks/useSiteContent";
-import { MessageCircle, Star } from "lucide-react";
+import { MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
@@ -17,7 +17,7 @@ export function CtaSection() {
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7 }}
-          className="relative overflow-hidden rounded-3xl border border-border/40 p-10 md:p-14 max-w-5xl mx-auto"
+          className="relative overflow-hidden rounded-3xl border border-border/40 p-10 md:p-14 max-w-5xl mx-auto min-h-[320px]"
         >
           {/* Background image */}
           <img src="/images/home/hero-bg.png" alt="" className="absolute inset-0 w-full h-full object-cover object-center" />
@@ -26,8 +26,7 @@ export function CtaSection() {
           {/* Dot pattern overlay */}
           <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(circle, hsl(var(--foreground)) 1px, transparent 1px)', backgroundSize: '16px 16px' }} />
 
-
-          <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center gap-10 md:gap-16">
+          <div className="relative z-10 flex flex-col md:flex-row items-center gap-10 md:gap-16">
             {/* Left: Headline + CTAs */}
             <div className="flex-1 min-w-0">
               <h2 className="text-3xl md:text-4xl font-display font-bold tracking-tight mb-4 text-foreground">
@@ -58,33 +57,13 @@ export function CtaSection() {
               </div>
             </div>
 
-            {/* Right: Testimonial card */}
-            <div className="flex-shrink-0 w-full md:w-[380px] rounded-2xl border border-border/40 bg-background/40 backdrop-blur-sm p-6">
-              <div className="flex gap-0.5 mb-3">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-4 h-4 fill-amber-500 text-amber-500" />
-                ))}
-              </div>
-              <p className="text-sm text-muted-foreground leading-relaxed mb-5">
-                {c('home', 'cta', 'testimonial_text', '"Mahtamun delivered an exceptional brand identity that truly captured our vision. The attention to detail and creative process was outstanding. Highly recommend for any brand project."')}
-              </p>
-              <div className="flex items-center gap-3">
-                <div className="w-9 h-9 rounded-full bg-muted overflow-hidden">
-                  <img
-                    src={c('home', 'cta', 'testimonial_avatar', '/images/reviews/client-1.jpg')}
-                    alt=""
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <div>
-                  <p className="text-sm font-display font-semibold text-foreground">
-                    {c('home', 'cta', 'testimonial_name', 'James Cooper')}
-                  </p>
-                  <p className="text-xs text-primary">
-                    {c('home', 'cta', 'testimonial_role', 'Chief Marketing Officer')}
-                  </p>
-                </div>
-              </div>
+            {/* Right: Rotated review image */}
+            <div className="hidden md:block flex-shrink-0">
+              <img
+                src={c('home', 'cta', 'review_image', '/images/reviews/client-1.jpg')}
+                alt="Client review"
+                className="w-[280px] h-auto rounded-2xl border border-border/30 shadow-2xl rotate-3"
+              />
             </div>
           </div>
         </motion.div>

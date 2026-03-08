@@ -19,6 +19,7 @@ const PAGE_TITLES: Record<string, string> = {
   pages: "Page Content Manager",
   blocks: "Dynamic Content Blocks",
   media: "Media Library",
+  "media-store": "Media Store",
   reviews: "Reviews Manager",
   clients: "Clients Manager",
   analytics: "Visitor Analytics",

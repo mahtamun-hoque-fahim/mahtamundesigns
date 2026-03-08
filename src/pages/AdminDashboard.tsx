@@ -109,6 +109,7 @@ const AdminDashboard = () => {
 
         <main className="p-6">
           {activeTab === "overview" && <DashboardOverview onNavigate={setActiveTab} />}
+          {activeTab === "messages" && <MessagesViewer />}
           {activeTab === "pages" && <ContentEditor />}
           {activeTab === "blocks" && <ContentBlocksView />}
           {activeTab === "media" && <MediaManager />}

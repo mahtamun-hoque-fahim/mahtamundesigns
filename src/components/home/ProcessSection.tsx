@@ -13,6 +13,7 @@ function useProcessImages() {
 
 export function ProcessSection() {
   const c = useCms();
+  const stepImages = useProcessImages();
   const [activeStep, setActiveStep] = useState(0);
   const stepRefs = useRef<(HTMLDivElement | null)[]>([]);
 

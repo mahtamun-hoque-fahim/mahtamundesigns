@@ -56,8 +56,12 @@ export function ProjectGroupsEditor({ companyId, layoutMode }: Props) {
     await fetchAll();
   };
 
-  const updateGroup = async (id: string, title: string) => {
-    await supabase.from("project_groups").update({ title }).eq("id", id);
+  const updateGroup = async (id: string, updates: Partial<ProjectGroup>) => {
+    const { title, subtitle } = updates;
+    const updateObj: any = {};
+    if (title !== undefined) updateObj.title = title;
+    if (subtitle !== undefined) updateObj.subtitle = subtitle;
+    await supabase.from("project_groups").update(updateObj).eq("id", id);
     toast({ title: "Group updated" });
     await fetchAll();
   };

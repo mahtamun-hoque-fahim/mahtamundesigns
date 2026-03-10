@@ -67,7 +67,7 @@ export function Hero() {
 
           <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8, delay: 0.3 }} className="hidden md:block relative flex-shrink-0 mr-[5%]">
             <div className="w-[480px] lg:w-[580px] h-[560px] lg:h-[680px] relative">
-              <img src={c('home', 'hero', 'person_image', '/images/home/hero-person.png')} alt={c('home', 'hero', 'person_alt', 'Mahtamun')} className="w-full h-full object-contain object-bottom drop-shadow-2xl" />
+              <img src={heroPerson} alt={c('home', 'hero', 'person_alt', 'Mahtamun')} className="w-full h-full object-contain object-bottom drop-shadow-2xl" />
             </div>
           </motion.div>
         </div>

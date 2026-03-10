@@ -8,6 +8,7 @@ interface ProjectGroup {
   id: string;
   company_id: string;
   title: string;
+  subtitle: string;
   sort_order: number;
 }
 
@@ -48,14 +49,19 @@ export function ProjectGroupsEditor({ companyId, layoutMode }: Props) {
     await supabase.from("project_groups").insert({
       company_id: companyId,
       title: "New Project",
+      subtitle: "",
       sort_order: groups.length,
     });
     toast({ title: "Group added" });
     await fetchAll();
   };
 
-  const updateGroup = async (id: string, title: string) => {
-    await supabase.from("project_groups").update({ title }).eq("id", id);
+  const updateGroup = async (id: string, updates: Partial<ProjectGroup>) => {
+    const { title, subtitle } = updates;
+    const updateObj: any = {};
+    if (title !== undefined) updateObj.title = title;
+    if (subtitle !== undefined) updateObj.subtitle = subtitle;
+    await supabase.from("project_groups").update(updateObj).eq("id", id);
     toast({ title: "Group updated" });
     await fetchAll();
   };
@@ -144,7 +150,7 @@ export function ProjectGroupsEditor({ companyId, layoutMode }: Props) {
                 onChange={e => {
                   setGroups(prev => prev.map(g => g.id === group.id ? { ...g, title: e.target.value } : g));
                 }}
-                onBlur={e => updateGroup(group.id, e.target.value)}
+                onBlur={e => updateGroup(group.id, { title: e.target.value })}
                 onClick={e => e.stopPropagation()}
                 className="flex-1 text-sm font-semibold bg-transparent border-none outline-none focus:ring-0"
                 placeholder="Project title"
@@ -158,7 +164,20 @@ export function ProjectGroupsEditor({ companyId, layoutMode }: Props) {
             </div>
 
             {isExpanded && (
-              <div className="border-t border-border p-4">
+              <div className="border-t border-border p-4 space-y-4">
+                {/* Subtitle field */}
+                <div>
+                  <label className="text-xs text-muted-foreground mb-1 block">Subtitle</label>
+                  <input
+                    value={group.subtitle || ""}
+                    onChange={e => {
+                      setGroups(prev => prev.map(g => g.id === group.id ? { ...g, subtitle: e.target.value } : g));
+                    }}
+                    onBlur={e => updateGroup(group.id, { subtitle: e.target.value })}
+                    className="w-full px-3 py-1.5 text-sm bg-background border border-border rounded-md focus:ring-2 focus:ring-primary/50 focus:outline-none"
+                    placeholder="Optional subtitle"
+                  />
+                </div>
                 <div className="flex gap-3 flex-wrap">
                   {groupImages.map(img => (
                     <div key={img.id} className="relative">

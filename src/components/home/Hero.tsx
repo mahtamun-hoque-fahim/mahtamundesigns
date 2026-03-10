@@ -2,10 +2,13 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { useCms } from "@/hooks/useSiteContent";
+import { useMediaUrl } from "@/hooks/useMediaUrl";
 import { Button } from "@/components/ui/button";
 
 export function Hero() {
   const c = useCms();
+  const heroBg = useMediaUrl("hero-bg", "/images/home/hero-bg.png");
+  const heroPerson = useMediaUrl("hero-person", "/images/home/hero-person.png");
 
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden">

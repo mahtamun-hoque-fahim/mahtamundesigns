@@ -2,15 +2,18 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { useCms } from "@/hooks/useSiteContent";
+import { useMediaUrl } from "@/hooks/useMediaUrl";
 import { Button } from "@/components/ui/button";
 
 export function Hero() {
   const c = useCms();
+  const heroBg = useMediaUrl("hero-bg", "/images/home/hero-bg.png");
+  const heroPerson = useMediaUrl("hero-person", "/images/home/hero-person.png");
 
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden">
       <div className="absolute inset-0">
-        <img src={c('home', 'hero', 'bg_image', '/images/home/hero-bg.png')} alt="" className="absolute inset-0 w-full h-full object-cover object-left md:object-center" />
+        <img src={heroBg} alt="" className="absolute inset-0 w-full h-full object-cover object-left md:object-center" />
         <div className="absolute inset-0 bg-background/50" />
         <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-transparent to-background" />
       </div>
@@ -64,7 +67,7 @@ export function Hero() {
 
           <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8, delay: 0.3 }} className="hidden md:block relative flex-shrink-0 mr-[5%]">
             <div className="w-[480px] lg:w-[580px] h-[560px] lg:h-[680px] relative">
-              <img src={c('home', 'hero', 'person_image', '/images/home/hero-person.png')} alt={c('home', 'hero', 'person_alt', 'Mahtamun')} className="w-full h-full object-contain object-bottom drop-shadow-2xl" />
+              <img src={heroPerson} alt={c('home', 'hero', 'person_alt', 'Mahtamun')} className="w-full h-full object-contain object-bottom drop-shadow-2xl" />
             </div>
           </motion.div>
         </div>

@@ -1,13 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCms } from "@/hooks/useSiteContent";
+import { useMediaUrl } from "@/hooks/useMediaUrl";
 
-const stepImages = [
-  "/images/home/process-step-1.jpg",
-  "/images/home/process-step-2.jpg",
-  "/images/home/process-step-3.jpg",
-  "/images/home/process-step-4.jpg",
-];
+function useProcessImages() {
+  const img1 = useMediaUrl("process-step-1", "/images/home/process-step-1.jpg");
+  const img2 = useMediaUrl("process-step-2", "/images/home/process-step-2.jpg");
+  const img3 = useMediaUrl("process-step-3", "/images/home/process-step-3.jpg");
+  const img4 = useMediaUrl("process-step-4", "/images/home/process-step-4.jpg");
+  return [img1, img2, img3, img4];
+}
 
 export function ProcessSection() {
   const c = useCms();

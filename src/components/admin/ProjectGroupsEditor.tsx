@@ -49,6 +49,7 @@ export function ProjectGroupsEditor({ companyId, layoutMode }: Props) {
     await supabase.from("project_groups").insert({
       company_id: companyId,
       title: "New Project",
+      subtitle: "",
       sort_order: groups.length,
     });
     toast({ title: "Group added" });

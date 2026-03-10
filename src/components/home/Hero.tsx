@@ -13,7 +13,7 @@ export function Hero() {
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden">
       <div className="absolute inset-0">
-        <img src={c('home', 'hero', 'bg_image', '/images/home/hero-bg.png')} alt="" className="absolute inset-0 w-full h-full object-cover object-left md:object-center" />
+        <img src={heroBg} alt="" className="absolute inset-0 w-full h-full object-cover object-left md:object-center" />
         <div className="absolute inset-0 bg-background/50" />
         <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-transparent to-background" />
       </div>

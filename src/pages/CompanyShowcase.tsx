@@ -1,12 +1,13 @@
 import { useParams, Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { useState, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { useCompanies } from "@/hooks/useCompaniesData";
 import { useProjectGroups } from "@/hooks/useProjectData";
 import { useCms } from "@/hooks/useSiteContent";
 import { LazyImage } from "@/components/LazyImage";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
-import { ArrowLeft, MessageCircle, Mail } from "lucide-react";
+import { ArrowLeft, MessageCircle, Mail, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const CompanyShowcase = () => {
@@ -33,15 +34,23 @@ const CompanyShowcase = () => {
     );
   }
 
-  // Determine which images to show: new project_images system or legacy design_urls
   const hasProjectImages = groups.length > 0 || ungroupedImages.length > 0;
   const useGroupedLayout = company.layoutMode === "grouped" && groups.length > 0;
   const simpleImages = hasProjectImages ? ungroupedImages.map(i => i.image_url) : company.designs;
+
+  // Collect all images for lightbox navigation
+  const allImages: string[] = useGroupedLayout
+    ? [
+        ...groups.flatMap(g => g.images.map(i => i.image_url)),
+        ...ungroupedImages.map(i => i.image_url),
+      ]
+    : simpleImages;
 
   return (
     <div className="min-h-screen bg-background">
       <Header />
       <main>
+        {/* Hero Cover */}
         <div className="relative">
           <div className="h-[300px] md:h-[400px] relative overflow-hidden">
             <LazyImage src={company.cover} alt={`${company.name} cover`} className="w-full h-full" fill />
@@ -65,6 +74,7 @@ const CompanyShowcase = () => {
             <ArrowLeft className="w-4 h-4" /> Back to Clients
           </Link>
 
+          {/* About */}
           <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.2 }} className="mb-16">
             <h2 className="text-2xl md:text-3xl font-display font-bold mb-6">
               {c('showcase', 'about', 'title', 'About My Work')}
@@ -94,15 +104,14 @@ const CompanyShowcase = () => {
             </div>
           </motion.section>
 
-          {/* Design Showcase - Grouped or Simple */}
+          {/* Design Showcase */}
           <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.4 }} className="mb-16">
             <h2 className="text-2xl md:text-3xl font-display font-bold mb-8">
               {c('showcase', 'designs', 'title', 'Design Showcase')}
             </h2>
 
             {useGroupedLayout ? (
-              /* Grouped Layout - Stacked Sections */
-              <div className="space-y-16">
+              <div className="space-y-20">
                 {groups.map((group, gi) => (
                   <motion.div
                     key={group.id}
@@ -110,28 +119,32 @@ const CompanyShowcase = () => {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.5 + gi * 0.1 }}
                   >
-                    <h3 className="text-xl md:text-2xl font-display font-semibold mb-6 flex items-center gap-3">
-                      <span className="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center text-sm font-bold">{gi + 1}</span>
-                      {group.title}
-                    </h3>
-                    <ImageGrid images={group.images.map(i => i.image_url)} companyName={company.name} />
+                    <div className="mb-6">
+                      <h3 className="text-xl md:text-2xl font-display font-semibold flex items-center gap-3">
+                        <span className="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center text-sm font-bold">{gi + 1}</span>
+                        {group.title}
+                      </h3>
+                      {group.subtitle && (
+                        <p className="text-muted-foreground mt-1 ml-11">{group.subtitle}</p>
+                      )}
+                    </div>
+                    <MasonryGrid images={group.images.map(i => i.image_url)} companyName={company.name} allImages={allImages} />
                   </motion.div>
                 ))}
 
-                {/* Show ungrouped images if any exist alongside groups */}
                 {ungroupedImages.length > 0 && (
                   <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.5 + groups.length * 0.1 }}>
                     <h3 className="text-xl md:text-2xl font-display font-semibold mb-6 text-muted-foreground">Other Designs</h3>
-                    <ImageGrid images={ungroupedImages.map(i => i.image_url)} companyName={company.name} />
+                    <MasonryGrid images={ungroupedImages.map(i => i.image_url)} companyName={company.name} allImages={allImages} />
                   </motion.div>
                 )}
               </div>
             ) : (
-              /* Simple Layout */
-              <ImageGrid images={simpleImages} companyName={company.name} animated />
+              <MasonryGrid images={simpleImages} companyName={company.name} allImages={allImages} animated />
             )}
           </motion.section>
 
+          {/* CTA */}
           <motion.section initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.6 }} className="bg-card border border-border/50 rounded-2xl p-8 md:p-12 text-center">
             <h2 className="text-2xl md:text-3xl font-display font-bold mb-3">
               {c('showcase', 'cta', 'title', 'Interested in working together?')}
@@ -161,39 +174,142 @@ const CompanyShowcase = () => {
   );
 };
 
-function ImageGrid({ images, companyName, animated }: { images: string[]; companyName: string; animated?: boolean }) {
-  const isComplexGrid = images.length > 2;
-  const gridClasses = ["md:col-span-8", "md:col-span-4", "md:col-span-6", "md:col-span-6", "md:col-span-12"];
+/* ─── Masonry Grid ─── */
+
+function MasonryGrid({ images, companyName, allImages, animated }: { images: string[]; companyName: string; allImages: string[]; animated?: boolean }) {
+  const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
+
+  const openLightbox = useCallback((imgUrl: string) => {
+    const idx = allImages.indexOf(imgUrl);
+    setLightboxIndex(idx >= 0 ? idx : 0);
+  }, [allImages]);
 
   if (images.length === 0) {
     return <p className="text-muted-foreground text-sm italic">No designs yet.</p>;
   }
 
   return (
-    <div className={isComplexGrid ? "grid grid-cols-1 md:grid-cols-12 gap-4" : "grid grid-cols-1 md:grid-cols-2 gap-4"}>
-      {images.map((img, i) => {
-        const complexGridClass = gridClasses[i % 5];
-        const content = (
-          <div className="relative overflow-hidden rounded-lg bg-card h-[300px] md:h-[400px]">
-            <LazyImage src={img} alt={`${companyName} design ${i + 1}`} className="w-full h-full" fill />
-          </div>
-        );
-
-        if (animated) {
-          return (
-            <motion.div key={i} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.5 + i * 0.1 }} className={isComplexGrid ? complexGridClass : ""}>
-              {content}
-            </motion.div>
+    <>
+      <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-4 space-y-4">
+        {images.map((img, i) => {
+          const card = (
+            <div
+              key={img + i}
+              className="break-inside-avoid group cursor-pointer"
+              onClick={() => openLightbox(img)}
+            >
+              <div className="relative overflow-hidden rounded-xl bg-muted transition-shadow duration-300 group-hover:shadow-xl group-hover:shadow-primary/10">
+                <img
+                  src={img}
+                  alt={`${companyName} design ${i + 1}`}
+                  loading="lazy"
+                  className="w-full h-auto block transition-transform duration-500 group-hover:scale-[1.03]"
+                />
+              </div>
+            </div>
           );
-        }
 
-        return (
-          <div key={i} className={isComplexGrid ? complexGridClass : ""}>
-            {content}
-          </div>
-        );
-      })}
-    </div>
+          if (animated) {
+            return (
+              <motion.div
+                key={img + i}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.3 + i * 0.08 }}
+                className="break-inside-avoid"
+              >
+                <div
+                  className="group cursor-pointer"
+                  onClick={() => openLightbox(img)}
+                >
+                  <div className="relative overflow-hidden rounded-xl bg-muted transition-shadow duration-300 group-hover:shadow-xl group-hover:shadow-primary/10">
+                    <img
+                      src={img}
+                      alt={`${companyName} design ${i + 1}`}
+                      loading="lazy"
+                      className="w-full h-auto block transition-transform duration-500 group-hover:scale-[1.03]"
+                    />
+                  </div>
+                </div>
+              </motion.div>
+            );
+          }
+
+          return card;
+        })}
+      </div>
+
+      {/* Lightbox */}
+      <AnimatePresence>
+        {lightboxIndex !== null && (
+          <Lightbox
+            images={allImages}
+            index={lightboxIndex}
+            onClose={() => setLightboxIndex(null)}
+            onNavigate={setLightboxIndex}
+          />
+        )}
+      </AnimatePresence>
+    </>
+  );
+}
+
+/* ─── Lightbox ─── */
+
+function Lightbox({ images, index, onClose, onNavigate }: {
+  images: string[];
+  index: number;
+  onClose: () => void;
+  onNavigate: (i: number) => void;
+}) {
+  const prev = () => onNavigate(index === 0 ? images.length - 1 : index - 1);
+  const next = () => onNavigate(index === images.length - 1 ? 0 : index + 1);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-50 bg-background/95 backdrop-blur-sm flex items-center justify-center"
+      onClick={onClose}
+    >
+      {/* Close */}
+      <button onClick={onClose} className="absolute top-6 right-6 z-10 w-10 h-10 rounded-full bg-muted/80 hover:bg-muted flex items-center justify-center text-foreground transition-colors">
+        <X className="w-5 h-5" />
+      </button>
+
+      {/* Nav prev */}
+      {images.length > 1 && (
+        <button onClick={(e) => { e.stopPropagation(); prev(); }} className="absolute left-4 md:left-8 z-10 w-10 h-10 rounded-full bg-muted/80 hover:bg-muted flex items-center justify-center text-foreground transition-colors">
+          <ChevronLeft className="w-5 h-5" />
+        </button>
+      )}
+
+      {/* Image */}
+      <motion.img
+        key={images[index]}
+        src={images[index]}
+        alt={`Preview ${index + 1}`}
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.95 }}
+        transition={{ duration: 0.2 }}
+        className="max-w-[90vw] max-h-[85vh] object-contain rounded-lg"
+        onClick={(e) => e.stopPropagation()}
+      />
+
+      {/* Nav next */}
+      {images.length > 1 && (
+        <button onClick={(e) => { e.stopPropagation(); next(); }} className="absolute right-4 md:right-8 z-10 w-10 h-10 rounded-full bg-muted/80 hover:bg-muted flex items-center justify-center text-foreground transition-colors">
+          <ChevronRight className="w-5 h-5" />
+        </button>
+      )}
+
+      {/* Counter */}
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-sm text-muted-foreground bg-muted/80 px-4 py-1.5 rounded-full">
+        {index + 1} / {images.length}
+      </div>
+    </motion.div>
   );
 }
 

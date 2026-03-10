@@ -8,6 +8,7 @@ interface ProjectGroup {
   id: string;
   company_id: string;
   title: string;
+  subtitle: string;
   sort_order: number;
 }
 

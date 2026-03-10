@@ -5,6 +5,7 @@ export interface ProjectGroup {
   id: string;
   company_id: string;
   title: string;
+  subtitle: string;
   sort_order: number;
   images: ProjectImage[];
 }
@@ -35,6 +36,7 @@ export function useProjectGroups(companyId: string | undefined) {
       const images = (imagesData || []) as ProjectImage[];
       const grps = (groupsData || []).map((g: any) => ({
         ...g,
+        subtitle: g.subtitle || "",
         images: images.filter((img) => img.group_id === g.id),
       })) as ProjectGroup[];
 

@@ -1,73 +1,68 @@
-# Welcome to your Lovable project
+# Mahtamun Designs — Portfolio
 
-## Project info
+A graphic design portfolio with a full admin dashboard.
+Built with React + Vite + TypeScript + Supabase.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+---
 
-## How can I edit this code?
+## ⚡ Setup (do this once)
 
-There are several ways of editing your application.
+### 1. Set up the database
 
-**Use Lovable**
+1. Go to [supabase.com](https://supabase.com) → your project (`rxrfnscinvfrmkwghylu`)
+2. Click **SQL Editor** → **New Query**
+3. Open `supabase/setup.sql`, paste the entire contents → **Run**
+4. You'll see: `Setup complete! All tables created and seeded.`
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+### 2. Set Resend key (for contact form emails)
 
-Changes made via Lovable will be committed automatically to this repo.
+In Supabase → **Edge Functions** → **Manage Secrets**, add:
+- `RESEND_API_KEY` = your Resend key
+- `ADMIN_USER_EMAIL` = your email (where contact messages go)
 
-**Use your preferred IDE**
+### 3. Create your admin account
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+Supabase → **Authentication** → **Users** → **Add User**
+Set your email + password. That's your `/admin` login.
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### 4. Deploy to Vercel
 
-Follow these steps:
+1. [vercel.com](https://vercel.com) → New Project → Import from GitHub → `mahtamundesigns`
+2. Add environment variables:
+   - `VITE_SUPABASE_URL` = `https://rxrfnscinvfrmkwghylu.supabase.co`
+   - `VITE_SUPABASE_PUBLISHABLE_KEY` = your anon key
+3. Deploy ✅
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+---
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+## 🔧 Local development
 
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
+```bash
+cp .env.example .env   # fill in your Supabase values
+npm install
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+---
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## 🗂 Tech Stack
 
-**Use GitHub Codespaces**
+| Layer | Tool |
+|---|---|
+| Frontend | React 18 + TypeScript |
+| Bundler | Vite |
+| UI | shadcn/ui + Tailwind CSS |
+| Database | Supabase (PostgreSQL) |
+| File Storage | Supabase Storage |
+| Auth | Supabase Auth |
+| Email | Resend via Supabase Edge Functions |
+| Hosting | Vercel |
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+---
 
-## What technologies are used for this project?
+## 🖼 How media replacement works
 
-This project is built with:
-
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
-
-## How can I deploy this project?
-
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+1. Go to `/admin` → **Media** tab
+2. Hover any image → click the upload icon → pick your file
+3. It uploads to Supabase Storage, saves the URL to the DB
+4. Your site shows the new image immediately, everywhere that slot is used

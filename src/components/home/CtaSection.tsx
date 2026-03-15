@@ -10,7 +10,7 @@ export function CtaSection() {
   const { ref, isInView } = useInView();
   const c = useCms();
   const heroBg = useMediaUrl("hero-bg", "/images/home/hero-bg.png");
-  const reviewClient = useMediaUrl("review-client-1", "/images/reviews/client-1.jpg");
+  const ctaSideImage = useMediaUrl("cta-side-image", "/images/reviews/client-1.jpg");
   const whatsappUrl = c('home', 'cta', 'whatsapp_url', 'https://wa.me/8801795931345');
 
   return (
@@ -50,9 +50,9 @@ export function CtaSection() {
             </div>
 
             <div className="hidden md:block flex-shrink-0">
-              {reviewClient && (
+              {ctaSideImage && (
                 <img
-                  src={reviewClient}
+                  src={ctaSideImage}
                   alt="Client review"
                   className="w-[280px] h-auto rounded-2xl border border-border/30 shadow-2xl rotate-3"
                 />

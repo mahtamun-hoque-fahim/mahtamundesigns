@@ -534,3 +534,8 @@ INSERT INTO public.logo_strip_items (name, logo_url, sort_order, active) VALUES
 ('Brand 4', '', 4, true),
 ('Brand 5', '', 5, true)
 ON CONFLICT DO NOTHING;
+
+-- Add cta-side-image slot if missing
+INSERT INTO public.media_assets (slot_key, label, category, file_path, public_url)
+VALUES ('cta-side-image', 'CTA Side Image', 'hero', NULL, '/images/reviews/client-1.jpg')
+ON CONFLICT (slot_key) DO NOTHING;

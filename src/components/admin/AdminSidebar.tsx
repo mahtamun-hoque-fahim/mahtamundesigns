@@ -19,6 +19,7 @@ const navItems = [
   { id: "pages", label: "Pages", icon: FileText },
   { id: "blocks", label: "Content Blocks", icon: Layers },
   { id: "media", label: "Media Library", icon: Image },
+  { id: "logo-strip", label: "Logo Strip", icon: Image },
   { id: "media-store", label: "Media Store", icon: FolderOpen },
   { id: "reviews", label: "Reviews", icon: MessageSquare },
   { id: "clients", label: "Clients", icon: Building2 },

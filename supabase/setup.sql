@@ -495,3 +495,42 @@ ON CONFLICT DO NOTHING;
 -- DONE ✅
 -- ────────────────────────────────────────────────────────────
 SELECT 'Setup complete! All tables created and seeded.' as status;
+
+-- ────────────────────────────────────────────────────────────
+-- STEP 16: Logo strip items (separate from companies)
+-- ────────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS public.logo_strip_items (
+  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+  name text NOT NULL DEFAULT '',
+  logo_url text NOT NULL DEFAULT '',
+  sort_order integer NOT NULL DEFAULT 0,
+  active boolean NOT NULL DEFAULT true,
+  created_at timestamptz NOT NULL DEFAULT now(),
+  updated_at timestamptz NOT NULL DEFAULT now()
+);
+
+ALTER TABLE public.logo_strip_items ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "Public read logo strip" ON public.logo_strip_items;
+DROP POLICY IF EXISTS "Auth insert logo strip" ON public.logo_strip_items;
+DROP POLICY IF EXISTS "Auth update logo strip" ON public.logo_strip_items;
+DROP POLICY IF EXISTS "Auth delete logo strip" ON public.logo_strip_items;
+
+CREATE POLICY "Public read logo strip" ON public.logo_strip_items FOR SELECT USING (true);
+CREATE POLICY "Auth insert logo strip" ON public.logo_strip_items FOR INSERT TO authenticated WITH CHECK (true);
+CREATE POLICY "Auth update logo strip" ON public.logo_strip_items FOR UPDATE TO authenticated USING (true);
+CREATE POLICY "Auth delete logo strip" ON public.logo_strip_items FOR DELETE TO authenticated USING (true);
+
+DROP TRIGGER IF EXISTS update_logo_strip_items_updated_at ON public.logo_strip_items;
+CREATE TRIGGER update_logo_strip_items_updated_at
+  BEFORE UPDATE ON public.logo_strip_items
+  FOR EACH ROW EXECUTE FUNCTION public.update_updated_at_column();
+
+-- Seed 5 placeholder slots
+INSERT INTO public.logo_strip_items (name, logo_url, sort_order, active) VALUES
+('Brand 1', '', 1, true),
+('Brand 2', '', 2, true),
+('Brand 3', '', 3, true),
+('Brand 4', '', 4, true),
+('Brand 5', '', 5, true)
+ON CONFLICT DO NOTHING;

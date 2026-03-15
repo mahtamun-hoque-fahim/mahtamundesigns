@@ -14,6 +14,7 @@ import { AnalyticsDashboard } from "@/components/admin/AnalyticsDashboard";
 import { ActivityLogViewer } from "@/components/admin/ActivityLogViewer";
 import { AdminSettings } from "@/components/admin/AdminSettings";
 import { MessagesViewer } from "@/components/admin/MessagesViewer";
+import { LogoStripEditor } from "@/components/admin/LogoStripEditor";
 
 const PAGE_TITLES: Record<string, string> = {
   overview: "Dashboard Overview",
@@ -21,6 +22,7 @@ const PAGE_TITLES: Record<string, string> = {
   pages: "Page Content Manager",
   blocks: "Dynamic Content Blocks",
   media: "Media Library",
+  "logo-strip": "Logo Strip",
   "media-store": "Media Store",
   reviews: "Reviews Manager",
   clients: "Clients Manager",
@@ -113,6 +115,7 @@ const AdminDashboard = () => {
           {activeTab === "pages" && <ContentEditor />}
           {activeTab === "blocks" && <ContentBlocksView />}
           {activeTab === "media" && <MediaManager />}
+          {activeTab === "logo-strip" && <LogoStripEditor />}
           {activeTab === "media-store" && <MediaStoreManager />}
           {activeTab === "reviews" && <ReviewsEditor />}
           {activeTab === "clients" && <CompaniesEditor />}

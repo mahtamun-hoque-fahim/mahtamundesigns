@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Company, companies as staticCompanies } from "@/data/companies";
+import { Company } from "@/data/companies";
 
 export interface DbCompany {
   id: string;
@@ -47,12 +47,13 @@ let _promise: Promise<Company[]> | null = null;
 
 async function fetchCompanies(): Promise<Company[]> {
   const { data } = await (supabase as any).from("companies").select("*").order("sort_order");
-  if (!data || data.length === 0) return staticCompanies;
+  if (!data || data.length === 0) return [];
   return (data as DbCompany[]).map(mapToCompany);
 }
 
 export function useCompanies(): Company[] {
-  const [companies, setCompanies] = useState<Company[]>(staticCompanies);
+  // Start empty — no flash of static/hardcoded data
+  const [companies, setCompanies] = useState<Company[]>([]);
 
   useEffect(() => {
     let cancelled = false;

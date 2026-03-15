@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
 import { useCms } from "@/hooks/useSiteContent";
+import { useMediaUrl } from "@/hooks/useMediaUrl";
 
 export function Footer() {
   const c = useCms();
+  const heroBg = useMediaUrl("hero-bg", "/images/home/hero-bg.png");
   const brandName = c('global', 'footer', 'brand_name', 'MAHTAMUN');
   const description = c('global', 'footer', 'description', 'Crafting bold visual identities and memorable brand experiences for ambitious companies across Bangladesh.');
   const email = c('global', 'footer', 'email', 'mahtamunhoquefahim@pm.me');
@@ -12,7 +14,7 @@ export function Footer() {
   return (
     <footer className="relative border-t border-border overflow-hidden">
       <div className="absolute inset-0">
-        <img src="/images/home/hero-bg.png" alt="" className="absolute inset-0 w-full h-full object-cover opacity-[0.08]" />
+        {heroBg && <img src={heroBg} alt="" className="absolute inset-0 w-full h-full object-cover opacity-[0.08]" />}
         <div className="absolute inset-0 bg-card/90" />
       </div>
 

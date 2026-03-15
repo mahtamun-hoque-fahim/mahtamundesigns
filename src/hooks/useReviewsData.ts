@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Review, reviews as staticReviews } from "@/data/reviews";
+import { Review } from "@/data/reviews";
 
 export interface DbReview {
   id: string;
@@ -34,12 +34,13 @@ let _promise: Promise<Review[]> | null = null;
 
 async function fetchReviews(): Promise<Review[]> {
   const { data } = await (supabase as any).from("reviews").select("*").order("sort_order");
-  if (!data || data.length === 0) return staticReviews;
+  if (!data || data.length === 0) return [];
   return (data as DbReview[]).map(mapToReview);
 }
 
 export function useReviews(): Review[] {
-  const [reviews, setReviews] = useState<Review[]>(staticReviews);
+  // Start empty — no flash of static/hardcoded data
+  const [reviews, setReviews] = useState<Review[]>([]);
 
   useEffect(() => {
     let cancelled = false;

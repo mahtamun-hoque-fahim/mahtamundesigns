@@ -9,7 +9,7 @@ interface MediaAsset {
 // Cache for media URLs
 let mediaCache: Record<string, string> | null = null;
 let cachePromise: Promise<Record<string, string>> | null = null;
-// Version counter — increments on every invalidation, triggering re-fetches in all hooks
+// Version counter — increments on every invalidation, triggering re-fetches
 let cacheVersion = 0;
 const versionListeners: Set<() => void> = new Set();
 
@@ -29,14 +29,15 @@ async function fetchMediaMap(): Promise<Record<string, string>> {
 
 /**
  * Hook to get the URL for a media asset by its slot key.
- * Falls back to the provided default URL if no override exists.
+ * Starts with null (no flash), resolves to Supabase URL or defaultUrl.
  * Automatically re-fetches when invalidateMediaCache() is called.
  */
 export function useMediaUrl(slotKey: string, defaultUrl: string): string {
-  const [url, setUrl] = useState(defaultUrl);
+  // Start null — prevents flash of old/default image before real URL loads
+  const [url, setUrl] = useState<string | null>(null);
   const [version, setVersion] = useState(cacheVersion);
 
-  // Subscribe to cache invalidation events
+  // Subscribe to cache invalidation so all hooks re-fetch after uploads
   useEffect(() => {
     const listener = () => setVersion(v => v + 1);
     versionListeners.add(listener);
@@ -47,14 +48,13 @@ export function useMediaUrl(slotKey: string, defaultUrl: string): string {
     let cancelled = false;
 
     const load = async () => {
-      // Always re-fetch fresh data after invalidation
       if (!mediaCache) {
         cachePromise = fetchMediaMap();
         mediaCache = await cachePromise;
       }
       if (!cancelled) {
-        const freshUrl = mediaCache[slotKey];
-        setUrl(freshUrl || defaultUrl);
+        // Use Supabase URL if exists, otherwise the local default
+        setUrl(mediaCache[slotKey] || defaultUrl);
       }
     };
 
@@ -62,7 +62,8 @@ export function useMediaUrl(slotKey: string, defaultUrl: string): string {
     return () => { cancelled = true; };
   }, [slotKey, defaultUrl, version]);
 
-  return url;
+  // Return empty string while loading — image won't render, no flash
+  return url ?? "";
 }
 
 /**
@@ -73,6 +74,5 @@ export function invalidateMediaCache() {
   mediaCache = null;
   cachePromise = null;
   cacheVersion += 1;
-  // Notify all mounted hooks to re-fetch
   versionListeners.forEach(fn => fn());
 }

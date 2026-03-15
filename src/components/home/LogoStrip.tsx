@@ -28,7 +28,7 @@ export function LogoStrip() {
                   src={item.logo_url}
                   alt={item.name}
                   loading="lazy"
-                  className="max-w-full max-h-full object-contain opacity-70 hover:opacity-100 transition-opacity"
+                  className="max-w-full max-h-full object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
                 />
               ) : (
                 <div className="w-16 h-8 rounded bg-muted-foreground/10" />

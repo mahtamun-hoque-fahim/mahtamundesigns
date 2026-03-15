@@ -28,10 +28,10 @@ export function LogoStrip() {
                   src={item.logo_url}
                   alt={item.name}
                   loading="lazy"
-                  className="max-w-full max-h-full object-contain brightness-0 invert opacity-70"
+                  className="max-w-full max-h-full object-contain opacity-70 hover:opacity-100 transition-opacity"
                 />
               ) : (
-                <div className="w-16 h-8 rounded bg-muted-foreground/20" />
+                <div className="w-16 h-8 rounded bg-muted-foreground/10" />
               )}
             </div>
           ))}

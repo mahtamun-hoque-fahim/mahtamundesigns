@@ -138,7 +138,7 @@ export function LogoStripEditor() {
                 <img
                   src={item.logo_url}
                   alt={item.name}
-                  className="w-full h-full object-contain p-4 brightness-0 invert"
+                  className="w-full h-full object-contain p-4"
                 />
               ) : (
                 <div className="w-full h-full flex flex-col items-center justify-center text-muted-foreground/40 gap-2">

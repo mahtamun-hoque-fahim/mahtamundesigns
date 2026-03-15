@@ -55,9 +55,9 @@ const Contact = () => {
               {doubled.map((item, i) => (
                 <div key={`${item.id}-${i}`} className="flex-shrink-0 w-24 h-12 flex items-center justify-center opacity-40 hover:opacity-80 transition-opacity duration-300">
                   {item.logo_url ? (
-                    <img src={item.logo_url} alt={item.name} loading="lazy" className="max-w-full max-h-full object-contain brightness-0 invert opacity-70" />
+                    <img src={item.logo_url} alt={item.name} loading="lazy" className="max-w-full max-h-full object-contain opacity-70 hover:opacity-100 transition-opacity" />
                   ) : (
-                    <div className="w-16 h-8 rounded bg-muted-foreground/20" />
+                    <div className="w-16 h-8 rounded bg-muted-foreground/10" />
                   )}
                 </div>
               ))}

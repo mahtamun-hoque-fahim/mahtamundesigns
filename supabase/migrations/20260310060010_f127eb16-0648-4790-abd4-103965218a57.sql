@@ -1,1 +1,0 @@
-ALTER TABLE public.project_groups ADD COLUMN subtitle text NOT NULL DEFAULT '';

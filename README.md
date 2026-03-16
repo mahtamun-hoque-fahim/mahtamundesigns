@@ -1,68 +1,36 @@
-# Mahtamun Designs — Portfolio
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-A graphic design portfolio with a full admin dashboard.
-Built with React + Vite + TypeScript + Supabase.
+## Getting Started
 
----
-
-## ⚡ Setup (do this once)
-
-### 1. Set up the database
-
-1. Go to [supabase.com](https://supabase.com) → your project (`rxrfnscinvfrmkwghylu`)
-2. Click **SQL Editor** → **New Query**
-3. Open `supabase/setup.sql`, paste the entire contents → **Run**
-4. You'll see: `Setup complete! All tables created and seeded.`
-
-### 2. Set Resend key (for contact form emails)
-
-In Supabase → **Edge Functions** → **Manage Secrets**, add:
-- `RESEND_API_KEY` = your Resend key
-- `ADMIN_USER_EMAIL` = your email (where contact messages go)
-
-### 3. Create your admin account
-
-Supabase → **Authentication** → **Users** → **Add User**
-Set your email + password. That's your `/admin` login.
-
-### 4. Deploy to Vercel
-
-1. [vercel.com](https://vercel.com) → New Project → Import from GitHub → `mahtamundesigns`
-2. Add environment variables:
-   - `VITE_SUPABASE_URL` = `https://rxrfnscinvfrmkwghylu.supabase.co`
-   - `VITE_SUPABASE_PUBLISHABLE_KEY` = your anon key
-3. Deploy ✅
-
----
-
-## 🔧 Local development
+First, run the development server:
 
 ```bash
-cp .env.example .env   # fill in your Supabase values
-npm install
 npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
 ```
 
----
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-## 🗂 Tech Stack
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-| Layer | Tool |
-|---|---|
-| Frontend | React 18 + TypeScript |
-| Bundler | Vite |
-| UI | shadcn/ui + Tailwind CSS |
-| Database | Supabase (PostgreSQL) |
-| File Storage | Supabase Storage |
-| Auth | Supabase Auth |
-| Email | Resend via Supabase Edge Functions |
-| Hosting | Vercel |
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
----
+## Learn More
 
-## 🖼 How media replacement works
+To learn more about Next.js, take a look at the following resources:
 
-1. Go to `/admin` → **Media** tab
-2. Hover any image → click the upload icon → pick your file
-3. It uploads to Supabase Storage, saves the URL to the DB
-4. Your site shows the new image immediately, everywhere that slot is used
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+
+## Deploy on Vercel
+
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

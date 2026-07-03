@@ -19,7 +19,7 @@ export function Hero() {
       </div>
 
       <div className="relative z-10 mx-auto flex h-full w-full max-w-[1400px] flex-col justify-center px-6 md:pl-20 md:pr-10 lg:pl-28">
-        <div className="flex w-full -translate-y-6 flex-col items-start justify-center md:max-w-lg md:-translate-y-10">
+        <div className="flex w-full translate-y-10 flex-col items-start justify-center md:max-w-lg md:translate-y-16">
           <div className="mb-4 flex gap-2 text-accent/70 md:mb-6" aria-hidden="true">
             <span className="h-1.5 w-1.5 rounded-full bg-current" />
             <span className="h-1.5 w-1.5 rounded-full bg-current" />

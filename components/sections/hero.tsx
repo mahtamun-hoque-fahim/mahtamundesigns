@@ -14,7 +14,7 @@ export function Hero() {
           alt=""
           fill
           priority
-          className="object-cover"
+          className="object-contain object-center"
         />
       </div>
 

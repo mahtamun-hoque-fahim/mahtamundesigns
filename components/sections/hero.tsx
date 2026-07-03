@@ -18,7 +18,7 @@ export function Hero() {
         />
       </div>
 
-      <div className="relative z-10 mx-auto flex h-full w-full max-w-[1400px] flex-col justify-center px-6 md:pl-20 md:pr-10 lg:pl-28">
+      <div className="relative z-10 mx-auto flex h-full w-full max-w-[1400px] flex-col justify-center px-6 md:px-10">
         <div className="flex w-full translate-y-2 flex-col items-start justify-center md:max-w-lg md:translate-y-6">
           <h1 className="font-display text-5xl font-bold tracking-tight text-white sm:text-6xl md:text-8xl">
             MAHTAMUN

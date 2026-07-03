@@ -42,7 +42,7 @@ const ROW_2: Logo[] = [
   { src: "/logos/rombus-logo.webp", alt: "Rombus", width: 315, height: 120 },
   { src: "/logos/silent-grind.webp", alt: "Silent Grind", width: 133, height: 120 },
   { src: "/logos/trust-take.webp", alt: "Trust & Take", width: 199, height: 120 },
-  { src: "/logos/logo.webp", alt: "Client logo", width: 288, height: 120 },
+  { src: "/logos/joynal-academy.webp", alt: "Joynal Academy", width: 288, height: 120 },
 ];
 
 function LogoItem({ logo }: { logo: Logo }) {

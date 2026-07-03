@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ExternalLink, ImageOff } from "lucide-react";
 
@@ -76,8 +77,19 @@ export function FeaturedProjects() {
   const [featured, ...rest] = FEATURED_PROJECTS;
 
   return (
-    <section id="showcase" className="bg-bg px-6 py-24 md:px-10 md:py-32">
-      <div className="mx-auto max-w-[1400px]">
+    <section id="showcase" className="relative overflow-hidden bg-black px-6 py-24 md:px-10 md:py-32">
+      <div className="pointer-events-none absolute inset-x-0 top-0 -z-10">
+        <Image
+          src="/images/featured-projects-bg.webp"
+          alt=""
+          width={1920}
+          height={2485}
+          priority={false}
+          className="w-full h-auto object-contain object-top"
+        />
+      </div>
+
+      <div className="relative z-10 mx-auto max-w-[1400px]">
         <div className="mb-16 text-center">
           <p className="mb-2 font-mono text-xs tracking-[0.2em] text-accent">
             Showcase

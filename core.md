@@ -80,3 +80,16 @@ Switched away from `next/font/google` because this sandbox's bash tool cannot re
 | Home | Selected Works | Project data (title/category/thumbnail/href) | Hardcoded | Needs dashboard/CMS wiring; data model already typed (`FeaturedProject`) for a clean swap |
 | Home | Selected Works | Thumbnail images | Placeholder (empty) | Upload/assignment flow needed from dashboard |
 
+## Loose Anchors (dead/placeholder links — audited 2026-07-03)
+
+| Location | href | Status | Needed |
+|---|---|---|---|
+| Navbar — "Reviews" | `#reviews` | Dead | Build Reviews section with `id="reviews"` |
+| Navbar — "About" | `#about` | Dead | Build About section/page with `id="about"` |
+| Navbar — "Book Meeting" | `#contact` | Dead | Contact section AND a confirmed destination (form/Calendly/mailto — Fahim hasn't decided) |
+| Hero — "Contact" button | `#contact` | Dead | Same as above |
+| Selected Works — 3 project cards | `#` | Placeholder | Case-study pages or external links, once real project content exists |
+| Selected Works — "SEE ALL" | `#` | Placeholder | Likely a `/portfolio` page — doesn't exist yet |
+
+Re-audit this list every time a new section/page is built — anchors that were dead may become valid once their target section exists (e.g. `#reviews` resolves itself the moment the Reviews section is built with a matching `id`).
+

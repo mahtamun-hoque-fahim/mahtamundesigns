@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -11,8 +12,23 @@ const NAV_LINKS = [
 ];
 
 export function Navbar() {
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 12);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-black/10 backdrop-blur-lg">
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 border-b transition-colors duration-300 ${
+        scrolled
+          ? "border-white/5 bg-black/10 backdrop-blur-lg"
+          : "border-transparent bg-transparent"
+      }`}
+    >
       <nav className="mx-auto flex max-w-[1400px] items-center justify-between px-6 py-6 md:px-10">
         <Link href="#home" className="shrink-0" aria-label="Mahtamun — home">
           <Image

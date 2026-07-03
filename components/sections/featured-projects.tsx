@@ -77,15 +77,15 @@ export function FeaturedProjects() {
   const [featured, ...rest] = FEATURED_PROJECTS;
 
   return (
-    <section id="showcase" className="relative overflow-hidden bg-black px-6 py-24 md:px-10 md:py-32">
-      <div className="pointer-events-none absolute inset-x-0 top-0 -z-10">
+    <section id="showcase" className="relative isolate overflow-hidden bg-black px-6 py-24 md:px-10 md:py-32">
+      <div className="pointer-events-none absolute inset-x-0 top-0 z-0">
         <Image
           src="/images/featured-projects-bg.webp"
           alt=""
           width={1920}
           height={2485}
           priority={false}
-          className="w-full h-auto object-contain object-top"
+          className="w-full h-auto object-cover object-top"
         />
       </div>
 

@@ -39,6 +39,7 @@ This file exists so neither Claude nor anyone else forgets how this project is b
 1. **Navbar** (`components/sections/navbar.tsx`) — logo, nav links (Home/Showcase/Reviews/About), Book Meeting CTA. Absolutely positioned over Hero, transparent bg.
 2. **Hero** (`components/sections/hero.tsx`) — full-bleed background image (`public/images/hero-bg.webp`, pattern+glow baked into the asset by Fahim, NOT built as CSS/SVG), name headline (font-display, Space Grotesk), role subtitle, Portfolio/Contact buttons with lucide-react icons, portrait cutout (`public/images/hero-portrait.webp`, RGBA/transparent, confirmed alpha survives WebP conversion).
    - Button hrefs are placeholders (`#showcase`, `#contact`) — Fahim will confirm real destinations once the full page is built. **Do not treat these as final.**
+   - **Hero height rule:** hard-capped at `100dvh` (Fahim's explicit instruction — hero must never exceed 100vh). On mobile (`< md`), the portrait image is hidden entirely — name/subtitle/buttons only. This was a Claude judgment call to fit content in 100vh on small screens; Fahim has NOT yet confirmed this is the right tradeoff vs. a shrunk portrait or other options. Revisit if he raises it.
 
 ## Fonts — self-hosted, not next/font/google
 

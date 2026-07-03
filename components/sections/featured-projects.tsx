@@ -119,10 +119,10 @@ export function FeaturedProjects() {
           ))}
         </div>
 
-        <div className="mt-12 flex justify-center">
+        <div className="mt-16 flex justify-center">
           <Link
             href="#"
-            className="flex items-center gap-2 rounded-md border border-white/20 px-6 py-3 text-sm font-medium text-white transition-colors duration-200 hover:border-white/40 hover:bg-white/5"
+            className="flex items-center gap-2 rounded-md bg-white px-7 py-3.5 font-mono text-sm font-medium text-ink shadow-[0_0_50px_rgba(187,124,255,0.35)] transition-all duration-300 hover:bg-white/90 hover:shadow-[0_0_70px_rgba(187,124,255,0.5)]"
           >
             SEE ALL
             <span aria-hidden="true">&rarr;</span>

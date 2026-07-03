@@ -47,15 +47,28 @@ function ProjectCard({
       href={project.href}
       className={`group relative flex flex-col justify-end overflow-hidden rounded-2xl border border-line bg-surface transition-colors duration-300 hover:border-white/20 ${className}`}
     >
-      {/* Thumbnail area — empty/placeholder until assigned from the dashboard */}
-      <div className="absolute inset-0 flex items-center justify-center bg-[repeating-linear-gradient(135deg,rgba(255,255,255,0.03)_0px,rgba(255,255,255,0.03)_1px,transparent_1px,transparent_12px)]">
-        <div className="flex flex-col items-center gap-2 text-white/20">
-          <ImageOff className="h-8 w-8" strokeWidth={1.5} />
-          <span className="font-mono text-[10px] tracking-wider">
-            THUMBNAIL PENDING
-          </span>
+      {/* Thumbnail: grayscale + dimmed by default, full color on hover.
+          Logo/branding is baked into the thumbnail asset itself — not a separate overlay. */}
+      {project.thumbnail ? (
+        <div className="absolute inset-0">
+          <Image
+            src={project.thumbnail}
+            alt={`${project.title} thumbnail`}
+            fill
+            className="object-cover object-center grayscale brightness-75 transition-all duration-500 group-hover:grayscale-0 group-hover:brightness-100"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/10 to-transparent" />
         </div>
-      </div>
+      ) : (
+        <div className="absolute inset-0 flex items-center justify-center bg-[repeating-linear-gradient(135deg,rgba(255,255,255,0.03)_0px,rgba(255,255,255,0.03)_1px,transparent_1px,transparent_12px)]">
+          <div className="flex flex-col items-center gap-2 text-white/20">
+            <ImageOff className="h-8 w-8" strokeWidth={1.5} />
+            <span className="font-mono text-[10px] tracking-wider">
+              THUMBNAIL PENDING
+            </span>
+          </div>
+        </div>
+      )}
 
       <span className="absolute right-5 top-5 flex h-9 w-9 items-center justify-center rounded-full bg-white/5 text-white/70 backdrop-blur-sm transition-colors duration-300 group-hover:bg-white group-hover:text-ink">
         <ExternalLink className="h-4 w-4" strokeWidth={2} />

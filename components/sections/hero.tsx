@@ -18,6 +18,14 @@ export function Hero() {
         />
       </div>
 
+      <div
+        className="pointer-events-none absolute inset-0 -z-[5] mix-blend-screen"
+        style={{
+          backgroundImage:
+            "radial-gradient(60% 90% at 0% 55%, rgba(187,124,255,0.35), transparent 70%), radial-gradient(60% 90% at 100% 55%, rgba(187,124,255,0.35), transparent 70%)",
+        }}
+      />
+
       <div className="relative z-10 mx-auto flex h-full w-full max-w-[1400px] flex-col justify-center px-6 pt-20 md:px-10 md:pt-16">
         <div className="flex w-full flex-col items-start justify-center md:max-w-lg">
           <div className="mb-4 flex gap-2 text-accent/70 md:mb-6" aria-hidden="true">

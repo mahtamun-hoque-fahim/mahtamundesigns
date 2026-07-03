@@ -18,8 +18,8 @@ export function Hero() {
         />
       </div>
 
-      <div className="mx-auto flex h-full w-full max-w-[1400px] flex-col items-center justify-center gap-6 px-6 pt-20 md:flex-row md:items-center md:justify-between md:gap-8 md:px-10 md:pt-16">
-        <div className="flex w-full flex-col items-start justify-center md:w-1/2">
+      <div className="mx-auto flex h-full w-full max-w-[1300px] flex-col items-center justify-center gap-6 px-6 pt-20 md:flex-row md:items-center md:justify-between md:gap-2 md:px-10 md:pt-16">
+        <div className="flex w-full flex-col items-start justify-center md:w-auto md:max-w-lg">
           <div className="mb-4 flex gap-2 text-accent/70 md:mb-6" aria-hidden="true">
             <span className="h-1.5 w-1.5 rounded-full bg-current" />
             <span className="h-1.5 w-1.5 rounded-full bg-current" />
@@ -52,8 +52,8 @@ export function Hero() {
           </div>
         </div>
 
-        <div className="relative hidden h-full w-full items-end justify-center md:flex md:w-1/2">
-          <div className="relative h-[85%] w-full max-w-[520px]">
+        <div className="relative hidden h-full flex-1 items-end justify-end md:flex">
+          <div className="relative h-[92%] w-full max-w-[640px]">
             <Image
               src="/images/hero-portrait.webp"
               alt="Mahtamun Hoque Fahim, Lead Designer"

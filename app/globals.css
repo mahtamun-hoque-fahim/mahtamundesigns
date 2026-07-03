@@ -25,34 +25,3 @@ body {
   color: #ffffff;
   font-family: var(--font-mono);
 }
-
-@keyframes marquee-left {
-  from {
-    transform: translateX(0);
-  }
-  to {
-    transform: translateX(-50%);
-  }
-}
-
-@keyframes marquee-right {
-  from {
-    transform: translateX(-50%);
-  }
-  to {
-    transform: translateX(0);
-  }
-}
-
-.animate-marquee-left {
-  animation: marquee-left 40s linear infinite;
-}
-
-.animate-marquee-right {
-  animation: marquee-right 45s linear infinite;
-}
-
-.marquee-track:hover .animate-marquee-left,
-.marquee-track:hover .animate-marquee-right {
-  animation-duration: 120s;
-}

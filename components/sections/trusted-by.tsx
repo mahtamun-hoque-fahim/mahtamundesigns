@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useRef } from "react";
 import Image from "next/image";
 
 type Logo = {
@@ -56,7 +59,52 @@ function LogoItem({ logo }: { logo: Logo }) {
   );
 }
 
+const FAST_SPEED = 40; // px per second
+const SLOW_SPEED = 8; // px per second, on hover
+const EASE = 3; // higher = snappier transition between speeds
+
 export function TrustedBy() {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const positionRef = useRef(0);
+  const currentSpeedRef = useRef(FAST_SPEED);
+  const targetSpeedRef = useRef(FAST_SPEED);
+  const loopWidthRef = useRef(0);
+
+  useEffect(() => {
+    const track = trackRef.current;
+    if (!track) return;
+
+    // Content is duplicated once, so half the scrollWidth is one full loop.
+    loopWidthRef.current = track.scrollWidth / 2;
+
+    let frameId: number;
+    let lastTime = performance.now();
+
+    const tick = (now: number) => {
+      const dt = (now - lastTime) / 1000;
+      lastTime = now;
+
+      // Smoothly ease current speed toward target speed — never jumps.
+      currentSpeedRef.current +=
+        (targetSpeedRef.current - currentSpeedRef.current) * Math.min(EASE * dt, 1);
+
+      positionRef.current += currentSpeedRef.current * dt;
+
+      if (loopWidthRef.current > 0 && positionRef.current >= loopWidthRef.current) {
+        positionRef.current -= loopWidthRef.current;
+      }
+
+      if (track) {
+        track.style.transform = `translateX(-${positionRef.current}px)`;
+      }
+
+      frameId = requestAnimationFrame(tick);
+    };
+
+    frameId = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(frameId);
+  }, []);
+
   return (
     <section className="border-y border-line bg-bg-alt py-14 md:py-16">
       <p className="mb-10 text-center text-xs tracking-[0.2em] text-muted md:text-sm">
@@ -64,7 +112,13 @@ export function TrustedBy() {
       </p>
 
       <div
-        className="marquee-track relative flex w-full overflow-hidden"
+        className="relative flex w-full overflow-hidden"
+        onMouseEnter={() => {
+          targetSpeedRef.current = SLOW_SPEED;
+        }}
+        onMouseLeave={() => {
+          targetSpeedRef.current = FAST_SPEED;
+        }}
         style={{
           maskImage:
             "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
@@ -72,7 +126,7 @@ export function TrustedBy() {
             "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
         }}
       >
-        <div className="flex w-max shrink-0 animate-marquee-left items-center">
+        <div ref={trackRef} className="flex w-max shrink-0 items-center will-change-transform">
           {[...LOGOS, ...LOGOS].map((logo, i) => (
             <LogoItem key={`${logo.src}-${i}`} logo={logo} />
           ))}

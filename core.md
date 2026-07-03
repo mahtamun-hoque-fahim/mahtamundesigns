@@ -50,7 +50,9 @@ This file exists so neither Claude nor anyone else forgets how this project is b
    - **Text block position** — vertical: `translate-y-2`, `md:translate-y-6` (small downward offset from true center — went too far down at `translate-y-10/16`, Fahim asked for "just a bit up" from that, this is the corrected value). Horizontal: pushed further right via container padding (`md:pl-20 lg:pl-28`, asymmetric — right side stays at `md:pr-10`). If either axis is still off, ask for a specific direction/amount rather than guessing again.
    - **Three-dot decorative element** above the H1 — REMOVED per Fahim's instruction (2026-07-03). Do not re-add.
 
-## Fonts — self-hosted, not next/font/google
+2. **Trusted-by strip** (`components/sections/trusted-by.tsx`) — "TRUSTED BY RISING BANGLADESHI BRANDS" eyebrow + dual-row infinite auto-scroll marquee, 31 logos total (row 1 scrolls left, row 2 scrolls right, opposite directions, pauses on hover via `.marquee-track:hover`). Logos are grayscale/50% opacity by default, full color on hover. Edge fade via CSS `mask-image` gradient. Went with a marquee instead of a static grid because 31 logos don't fit a fixed row — this was a Claude judgment call, not explicitly requested; revisit if Fahim wants a static/grid layout instead.
+   - **Logo assets:** `public/logos/*.webp`, all pre-converted to WebP by Fahim, all normalized to ~120px height, transparent backgrounds confirmed intact.
+   - **Unresolved:** `public/logos/logo.webp` — filename has no brand identifier, currently using generic `alt="Client logo"`. Fahim was asked which brand this is but hasn't confirmed yet. Fix the alt text once he does.
 
 Switched away from `next/font/google` because this sandbox's bash tool cannot reach `fonts.googleapis.com` (not on the allowed-domains list), which broke local builds. Using `@fontsource/space-grotesk` and `@fontsource/jetbrains-mono` instead (imported directly in `app/layout.tsx`, specific weight files only — 500/600/700 for Space Grotesk, 400/500/600/700 for JetBrains Mono). This is now the standing approach for this repo — do not switch back to `next/font/google` without checking network access first.
 

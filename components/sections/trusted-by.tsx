@@ -59,15 +59,17 @@ function LogoItem({ logo }: { logo: Logo }) {
   );
 }
 
-const FAST_SPEED = 40; // px per second
-const SLOW_SPEED = 8; // px per second, on hover
+const FAST_DURATION = 40; // seconds for one full loop — matches the original CSS animation
+const SLOW_DURATION = 120; // seconds for one full loop, on hover — matches the original CSS animation
 const EASE = 3; // higher = snappier transition between speeds
 
 export function TrustedBy() {
   const trackRef = useRef<HTMLDivElement>(null);
   const positionRef = useRef(0);
-  const currentSpeedRef = useRef(FAST_SPEED);
-  const targetSpeedRef = useRef(FAST_SPEED);
+  const currentSpeedRef = useRef(0);
+  const targetSpeedRef = useRef(0);
+  const fastSpeedRef = useRef(0);
+  const slowSpeedRef = useRef(0);
   const loopWidthRef = useRef(0);
 
   useEffect(() => {
@@ -75,7 +77,15 @@ export function TrustedBy() {
     if (!track) return;
 
     // Content is duplicated once, so half the scrollWidth is one full loop.
-    loopWidthRef.current = track.scrollWidth / 2;
+    const loopWidth = track.scrollWidth / 2;
+    loopWidthRef.current = loopWidth;
+
+    // Derive px/s speeds from the same duration values the original
+    // CSS animation used, so the perceived speed matches exactly.
+    fastSpeedRef.current = loopWidth / FAST_DURATION;
+    slowSpeedRef.current = loopWidth / SLOW_DURATION;
+    currentSpeedRef.current = fastSpeedRef.current;
+    targetSpeedRef.current = fastSpeedRef.current;
 
     let frameId: number;
     let lastTime = performance.now();
@@ -114,10 +124,10 @@ export function TrustedBy() {
       <div
         className="relative flex w-full overflow-hidden"
         onMouseEnter={() => {
-          targetSpeedRef.current = SLOW_SPEED;
+          targetSpeedRef.current = slowSpeedRef.current;
         }}
         onMouseLeave={() => {
-          targetSpeedRef.current = FAST_SPEED;
+          targetSpeedRef.current = fastSpeedRef.current;
         }}
         style={{
           maskImage:

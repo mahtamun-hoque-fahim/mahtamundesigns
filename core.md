@@ -57,7 +57,7 @@ This file exists so neither Claude nor anyone else forgets how this project is b
    - **Sizing** — reverted back to original: `h-10 md:h-12` logo display height, `py-14 md:py-16` section padding. Fahim asked to shrink it, then said undo — this is the CURRENT correct state, don't shrink again without a fresh explicit ask.
    - **Layout — SINGLE marquee row, not dual-row.** Originally built as two rows scrolling opposite directions; Fahim asked to consolidate into one row (in the same message as the size revert). All 31 logos now share one continuous scrolling track (`animate-marquee-left`). The `animate-marquee-right` keyframe in `globals.css` is now unused but left in place in case a second row returns.
    - **Hover behavior** — slows down (`animation-duration: 120s` on hover, from base `40s`), does NOT fully pause. Was pause-on-hover initially, Fahim changed it to slow-down. Heads up for future Claude: changing `animation-duration` mid-animation via CSS can cause a slight visual jump since browsers recompute position against the new duration — acceptable here for an infinite loop, but if it ever looks janky, the fix is a JS-driven speed control (e.g. Framer Motion) instead of pure CSS.
-3. **Selected Works** (`components/sections/selected-works.tsx`) — "Portfolio" eyebrow + "SELECTED WORKS" heading, asymmetric grid: 1 large featured card full-width on top (`md:col-span-2`), 2 smaller cards below side by side. "SEE ALL" button.
+3. **Featured Projects** (`components/sections/featured-projects.tsx`) — "Showcase" eyebrow + "FEATURED PROJECTS" heading (renamed from "Portfolio"/"SELECTED WORKS"), asymmetric grid: 1 large featured card full-width on top (`md:col-span-2`), 2 smaller cards below side by side. "SEE ALL" button.
    - **Data model:** `FEATURED_PROJECTS` array, typed (`FeaturedProject`), explicitly commented `TODO(dashboard)` — count, ordering, category labels, and thumbnails are all meant to be dashboard-controlled eventually. Hardcoded to exactly 3 for now per Fahim's instruction: Fahad's Tutorial (featured/large), Motovessel, Interting.
    - **Category labels** — all set to placeholder `"Brand Identity"` for now, not confirmed real categories. Fix when Fahim gives real ones or when dashboard data model lands.
    - **Thumbnails — intentionally empty.** `thumbnail: null` in the data + a styled placeholder state (diagonal hatch pattern, `ImageOff` icon, "THUMBNAIL PENDING" label) instead of a broken image or a stock photo. This is correct as-is, NOT a bug — thumbnails get assigned/uploaded from the dashboard later. See Loose Ends Tracker.
@@ -66,9 +66,9 @@ This file exists so neither Claude nor anyone else forgets how this project is b
 
 - **Homepage** (`/`) — in progress, section by section (current file).
 - **Portfolio page** (`/portfolio` — route TBD) — index/grid of every company Fahim has worked with. Card = profile pic + cover image. Same count/source as the Trusted-by strip logos (~31 currently, dashboard-managed list). NOT BUILT YET.
-- **Client Profile page** (`/clients/[slug]` — dynamic route, one per company) — the shared destination for BOTH (a) Selected Works cards on the homepage, and (b) Portfolio page cards. Contains profile pic + cover (dashboard-uploaded) plus additional case-study-style content ("lots of stuff", not yet spec'd in detail). NOT BUILT YET.
+- **Client Profile page** (`/clients/[slug]` — dynamic route, one per company) — the shared destination for BOTH (a) Featured Projects cards on the homepage, and (b) Portfolio page cards. Contains profile pic + cover (dashboard-uploaded) plus additional case-study-style content ("lots of stuff", not yet spec'd in detail). NOT BUILT YET.
 - **Naming note:** "Client Profile page" is Claude's chosen name (Fahim asked Claude to pick one) — use this term consistently in code (component names, route folders) and future conversation unless Fahim renames it.
-- **Key relationship:** Selected Works (homepage) and the Portfolio page are two different ENTRY POINTS into the same Client Profile page type — not three unrelated page templates. Build the Client Profile template once, link both places to it.
+- **Key relationship:** Featured Projects (homepage) and the Portfolio page are two different ENTRY POINTS into the same Client Profile page type — not three unrelated page templates. Build the Client Profile template once, link both places to it.
 - Do not start building Portfolio or Client Profile pages until Fahim explicitly says so — this was logged as an architecture note only, per his instruction.
 
 ## Fonts — self-hosted, not next/font/google
@@ -82,8 +82,8 @@ Things Fahim has committed to building but that are blocked on a reference image
 | Item | What it needs | Blocked on |
 |---|---|---|
 | Portfolio page (`/portfolio`) | Grid of ~31 client cards (profile pic + cover) | Reference image from Fahim, dashboard data model |
-| Client Profile page (`/clients/[slug]`) | Profile pic + cover + case-study content, shared destination for Selected Works AND Portfolio cards | Reference image from Fahim, content spec ("lots of stuff" not yet detailed) |
-| Dashboard / CMS | Controls: Selected Works count/order/categories/thumbnails, Trusted-by logo list, Portfolio card list | Not started, no reference yet — this is the backend everything above depends on |
+| Client Profile page (`/clients/[slug]`) | Profile pic + cover + case-study content, shared destination for Featured Projects AND Portfolio cards | Reference image from Fahim, content spec ("lots of stuff" not yet detailed) |
+| Dashboard / CMS | Controls: Featured Projects count/order/categories/thumbnails, Trusted-by logo list, Portfolio card list | Not started, no reference yet — this is the backend everything above depends on |
 | Contact destination | Where "Book Meeting" / "Contact" buttons actually go (form? Calendly? mailto?) | Fahim hasn't decided yet — see Loose Anchors |
 | About section/page | Nav link `#about` currently dead | Not designed yet |
 | Reviews section | Testimonial cards, star ratings | Next up — in progress this session |
@@ -103,8 +103,8 @@ Things Fahim has committed to building but that are blocked on a reference image
 
 | Page | Section | Element | Status | Notes |
 |------|---------|---------|--------|-------|
-| Home | Selected Works | Project data (title/category/thumbnail/href) | Hardcoded | Needs dashboard/CMS wiring; data model already typed (`FeaturedProject`) for a clean swap |
-| Home | Selected Works | Thumbnail images | Placeholder (empty) | Upload/assignment flow needed from dashboard |
+| Home | Featured Projects | Project data (title/category/thumbnail/href) | Hardcoded | Needs dashboard/CMS wiring; data model already typed (`FeaturedProject`) for a clean swap |
+| Home | Featured Projects | Thumbnail images | Placeholder (empty) | Upload/assignment flow needed from dashboard |
 
 ## Loose Anchors (dead/placeholder links — audited 2026-07-03)
 
@@ -114,8 +114,8 @@ Things Fahim has committed to building but that are blocked on a reference image
 | Navbar — "About" | `#about` | Dead | Build About section/page with `id="about"` |
 | Navbar — "Book Meeting" | `#contact` | Dead | Contact section AND a confirmed destination (form/Calendly/mailto — Fahim hasn't decided) |
 | Hero — "Contact" button | `#contact` | Dead | Same as above |
-| Selected Works — 3 project cards | `#` | Placeholder | Case-study pages or external links, once real project content exists |
-| Selected Works — "SEE ALL" | `#` | Placeholder | Likely a `/portfolio` page — doesn't exist yet |
+| Featured Projects — 3 project cards | `#` | Placeholder | Case-study pages or external links, once real project content exists |
+| Featured Projects — "SEE ALL" | `#` | Placeholder | Likely a `/portfolio` page — doesn't exist yet |
 
 Re-audit this list every time a new section/page is built — anchors that were dead may become valid once their target section exists (e.g. `#reviews` resolves itself the moment the Reviews section is built with a matching `id`).
 

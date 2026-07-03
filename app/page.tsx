@@ -1,7 +1,7 @@
 import { Navbar } from "@/components/sections/navbar";
 import { Hero } from "@/components/sections/hero";
 import { TrustedBy } from "@/components/sections/trusted-by";
-import { SelectedWorks } from "@/components/sections/selected-works";
+import { FeaturedProjects } from "@/components/sections/featured-projects";
 
 export default function Home() {
   return (
@@ -9,7 +9,7 @@ export default function Home() {
       <Navbar />
       <Hero />
       <TrustedBy />
-      <SelectedWorks />
+      <FeaturedProjects />
     </main>
   );
 }

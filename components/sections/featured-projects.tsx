@@ -72,7 +72,7 @@ function ProjectCard({
   );
 }
 
-export function SelectedWorks() {
+export function FeaturedProjects() {
   const [featured, ...rest] = FEATURED_PROJECTS;
 
   return (
@@ -80,10 +80,10 @@ export function SelectedWorks() {
       <div className="mx-auto max-w-[1400px]">
         <div className="mb-16 text-center">
           <p className="mb-2 font-mono text-xs tracking-[0.2em] text-accent">
-            Portfolio
+            Showcase
           </p>
           <h2 className="font-display text-4xl font-bold tracking-tight text-white md:text-6xl">
-            SELECTED WORKS
+            FEATURED PROJECTS
           </h2>
         </div>
 

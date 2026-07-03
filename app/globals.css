@@ -52,6 +52,7 @@ body {
   animation: marquee-right 45s linear infinite;
 }
 
-.marquee-track:hover {
-  animation-play-state: paused;
+.marquee-track:hover .animate-marquee-left,
+.marquee-track:hover .animate-marquee-right {
+  animation-duration: 120s;
 }

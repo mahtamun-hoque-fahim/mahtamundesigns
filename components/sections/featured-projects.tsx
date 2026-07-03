@@ -3,32 +3,32 @@ import { ExternalLink, ImageOff } from "lucide-react";
 
 type FeaturedProject = {
   title: string;
-  category: string;
+  projectType: string;
   href: string;
   thumbnail: string | null;
   featured?: boolean;
 };
 
-// TODO(dashboard): this list, its length, ordering, category labels, and
+// TODO(dashboard): this list, its length, ordering, project type labels, and
 // thumbnails will eventually be controlled from the admin dashboard.
 // Hardcoded to exactly 3 for now per Fahim's instruction.
 const FEATURED_PROJECTS: FeaturedProject[] = [
   {
     title: "Fahad's Tutorial",
-    category: "Brand Identity",
+    projectType: "Brand Identity",
     href: "#",
     thumbnail: null,
     featured: true,
   },
   {
     title: "Motovessel",
-    category: "Brand Identity",
+    projectType: "Brand Identity",
     href: "#",
     thumbnail: null,
   },
   {
     title: "Interting",
-    category: "Brand Identity",
+    projectType: "Brand Identity",
     href: "#",
     thumbnail: null,
   },
@@ -62,7 +62,7 @@ function ProjectCard({
 
       <div className="relative z-10 p-6 md:p-8">
         <p className="mb-1 font-mono text-xs tracking-wider text-accent">
-          {project.category}
+          {project.projectType}
         </p>
         <h3 className="font-display text-xl font-bold tracking-tight text-white md:text-2xl">
           {project.title.toUpperCase()}

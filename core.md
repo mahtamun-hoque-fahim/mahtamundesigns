@@ -75,6 +75,22 @@ This file exists so neither Claude nor anyone else forgets how this project is b
 
 Switched away from `next/font/google` because this sandbox's bash tool cannot reach `fonts.googleapis.com` (not on the allowed-domains list), which broke local builds. Using `@fontsource/space-grotesk` and `@fontsource/jetbrains-mono` instead (imported directly in `app/layout.tsx`, specific weight files only — 500/600/700 for Space Grotesk, 400/500/600/700 for JetBrains Mono). This is now the standing approach for this repo — do not switch back to `next/font/google` without checking network access first.
 
+## In Future (confirmed but not yet built — consolidated tracker)
+
+Things Fahim has committed to building but that are blocked on a reference image, a decision, or simply haven't come up in the build order yet. Update this whenever something new future-facing comes up in conversation — don't let it live only in a chat message.
+
+| Item | What it needs | Blocked on |
+|---|---|---|
+| Portfolio page (`/portfolio`) | Grid of ~31 client cards (profile pic + cover) | Reference image from Fahim, dashboard data model |
+| Client Profile page (`/clients/[slug]`) | Profile pic + cover + case-study content, shared destination for Selected Works AND Portfolio cards | Reference image from Fahim, content spec ("lots of stuff" not yet detailed) |
+| Dashboard / CMS | Controls: Selected Works count/order/categories/thumbnails, Trusted-by logo list, Portfolio card list | Not started, no reference yet — this is the backend everything above depends on |
+| Contact destination | Where "Book Meeting" / "Contact" buttons actually go (form? Calendly? mailto?) | Fahim hasn't decided yet — see Loose Anchors |
+| About section/page | Nav link `#about` currently dead | Not designed yet |
+| Reviews section | Testimonial cards, star ratings | Next up — in progress this session |
+| Stats bar | 6+ Years / 600+ Designs / 11 Clients / 100% Satisfaction | Numbers need reconfirming as current |
+| Bottom CTA | "I'm here to solve THE PAIN" + tilted testimonial card | Not started |
+| Footer | Nav links, social URLs, license line | Social URLs needed; WikiMedia CC license line flagged earlier as possibly wrong |
+
 ## Explain Log
 
 (Entries added here whenever Fahim requests a pause-and-explain. Each entry: date, section/topic, explanation.)

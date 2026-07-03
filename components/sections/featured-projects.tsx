@@ -112,7 +112,7 @@ export function FeaturedProjects() {
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 lg:px-12 xl:px-24">
           <ProjectCard project={featured} className="min-h-[280px] md:col-span-2" />
           {rest.map((project) => (
             <ProjectCard key={project.title} project={project} className="min-h-[220px]" />

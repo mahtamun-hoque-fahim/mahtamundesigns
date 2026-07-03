@@ -62,6 +62,15 @@ This file exists so neither Claude nor anyone else forgets how this project is b
    - **Category labels** — all set to placeholder `"Brand Identity"` for now, not confirmed real categories. Fix when Fahim gives real ones or when dashboard data model lands.
    - **Thumbnails — intentionally empty.** `thumbnail: null` in the data + a styled placeholder state (diagonal hatch pattern, `ImageOff` icon, "THUMBNAIL PENDING" label) instead of a broken image or a stock photo. This is correct as-is, NOT a bug — thumbnails get assigned/uploaded from the dashboard later. See Loose Ends Tracker.
 
+## Site Architecture (planned, NOT yet built — logged 2026-07-03)
+
+- **Homepage** (`/`) — in progress, section by section (current file).
+- **Portfolio page** (`/portfolio` — route TBD) — index/grid of every company Fahim has worked with. Card = profile pic + cover image. Same count/source as the Trusted-by strip logos (~31 currently, dashboard-managed list). NOT BUILT YET.
+- **Client Profile page** (`/clients/[slug]` — dynamic route, one per company) — the shared destination for BOTH (a) Selected Works cards on the homepage, and (b) Portfolio page cards. Contains profile pic + cover (dashboard-uploaded) plus additional case-study-style content ("lots of stuff", not yet spec'd in detail). NOT BUILT YET.
+- **Naming note:** "Client Profile page" is Claude's chosen name (Fahim asked Claude to pick one) — use this term consistently in code (component names, route folders) and future conversation unless Fahim renames it.
+- **Key relationship:** Selected Works (homepage) and the Portfolio page are two different ENTRY POINTS into the same Client Profile page type — not three unrelated page templates. Build the Client Profile template once, link both places to it.
+- Do not start building Portfolio or Client Profile pages until Fahim explicitly says so — this was logged as an architecture note only, per his instruction.
+
 ## Fonts — self-hosted, not next/font/google
 
 Switched away from `next/font/google` because this sandbox's bash tool cannot reach `fonts.googleapis.com` (not on the allowed-domains list), which broke local builds. Using `@fontsource/space-grotesk` and `@fontsource/jetbrains-mono` instead (imported directly in `app/layout.tsx`, specific weight files only — 500/600/700 for Space Grotesk, 400/500/600/700 for JetBrains Mono). This is now the standing approach for this repo — do not switch back to `next/font/google` without checking network access first.

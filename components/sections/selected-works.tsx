@@ -1,0 +1,109 @@
+import Link from "next/link";
+import { ExternalLink, ImageOff } from "lucide-react";
+
+type FeaturedProject = {
+  title: string;
+  category: string;
+  href: string;
+  thumbnail: string | null;
+  featured?: boolean;
+};
+
+// TODO(dashboard): this list, its length, ordering, category labels, and
+// thumbnails will eventually be controlled from the admin dashboard.
+// Hardcoded to exactly 3 for now per Fahim's instruction.
+const FEATURED_PROJECTS: FeaturedProject[] = [
+  {
+    title: "Fahad's Tutorial",
+    category: "Brand Identity",
+    href: "#",
+    thumbnail: null,
+    featured: true,
+  },
+  {
+    title: "Motovessel",
+    category: "Brand Identity",
+    href: "#",
+    thumbnail: null,
+  },
+  {
+    title: "Interting",
+    category: "Brand Identity",
+    href: "#",
+    thumbnail: null,
+  },
+];
+
+function ProjectCard({
+  project,
+  className = "",
+}: {
+  project: FeaturedProject;
+  className?: string;
+}) {
+  return (
+    <Link
+      href={project.href}
+      className={`group relative flex flex-col justify-end overflow-hidden rounded-2xl border border-line bg-surface transition-colors duration-300 hover:border-white/20 ${className}`}
+    >
+      {/* Thumbnail area — empty/placeholder until assigned from the dashboard */}
+      <div className="absolute inset-0 flex items-center justify-center bg-[repeating-linear-gradient(135deg,rgba(255,255,255,0.03)_0px,rgba(255,255,255,0.03)_1px,transparent_1px,transparent_12px)]">
+        <div className="flex flex-col items-center gap-2 text-white/20">
+          <ImageOff className="h-8 w-8" strokeWidth={1.5} />
+          <span className="font-mono text-[10px] tracking-wider">
+            THUMBNAIL PENDING
+          </span>
+        </div>
+      </div>
+
+      <span className="absolute right-5 top-5 flex h-9 w-9 items-center justify-center rounded-full bg-white/5 text-white/70 backdrop-blur-sm transition-colors duration-300 group-hover:bg-white group-hover:text-ink">
+        <ExternalLink className="h-4 w-4" strokeWidth={2} />
+      </span>
+
+      <div className="relative z-10 p-6 md:p-8">
+        <p className="mb-1 font-mono text-xs tracking-wider text-accent">
+          {project.category}
+        </p>
+        <h3 className="font-display text-xl font-bold tracking-tight text-white md:text-2xl">
+          {project.title.toUpperCase()}
+        </h3>
+      </div>
+    </Link>
+  );
+}
+
+export function SelectedWorks() {
+  const [featured, ...rest] = FEATURED_PROJECTS;
+
+  return (
+    <section id="showcase" className="bg-bg px-6 py-24 md:px-10 md:py-32">
+      <div className="mx-auto max-w-[1400px]">
+        <div className="mb-16 text-center">
+          <p className="mb-2 font-mono text-xs tracking-[0.2em] text-accent">
+            Portfolio
+          </p>
+          <h2 className="font-display text-4xl font-bold tracking-tight text-white md:text-6xl">
+            SELECTED WORKS
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
+          <ProjectCard project={featured} className="min-h-[420px] md:col-span-2" />
+          {rest.map((project) => (
+            <ProjectCard key={project.title} project={project} className="min-h-[320px]" />
+          ))}
+        </div>
+
+        <div className="mt-12 flex justify-center">
+          <Link
+            href="#"
+            className="flex items-center gap-2 rounded-md border border-white/20 px-6 py-3 text-sm font-medium text-white transition-colors duration-200 hover:border-white/40 hover:bg-white/5"
+          >
+            SEE ALL
+            <span aria-hidden="true">&rarr;</span>
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+}

@@ -56,6 +56,12 @@ This file exists so neither Claude nor anyone else forgets how this project is b
    - **Sizing** — reverted back to original: `h-10 md:h-12` logo display height, `py-14 md:py-16` section padding. Fahim asked to shrink it, then said undo — this is the CURRENT correct state, don't shrink again without a fresh explicit ask.
    - **Layout — SINGLE marquee row, not dual-row.** Originally built as two rows scrolling opposite directions; Fahim asked to consolidate into one row (in the same message as the size revert). All 31 logos now share one continuous scrolling track (`animate-marquee-left`). The `animate-marquee-right` keyframe in `globals.css` is now unused but left in place in case a second row returns.
    - **Hover behavior** — slows down (`animation-duration: 120s` on hover, from base `40s`), does NOT fully pause. Was pause-on-hover initially, Fahim changed it to slow-down. Heads up for future Claude: changing `animation-duration` mid-animation via CSS can cause a slight visual jump since browsers recompute position against the new duration — acceptable here for an infinite loop, but if it ever looks janky, the fix is a JS-driven speed control (e.g. Framer Motion) instead of pure CSS.
+3. **Selected Works** (`components/sections/selected-works.tsx`) — "Portfolio" eyebrow + "SELECTED WORKS" heading, asymmetric grid: 1 large featured card full-width on top (`md:col-span-2`), 2 smaller cards below side by side. "SEE ALL" button.
+   - **Data model:** `FEATURED_PROJECTS` array, typed (`FeaturedProject`), explicitly commented `TODO(dashboard)` — count, ordering, category labels, and thumbnails are all meant to be dashboard-controlled eventually. Hardcoded to exactly 3 for now per Fahim's instruction: Fahad's Tutorial (featured/large), Motovessel, Interting.
+   - **Category labels** — all set to placeholder `"Brand Identity"` for now, not confirmed real categories. Fix when Fahim gives real ones or when dashboard data model lands.
+   - **Thumbnails — intentionally empty.** `thumbnail: null` in the data + a styled placeholder state (diagonal hatch pattern, `ImageOff` icon, "THUMBNAIL PENDING" label) instead of a broken image or a stock photo. This is correct as-is, NOT a bug — thumbnails get assigned/uploaded from the dashboard later. See Loose Ends Tracker.
+
+## Fonts — self-hosted, not next/font/google
 
 Switched away from `next/font/google` because this sandbox's bash tool cannot reach `fonts.googleapis.com` (not on the allowed-domains list), which broke local builds. Using `@fontsource/space-grotesk` and `@fontsource/jetbrains-mono` instead (imported directly in `app/layout.tsx`, specific weight files only — 500/600/700 for Space Grotesk, 400/500/600/700 for JetBrains Mono). This is now the standing approach for this repo — do not switch back to `next/font/google` without checking network access first.
 
@@ -71,3 +77,6 @@ Switched away from `next/font/google` because this sandbox's bash tool cannot re
 
 | Page | Section | Element | Status | Notes |
 |------|---------|---------|--------|-------|
+| Home | Selected Works | Project data (title/category/thumbnail/href) | Hardcoded | Needs dashboard/CMS wiring; data model already typed (`FeaturedProject`) for a clean swap |
+| Home | Selected Works | Thumbnail images | Placeholder (empty) | Upload/assignment flow needed from dashboard |
+

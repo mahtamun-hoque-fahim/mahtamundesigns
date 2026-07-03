@@ -14,6 +14,7 @@ This file exists so neither Claude nor anyone else forgets how this project is b
 6. **Per-page log.** When a page is fully done, write a `[pagename].md` documenting the build from a designer's perspective — layout logic, visual decisions, what worked, what was tried.
 7. **Future skill use.** These page logs are intended to eventually inform/improve the `cave-man` and `ui-ux-designer` skills. Skills are NEVER modified without Fahim's explicit confirmation, even if the log content clearly suggests an improvement.
 8. **Running audit log.** Across the whole build, maintain a log of loose frontend ends — UI built but not yet wired to backend/data — so nothing gets forgotten before the eventual full audit + dashboard pass.
+9. **Resolution = mark done, never delete.** When a loose end or loose anchor resolves, update its row's Status to `✅ Resolved (date)` with a one-line note on how — do NOT remove the row. The tables are a history, not just a live to-do list.
 
 ---
 

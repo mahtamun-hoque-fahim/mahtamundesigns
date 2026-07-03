@@ -47,7 +47,7 @@ const ROW_2: Logo[] = [
 
 function LogoItem({ logo }: { logo: Logo }) {
   return (
-    <div className="flex h-10 shrink-0 items-center px-8 md:h-12 md:px-10">
+    <div className="flex h-6 shrink-0 items-center px-6 md:h-8 md:px-8">
       <Image
         src={logo.src}
         alt={logo.alt}
@@ -83,13 +83,13 @@ function MarqueeRow({
 
 export function TrustedBy() {
   return (
-    <section className="border-y border-line bg-bg-alt py-14 md:py-16">
-      <p className="mb-10 text-center text-xs tracking-[0.2em] text-muted md:text-sm">
+    <section className="border-y border-line bg-bg-alt py-8 md:py-10">
+      <p className="mb-6 text-center text-xs tracking-[0.2em] text-muted md:text-sm">
         TRUSTED BY RISING BANGLADESHI BRANDS
       </p>
 
       <div
-        className="flex flex-col gap-8"
+        className="flex flex-col gap-4"
         style={{
           maskImage:
             "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",

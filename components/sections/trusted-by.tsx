@@ -7,7 +7,7 @@ type Logo = {
   height: number;
 };
 
-const ROW_1: Logo[] = [
+const LOGOS: Logo[] = [
   { src: "/logos/acs.webp", alt: "ACS", width: 297, height: 120 },
   { src: "/logos/fahads-tutorial.webp", alt: "Fahad's Tutorial", width: 332, height: 120 },
   { src: "/logos/interting.webp", alt: "Interting", width: 105, height: 120 },
@@ -24,9 +24,6 @@ const ROW_1: Logo[] = [
   { src: "/logos/abrotune.webp", alt: "Abrotune", width: 287, height: 120 },
   { src: "/logos/sulphuric-bench.webp", alt: "Sulphuric Bench", width: 366, height: 120 },
   { src: "/logos/lobdhi.webp", alt: "Lobdhi", width: 331, height: 120 },
-];
-
-const ROW_2: Logo[] = [
   { src: "/logos/apurba-physics.webp", alt: "Apurba Physics", width: 152, height: 120 },
   { src: "/logos/arunodoy45.webp", alt: "Arunodoy45", width: 154, height: 120 },
   { src: "/logos/bbu.webp", alt: "BBU", width: 154, height: 120 },
@@ -47,7 +44,7 @@ const ROW_2: Logo[] = [
 
 function LogoItem({ logo }: { logo: Logo }) {
   return (
-    <div className="flex h-6 shrink-0 items-center px-6 md:h-8 md:px-8">
+    <div className="flex h-10 shrink-0 items-center px-8 md:h-12 md:px-10">
       <Image
         src={logo.src}
         alt={logo.alt}
@@ -59,37 +56,15 @@ function LogoItem({ logo }: { logo: Logo }) {
   );
 }
 
-function MarqueeRow({
-  logos,
-  direction,
-}: {
-  logos: Logo[];
-  direction: "left" | "right";
-}) {
-  return (
-    <div className="marquee-track relative flex w-full overflow-hidden">
-      <div
-        className={`flex w-max shrink-0 items-center ${
-          direction === "left" ? "animate-marquee-left" : "animate-marquee-right"
-        }`}
-      >
-        {[...logos, ...logos].map((logo, i) => (
-          <LogoItem key={`${logo.src}-${i}`} logo={logo} />
-        ))}
-      </div>
-    </div>
-  );
-}
-
 export function TrustedBy() {
   return (
-    <section className="border-y border-line bg-bg-alt py-8 md:py-10">
-      <p className="mb-6 text-center text-xs tracking-[0.2em] text-muted md:text-sm">
+    <section className="border-y border-line bg-bg-alt py-14 md:py-16">
+      <p className="mb-10 text-center text-xs tracking-[0.2em] text-muted md:text-sm">
         TRUSTED BY RISING BANGLADESHI BRANDS
       </p>
 
       <div
-        className="flex flex-col gap-4"
+        className="marquee-track relative flex w-full overflow-hidden"
         style={{
           maskImage:
             "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
@@ -97,8 +72,11 @@ export function TrustedBy() {
             "linear-gradient(to right, transparent, black 8%, black 92%, transparent)",
         }}
       >
-        <MarqueeRow logos={ROW_1} direction="left" />
-        <MarqueeRow logos={ROW_2} direction="right" />
+        <div className="flex w-max shrink-0 animate-marquee-left items-center">
+          {[...LOGOS, ...LOGOS].map((logo, i) => (
+            <LogoItem key={`${logo.src}-${i}`} logo={logo} />
+          ))}
+        </div>
       </div>
     </section>
   );

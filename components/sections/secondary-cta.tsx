@@ -105,8 +105,8 @@ function SecondaryCtaCard({ set }: { set: SecondaryCtaSet }) {
 
   return (
     <div className="mx-auto flex max-w-3xl flex-col overflow-hidden bg-surface-light shadow-xl md:max-w-[1100px] md:flex-row">
-      {/* Secondary Quotes — left, 45% */}
-      <div className="flex flex-col justify-center gap-4 p-8 md:w-[45%] md:p-14">
+      {/* Secondary Quotes — left on desktop, second on mobile */}
+      <div className="order-2 flex flex-col justify-center gap-4 p-8 md:order-none md:w-[45%] md:p-14">
         <p className="font-mono text-xs tracking-[0.2em] text-black/50">
           {set.eyebrow ?? "Eyebrow pending"}
         </p>
@@ -121,8 +121,8 @@ function SecondaryCtaCard({ set }: { set: SecondaryCtaSet }) {
         </a>
       </div>
 
-      {/* Secondary Motivation — right, 55%, real coded content, cropped by the column */}
-      <div className="relative flex items-center justify-center overflow-hidden p-8 md:w-[55%] md:p-12">
+      {/* Secondary Motivation — right on desktop, first on mobile, cropped by the column */}
+      <div className="relative order-1 flex items-center justify-center overflow-hidden p-8 md:order-none md:w-[55%] md:p-12">
         <div className="relative w-full max-w-md rotate-3 border border-black/10 bg-white p-6 shadow-lg transition-transform duration-300 hover:rotate-0 md:p-7">
           <span className="absolute right-3 top-3 flex h-7 w-7 items-center justify-center rounded-full bg-black/5 text-black/40">
             <ExternalLink className="h-3.5 w-3.5" strokeWidth={2} />

@@ -103,7 +103,14 @@ export function FeaturedProjects() {
       </div>
 
       <div
-        className="pointer-events-none absolute inset-x-0 bottom-0 z-0 h-[420px]"
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-0 h-[420px] md:hidden"
+        style={{
+          background:
+            "radial-gradient(100% 100% at 50% 100%, rgba(160,83,242,0.4), transparent 70%)",
+        }}
+      />
+      <div
+        className="pointer-events-none absolute inset-x-0 bottom-0 z-0 hidden h-[420px] md:block"
         style={{
           background:
             "radial-gradient(60% 100% at 50% 100%, rgba(160,83,242,0.4), transparent 70%)",

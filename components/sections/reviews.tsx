@@ -94,8 +94,8 @@ export function Reviews() {
         className="relative bg-surface-light"
         style={{ height: "350vh" }}
       >
-        <div className="sticky top-0 flex h-screen w-full flex-col justify-center overflow-hidden bg-surface-light">
-          <div className="mx-auto mb-10 w-full max-w-[1400px] px-6 text-center md:px-10">
+        <div className="sticky top-0 flex h-screen w-full flex-col justify-start overflow-hidden bg-surface-light pt-24 md:pt-28">
+          <div className="mx-auto mb-8 w-full max-w-[1400px] px-6 text-center md:px-10">
             <p className="mb-2 font-mono text-xs tracking-[0.2em] text-accent-dim">
               Customer Reviews and
             </p>
@@ -115,7 +115,7 @@ export function Reviews() {
         </div>
       </section>
 
-      <div className="flex justify-center bg-surface-light py-16">
+      <div className="flex justify-center bg-surface-light py-8">
         <a
           href="#"
           className="flex items-center gap-2 rounded-md border border-black/15 px-6 py-3 font-mono text-sm font-medium text-ink transition-colors duration-200 hover:border-black/30 hover:bg-black/5"

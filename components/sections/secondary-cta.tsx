@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { ExternalLink, UserRound } from "lucide-react";
 
-type AvailabilityProps = {
+type SecondaryCtaProps = {
   /**
    * Glow color as an "R, G, B" triplet string, e.g. "160, 83, 242".
    * This is the per-instance variable — each client/company page passes
@@ -10,15 +10,16 @@ type AvailabilityProps = {
    */
   glow?: string;
   /**
-   * The quote/testimonial set for this page's Availability section.
-   * TODO(dashboard): each page gets its own {name, role, quote, avatar}
-   * set assigned from the admin dashboard — this section is reused across
-   * many pages, only the set changes. Null fields render as pending.
+   * The Secondary Motivation set (name, role, quote, avatar) for this
+   * page's Secondary CTA Section.
+   * TODO(dashboard): each page gets its own set assigned from the admin
+   * dashboard — this section is reused across many pages, only the set
+   * changes. Null fields render as pending.
    */
-  quote?: AvailabilityQuote;
+  motivation?: SecondaryMotivation;
 };
 
-type AvailabilityQuote = {
+type SecondaryMotivation = {
   name: string | null;
   role: string | null;
   quote: string | null;
@@ -27,17 +28,17 @@ type AvailabilityQuote = {
 
 const DEFAULT_GLOW = "187, 124, 255"; // --color-accent (#bb7cff)
 
-const DEFAULT_QUOTE: AvailabilityQuote = {
+const DEFAULT_MOTIVATION: SecondaryMotivation = {
   name: null,
   role: null,
   quote: null,
   avatar: null,
 };
 
-export function Availability({
+export function SecondaryCta({
   glow = DEFAULT_GLOW,
-  quote = DEFAULT_QUOTE,
-}: AvailabilityProps) {
+  motivation = DEFAULT_MOTIVATION,
+}: SecondaryCtaProps) {
   return (
     <section className="relative isolate overflow-hidden bg-bg py-24 md:py-32">
       {/* Pattern texture — dedicated asset for this section, colorless by design */}
@@ -73,16 +74,16 @@ export function Availability({
       />
 
       <div className="relative z-10 mx-auto max-w-[1400px] px-6 md:px-10">
-        <AvailabilityCard quote={quote} />
+        <SecondaryCtaCard motivation={motivation} />
       </div>
     </section>
   );
 }
 
-function AvailabilityCard({ quote }: { quote: AvailabilityQuote }) {
+function SecondaryCtaCard({ motivation }: { motivation: SecondaryMotivation }) {
   return (
     <div className="mx-auto flex max-w-3xl flex-col overflow-hidden bg-surface-light shadow-xl md:max-w-[1100px] md:flex-row">
-      {/* Text — 45% */}
+      {/* Secondary Quotes — left, 45% */}
       <div className="flex flex-col justify-center gap-4 p-8 md:w-[45%] md:p-14">
         <p className="font-mono text-xs tracking-[0.2em] text-black/50">
           I&apos;M HERE TO SOLVE
@@ -98,7 +99,7 @@ function AvailabilityCard({ quote }: { quote: AvailabilityQuote }) {
         </a>
       </div>
 
-      {/* Quote card — 55%, real coded content, cropped by the column */}
+      {/* Secondary Motivation — right, 55%, real coded content, cropped by the column */}
       <div className="relative flex items-center justify-center overflow-hidden p-8 md:w-[55%] md:p-12">
         <div className="relative w-full max-w-md rotate-3 border border-black/10 bg-white p-6 shadow-lg transition-transform duration-300 hover:rotate-0 md:p-7">
           <span className="absolute right-3 top-3 flex h-7 w-7 items-center justify-center rounded-full bg-black/5 text-black/40">
@@ -107,10 +108,10 @@ function AvailabilityCard({ quote }: { quote: AvailabilityQuote }) {
 
           <div className="mb-4 flex items-center gap-3 pr-8">
             <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-black/5 text-black/30">
-              {quote.avatar ? (
+              {motivation.avatar ? (
                 <Image
-                  src={quote.avatar}
-                  alt={quote.name ?? "Client"}
+                  src={motivation.avatar}
+                  alt={motivation.name ?? "Client"}
                   width={48}
                   height={48}
                   className="h-12 w-12 rounded-full object-cover"
@@ -121,16 +122,16 @@ function AvailabilityCard({ quote }: { quote: AvailabilityQuote }) {
             </div>
             <div>
               <p className="font-display text-sm font-bold uppercase tracking-tight text-ink">
-                {quote.name ?? "Client Name"}
+                {motivation.name ?? "Client Name"}
               </p>
               <p className="font-mono text-xs text-black/50">
-                {quote.role ?? "Role, Company"}
+                {motivation.role ?? "Role, Company"}
               </p>
             </div>
           </div>
 
           <p className="font-mono text-xs leading-relaxed text-black/70">
-            {quote.quote ??
+            {motivation.quote ??
               "This quote is pending — content will be assigned from the dashboard."}
           </p>
         </div>

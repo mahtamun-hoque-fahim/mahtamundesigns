@@ -4,7 +4,7 @@ import { TrustedBy } from "@/components/sections/trusted-by";
 import { FeaturedProjects } from "@/components/sections/featured-projects";
 import { Reviews } from "@/components/sections/reviews";
 import { Stats } from "@/components/sections/stats";
-import { Availability } from "@/components/sections/availability";
+import { SecondaryCta } from "@/components/sections/secondary-cta";
 
 export default function Home() {
   return (
@@ -15,7 +15,7 @@ export default function Home() {
       <FeaturedProjects />
       <Reviews />
       <Stats />
-      <Availability />
+      <SecondaryCta />
     </main>
   );
 }

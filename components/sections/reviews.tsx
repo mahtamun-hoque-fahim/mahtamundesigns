@@ -23,7 +23,7 @@ const REVIEWS: Review[] = [
 
 function ReviewCard({ review }: { review: Review }) {
   return (
-    <div className="flex h-full w-[340px] shrink-0 flex-col rounded-2xl border border-black/10 bg-white p-7 shadow-sm md:w-[420px] md:p-8">
+    <div className="flex h-[440px] w-[340px] shrink-0 flex-col rounded-2xl border border-black/10 bg-white p-7 shadow-sm md:w-[420px] md:p-8">
       <div className="mb-5 flex items-center gap-3">
         <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-black/5 text-black/30">
           <UserRound className="h-6 w-6" strokeWidth={1.5} />
@@ -94,7 +94,7 @@ export function Reviews() {
         className="relative bg-surface-light"
         style={{ height: "350vh" }}
       >
-        <div className="sticky top-0 flex h-screen w-full flex-col justify-start overflow-hidden bg-surface-light pt-24 md:pt-28">
+        <div className="sticky top-0 flex h-screen w-full flex-col justify-center overflow-hidden bg-surface-light">
           <div className="mx-auto mb-8 w-full max-w-[1400px] px-6 text-center md:px-10">
             <p className="mb-2 font-mono text-xs tracking-[0.2em] text-accent-dim">
               Customer Reviews and
@@ -115,7 +115,7 @@ export function Reviews() {
         </div>
       </section>
 
-      <div className="flex justify-center bg-surface-light py-8">
+      <div className="flex justify-center bg-surface-light py-6">
         <a
           href="#"
           className="flex items-center gap-2 rounded-md border border-black/15 px-6 py-3 font-mono text-sm font-medium text-ink transition-colors duration-200 hover:border-black/30 hover:bg-black/5"

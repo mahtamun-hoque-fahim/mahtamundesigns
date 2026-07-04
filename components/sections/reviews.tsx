@@ -119,7 +119,7 @@ export function Reviews() {
       <div className="flex justify-center bg-surface-light py-6">
         <a
           href="#"
-          className="flex items-center gap-2 rounded-md border border-black/15 px-6 py-3 font-mono text-sm font-medium text-ink transition-colors duration-200 hover:border-black/30 hover:bg-black/5"
+          className="flex items-center gap-2 rounded-full bg-accent px-6 py-3 font-mono text-sm font-medium text-white shadow-[0_0_40px_rgba(187,124,255,0.55)] transition-all duration-300 hover:bg-accent-dim hover:shadow-[0_0_55px_rgba(187,124,255,0.75)]"
         >
           SEE ALL
           <span aria-hidden="true">&rarr;</span>

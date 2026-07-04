@@ -91,6 +91,7 @@ export function Reviews() {
       <section
         ref={sectionRef}
         id="reviews"
+        data-nav-hide="true"
         className="relative bg-surface-light"
         style={{ height: "350vh" }}
       >

@@ -13,17 +13,40 @@ const NAV_LINKS = [
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
+  const [hiddenForSection, setHiddenForSection] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 12);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    const update = () => {
+      setScrolled(window.scrollY > 12);
+
+      // Auto-hide while any section marked data-nav-hide="true" covers the
+      // viewport (currently just Reviews — its light bg clashes with the nav).
+      const hideTargets = document.querySelectorAll('[data-nav-hide="true"]');
+      let shouldHide = false;
+      hideTargets.forEach((el) => {
+        const top = (el as HTMLElement).offsetTop;
+        const bottom = top + (el as HTMLElement).offsetHeight;
+        if (window.scrollY >= top - 4 && window.scrollY < bottom - 4) {
+          shouldHide = true;
+        }
+      });
+      setHiddenForSection(shouldHide);
+    };
+
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
   }, []);
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 border-b transition-colors duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 border-b transition-all duration-300 ${
+        hiddenForSection ? "-translate-y-full" : "translate-y-0"
+      } ${
         scrolled
           ? "border-white/5 bg-black/10 backdrop-blur-lg"
           : "border-transparent bg-transparent"

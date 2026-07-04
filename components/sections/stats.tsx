@@ -52,11 +52,11 @@ function StatItem({ stat, active }: { stat: Stat; active: boolean }) {
 
   return (
     <div className="text-center">
-      <p className="font-display text-4xl font-bold text-accent md:text-5xl">
+      <p className="font-display text-4xl font-bold text-white md:text-5xl">
         {value}
         {stat.suffix}
       </p>
-      <p className="mt-2 font-mono text-sm text-muted md:text-base">
+      <p className="mt-2 font-mono text-sm text-accent md:text-base">
         {stat.label}
       </p>
     </div>

@@ -87,9 +87,9 @@ export function SecondaryCta({
           in white — keeps it reading as an accent-colored light, not a
           washed-out blob. */}
       <div
-        className="pointer-events-none absolute inset-x-0 top-0 z-0 h-[520px]"
+        className="pointer-events-none absolute inset-x-0 top-0 z-0 h-[320px]"
         style={{
-          background: `radial-gradient(55% 100% at 50% 0%, rgba(${glow}, 0.9) 0%, rgba(${glow}, 0.45) 40%, transparent 75%)`,
+          background: `radial-gradient(35% 100% at 50% 0%, rgba(${glow}, 0.9) 0%, rgba(${glow}, 0.45) 40%, transparent 75%)`,
         }}
       />
 
@@ -115,7 +115,7 @@ function SecondaryCtaCard({ set }: { set: SecondaryCtaSet }) {
         </h2>
         <a
           href={set.buttonHref ?? "#"}
-          className="mt-2 inline-flex w-fit items-center justify-center rounded-none bg-ink px-6 py-3 font-mono text-sm font-medium text-white transition-opacity duration-200 hover:opacity-90"
+          className="mt-2 inline-flex w-fit items-center justify-center rounded-none bg-accent px-6 py-3 font-mono text-sm font-medium text-white transition-opacity duration-200 hover:opacity-90"
         >
           {set.buttonLabel ?? "Button pending"}
         </a>

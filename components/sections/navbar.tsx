@@ -75,12 +75,12 @@ export function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 border-b transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-black/10 backdrop-blur-lg transition-all duration-300 ${
         hiddenForSection ? "-translate-y-full" : "translate-y-0"
       } ${
         scrolled || menuOpen
-          ? "border-white/5 bg-black/10 backdrop-blur-lg"
-          : "border-transparent bg-transparent"
+          ? "md:border-white/5 md:bg-black/10 md:backdrop-blur-lg"
+          : "md:border-transparent md:bg-transparent md:backdrop-blur-none"
       }`}
     >
       <nav className="mx-auto flex max-w-[1400px] items-center justify-between px-6 py-6 md:px-10">

@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { Menu, X } from "lucide-react";
 
 const NAV_LINKS = [
   { label: "Home", href: "#home" },
@@ -14,6 +15,8 @@ const NAV_LINKS = [
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [hiddenForSection, setHiddenForSection] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const update = () => {
@@ -42,12 +45,40 @@ export function Navbar() {
     };
   }, []);
 
+  // Lock body scroll while the mobile menu is open
+  useEffect(() => {
+    if (menuOpen) {
+      const original = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = original;
+      };
+    }
+  }, [menuOpen]);
+
+  // Close on Escape
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setMenuOpen(false);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [menuOpen]);
+
+  // Close the menu automatically if the viewport grows back to desktop
+  useEffect(() => {
+    const onResize = () => {
+      if (window.innerWidth >= 768) setMenuOpen(false);
+    };
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, []);
+
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 border-b transition-all duration-300 ${
         hiddenForSection ? "-translate-y-full" : "translate-y-0"
       } ${
-        scrolled
+        scrolled || menuOpen
           ? "border-white/5 bg-black/10 backdrop-blur-lg"
           : "border-transparent bg-transparent"
       }`}
@@ -77,13 +108,72 @@ export function Navbar() {
           ))}
         </ul>
 
-        <Link
-          href="#contact"
-          className="rounded-md bg-accent px-5 py-2.5 text-sm font-medium text-white transition-colors duration-200 hover:bg-accent-dim"
-        >
-          Book Meeting
-        </Link>
+        <div className="flex items-center gap-3">
+          <Link
+            href="#contact"
+            className="hidden rounded-md bg-accent px-5 py-2.5 text-sm font-medium text-white transition-colors duration-200 hover:bg-accent-dim md:inline-flex"
+          >
+            Book Meeting
+          </Link>
+
+          <button
+            type="button"
+            onClick={() => setMenuOpen((open) => !open)}
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={menuOpen}
+            className="flex h-10 w-10 items-center justify-center rounded-md text-white/80 transition-colors duration-200 hover:text-white md:hidden"
+          >
+            {menuOpen ? (
+              <X className="h-5 w-5" strokeWidth={2} />
+            ) : (
+              <Menu className="h-5 w-5" strokeWidth={2} />
+            )}
+          </button>
+        </div>
       </nav>
+
+      {/* Mobile menu backdrop */}
+      <div
+        onClick={() => setMenuOpen(false)}
+        className={`fixed inset-0 top-[73px] z-40 bg-black/60 transition-opacity md:hidden ${
+          menuOpen ? "opacity-100" : "pointer-events-none opacity-0"
+        }`}
+      />
+
+      {/* Mobile menu panel */}
+      <div
+        ref={menuRef}
+        role="dialog"
+        aria-modal="true"
+        className={`absolute inset-x-0 top-full z-40 origin-top border-b border-white/5 bg-bg/95 backdrop-blur-lg transition-all duration-200 md:hidden ${
+          menuOpen
+            ? "pointer-events-auto translate-y-0 opacity-100"
+            : "pointer-events-none -translate-y-2 opacity-0"
+        }`}
+      >
+        <ul className="flex flex-col px-6 py-4">
+          {NAV_LINKS.map((link) => (
+            <li key={link.href}>
+              <Link
+                href={link.href}
+                onClick={() => setMenuOpen(false)}
+                className="block border-b border-white/5 py-4 text-base text-white/80 transition-colors duration-200 hover:text-white"
+              >
+                {link.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+        <div className="px-6 pb-6">
+          <Link
+            href="#contact"
+            onClick={() => setMenuOpen(false)}
+            className="flex items-center justify-center rounded-md bg-accent px-5 py-3 text-sm font-medium text-white transition-colors duration-200 hover:bg-accent-dim"
+          >
+            Book Meeting
+          </Link>
+        </div>
+      </div>
     </header>
   );
 }

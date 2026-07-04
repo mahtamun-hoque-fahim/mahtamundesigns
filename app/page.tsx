@@ -5,6 +5,7 @@ import { FeaturedProjects } from "@/components/sections/featured-projects";
 import { Reviews } from "@/components/sections/reviews";
 import { Stats } from "@/components/sections/stats";
 import { SecondaryCta } from "@/components/sections/secondary-cta";
+import { Footer } from "@/components/sections/footer";
 
 export default function Home() {
   return (
@@ -16,6 +17,7 @@ export default function Home() {
       <Reviews />
       <Stats />
       <SecondaryCta />
+      <Footer />
     </main>
   );
 }

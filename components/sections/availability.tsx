@@ -37,13 +37,14 @@ export function Availability({ glow = DEFAULT_GLOW }: AvailabilityProps) {
         }}
       />
 
-      {/* Glow — pure CSS, not baked into the image, primary accent color.
-          Bright core fading into the accent hue reads as a light source
-          rather than a flat color patch. */}
+      {/* Glow — pure CSS, not baked into the image, primary accent color only.
+          Brightness comes from opacity falloff at the core, not from mixing
+          in white — keeps it reading as an accent-colored light, not a
+          washed-out blob. */}
       <div
         className="pointer-events-none absolute inset-x-0 top-0 z-0 h-[520px]"
         style={{
-          background: `radial-gradient(55% 100% at 50% 0%, rgba(255,255,255,0.85) 0%, rgba(${glow}, 0.7) 30%, transparent 70%)`,
+          background: `radial-gradient(55% 100% at 50% 0%, rgba(${glow}, 0.9) 0%, rgba(${glow}, 0.45) 40%, transparent 75%)`,
         }}
       />
 
@@ -61,9 +62,9 @@ const QUOTE_IMAGE: string | null = null;
 
 function AvailabilityCard({ quoteImage }: { quoteImage: string | null }) {
   return (
-    <div className="mx-auto flex max-w-3xl flex-col overflow-hidden bg-surface-light shadow-xl md:max-w-4xl md:flex-row">
+    <div className="mx-auto flex max-w-3xl flex-col overflow-hidden bg-surface-light shadow-xl md:max-w-[1100px] md:flex-row">
       {/* Text — 45% */}
-      <div className="flex flex-col justify-center gap-4 p-8 md:w-[45%] md:p-10">
+      <div className="flex flex-col justify-center gap-4 p-8 md:w-[45%] md:p-14">
         <p className="font-mono text-xs tracking-[0.2em] text-black/50">
           I&apos;M HERE TO SOLVE
         </p>
@@ -78,9 +79,9 @@ function AvailabilityCard({ quoteImage }: { quoteImage: string | null }) {
         </a>
       </div>
 
-      {/* Quote image — 55% */}
-      <div className="relative flex items-center justify-center bg-black/[0.03] p-8 md:w-[55%] md:p-10">
-        <div className="relative w-full max-w-sm rotate-3 border border-black/10 bg-white shadow-lg transition-transform duration-300 hover:rotate-0">
+      {/* Quote image — 55%, same bg as text side, image fills the column */}
+      <div className="relative flex items-center justify-center p-8 md:w-[55%] md:p-12">
+        <div className="relative h-56 w-full max-w-md rotate-3 border border-black/10 bg-white shadow-lg transition-transform duration-300 hover:rotate-0 md:h-64">
           <span className="absolute right-3 top-3 z-10 flex h-7 w-7 items-center justify-center rounded-full bg-black/5 text-black/40">
             <ExternalLink className="h-3.5 w-3.5" strokeWidth={2} />
           </span>
@@ -89,12 +90,11 @@ function AvailabilityCard({ quoteImage }: { quoteImage: string | null }) {
             <Image
               src={quoteImage}
               alt="Client quote"
-              width={480}
-              height={320}
-              className="h-auto w-full object-cover"
+              fill
+              className="object-cover"
             />
           ) : (
-            <div className="flex aspect-[3/2] w-full flex-col items-center justify-center gap-2 p-6 text-center">
+            <div className="flex h-full w-full flex-col items-center justify-center gap-2 p-6 text-center">
               <ImageIcon className="h-6 w-6 text-black/20" strokeWidth={1.5} />
               <p className="font-mono text-xs text-black/40">
                 Quote image pending — assigned from dashboard

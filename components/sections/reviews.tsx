@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { Star, UserRound } from "lucide-react";
+import { ArrowRight, Star, UserRound } from "lucide-react";
 
 type Review = {
   name: string | null;
@@ -96,7 +96,15 @@ export function Reviews() {
         style={{ height: "350vh" }}
       >
         <div className="sticky top-0 flex h-screen w-full flex-col justify-center overflow-hidden bg-surface-light">
-          <div className="mx-auto mb-8 w-full max-w-[1400px] px-6 text-center md:px-10">
+          <div
+            className="pointer-events-none absolute inset-y-0 left-0 z-0 w-[420px]"
+            style={{
+              background:
+                "radial-gradient(70% 60% at 0% 50%, rgba(160,83,242,0.35), transparent 70%)",
+            }}
+          />
+
+          <div className="relative z-10 mx-auto mb-8 w-full max-w-[1400px] px-6 text-center md:px-10">
             <p className="mb-2 font-mono text-xs tracking-[0.2em] text-accent-dim">
               Customer Reviews and
             </p>
@@ -107,7 +115,7 @@ export function Reviews() {
 
           <div
             ref={trackRef}
-            className="flex w-max shrink-0 gap-6 pl-6 will-change-transform md:pl-10"
+            className="relative z-10 flex w-max shrink-0 gap-6 pl-6 will-change-transform md:pl-10"
           >
             {REVIEWS.map((review, i) => (
               <ReviewCard key={i} review={review} />
@@ -119,10 +127,10 @@ export function Reviews() {
       <div className="flex justify-center bg-surface-light py-6">
         <a
           href="#"
-          className="flex items-center gap-2 rounded-full bg-accent px-6 py-3 font-mono text-sm font-medium text-white shadow-[0_0_40px_rgba(187,124,255,0.55)] transition-all duration-300 hover:bg-accent-dim hover:shadow-[0_0_55px_rgba(187,124,255,0.75)]"
+          className="flex items-center gap-2 rounded-md bg-accent px-6 py-3 font-mono text-sm font-medium text-white transition-colors duration-200 hover:bg-accent-dim"
         >
           SEE ALL
-          <span aria-hidden="true">&rarr;</span>
+          <ArrowRight className="h-4 w-4" strokeWidth={2} />
         </a>
       </div>
     </>

@@ -127,7 +127,7 @@ export function Reviews() {
       <div className="flex justify-center bg-surface-light py-6">
         <a
           href="#"
-          className="flex items-center gap-2 rounded-md bg-accent px-6 py-3 font-mono text-sm font-medium text-white transition-colors duration-200 hover:bg-accent-dim"
+          className="flex items-center gap-2 rounded-none bg-accent px-6 py-3 font-mono text-sm font-medium text-white transition-colors duration-200 hover:bg-accent-dim"
         >
           SEE ALL
           <ArrowRight className="h-4 w-4" strokeWidth={2} />

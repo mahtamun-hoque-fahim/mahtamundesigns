@@ -111,7 +111,7 @@ export function Navbar() {
         <div className="flex items-center gap-3">
           <Link
             href="#contact"
-            className="hidden rounded-md bg-accent px-5 py-2.5 text-sm font-medium text-white transition-colors duration-200 hover:bg-accent-dim md:inline-flex"
+            className="hidden rounded-md bg-accent-dim px-5 py-2.5 text-sm font-medium text-white transition-colors duration-200 hover:bg-accent md:inline-flex"
           >
             Book Meeting
           </Link>
@@ -168,7 +168,7 @@ export function Navbar() {
           <Link
             href="#contact"
             onClick={() => setMenuOpen(false)}
-            className="flex items-center justify-center rounded-md bg-accent px-5 py-3 text-sm font-medium text-white transition-colors duration-200 hover:bg-accent-dim"
+            className="flex items-center justify-center rounded-md bg-accent-dim px-5 py-3 text-sm font-medium text-white transition-colors duration-200 hover:bg-accent"
           >
             Book Meeting
           </Link>

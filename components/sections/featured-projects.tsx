@@ -106,7 +106,7 @@ export function FeaturedProjects() {
         className="pointer-events-none absolute inset-x-0 bottom-0 z-0 h-[420px]"
         style={{
           background:
-            "radial-gradient(60% 100% at 50% 100%, rgba(187,124,255,0.35), transparent 70%)",
+            "radial-gradient(60% 100% at 50% 100%, rgba(160,83,242,0.4), transparent 70%)",
         }}
       />
 

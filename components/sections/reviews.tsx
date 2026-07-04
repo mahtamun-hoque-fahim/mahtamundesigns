@@ -100,7 +100,7 @@ export function Reviews() {
             className="pointer-events-none absolute inset-y-0 left-0 z-0 w-[420px]"
             style={{
               background:
-                "radial-gradient(70% 60% at 0% 50%, rgba(160,83,242,0.35), transparent 70%)",
+                "radial-gradient(70% 60% at 0% 50%, rgba(110,47,189,0.45), transparent 70%)",
             }}
           />
 
@@ -127,7 +127,7 @@ export function Reviews() {
       <div className="flex justify-center bg-surface-light py-6">
         <a
           href="#"
-          className="flex items-center gap-2 rounded-none bg-gradient-to-r from-accent to-[#A053F2] px-6 py-3 font-mono text-sm font-medium text-white transition-opacity duration-200 hover:opacity-90"
+          className="flex items-center gap-2 rounded-none bg-[#6E2FBD] px-6 py-3 font-mono text-sm font-medium text-white transition-opacity duration-200 hover:opacity-90"
         >
           SEE ALL
           <ArrowRight className="h-4 w-4" strokeWidth={2} />

@@ -11,7 +11,7 @@ type AvailabilityProps = {
   glow?: string;
 };
 
-const DEFAULT_GLOW = "160, 83, 242"; // matches --color-accent family used elsewhere
+const DEFAULT_GLOW = "187, 124, 255"; // --color-accent (#bb7cff)
 
 export function Availability({ glow = DEFAULT_GLOW }: AvailabilityProps) {
   return (
@@ -37,11 +37,13 @@ export function Availability({ glow = DEFAULT_GLOW }: AvailabilityProps) {
         }}
       />
 
-      {/* Glow — pure CSS, not baked into the image, same primary color */}
+      {/* Glow — pure CSS, not baked into the image, primary accent color.
+          Bright core fading into the accent hue reads as a light source
+          rather than a flat color patch. */}
       <div
         className="pointer-events-none absolute inset-x-0 top-0 z-0 h-[520px]"
         style={{
-          background: `radial-gradient(60% 100% at 50% 0%, rgba(${glow}, 0.55), transparent 70%)`,
+          background: `radial-gradient(55% 100% at 50% 0%, rgba(255,255,255,0.85) 0%, rgba(${glow}, 0.7) 30%, transparent 70%)`,
         }}
       />
 

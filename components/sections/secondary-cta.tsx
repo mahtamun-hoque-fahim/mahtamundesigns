@@ -10,13 +10,16 @@ type SecondaryCtaProps = {
    */
   glow?: string;
   /**
-   * The Secondary Motivation set (name, role, quote, avatar) for this
-   * page's Secondary CTA Section.
-   * TODO(dashboard): each page gets its own set assigned from the admin
-   * dashboard — this section is reused across many pages, only the set
-   * changes. Null fields render as pending.
+   * The full content set for this page's Secondary CTA Section Card —
+   * Secondary Quotes (eyebrow, heading, button) + Secondary Motivation
+   * (name, role, quote, avatar), bundled as one unit.
+   *
+   * TODO(dashboard): multiple sets will exist. Each page's Secondary CTA
+   * Section Card gets exactly one set assigned to it from the admin
+   * dashboard — this component is reused across many pages, only the
+   * set changes. Defaults to the homepage's own set below.
    */
-  motivation?: SecondaryMotivation;
+  set?: SecondaryCtaSet;
 };
 
 type SecondaryMotivation = {
@@ -26,18 +29,35 @@ type SecondaryMotivation = {
   avatar: string | null;
 };
 
+type SecondaryCtaSet = {
+  eyebrow: string | null;
+  heading: string | null;
+  buttonLabel: string | null;
+  buttonHref: string | null;
+  motivation: SecondaryMotivation;
+};
+
 const DEFAULT_GLOW = "187, 124, 255"; // --color-accent (#bb7cff)
 
-const DEFAULT_MOTIVATION: SecondaryMotivation = {
-  name: null,
-  role: null,
-  quote: null,
-  avatar: null,
+// Homepage's own set — real, approved copy, not a dashboard placeholder.
+// Once the dashboard exists, this becomes one named set among several,
+// each assigned to a specific page's Secondary CTA Section Card.
+const HOME_SET: SecondaryCtaSet = {
+  eyebrow: "I'M HERE TO SOLVE",
+  heading: "THE PAIN",
+  buttonLabel: "DM NOW",
+  buttonHref: "#contact",
+  motivation: {
+    name: null,
+    role: null,
+    quote: null,
+    avatar: null,
+  },
 };
 
 export function SecondaryCta({
   glow = DEFAULT_GLOW,
-  motivation = DEFAULT_MOTIVATION,
+  set = HOME_SET,
 }: SecondaryCtaProps) {
   return (
     <section className="relative isolate overflow-hidden bg-bg py-24 md:py-32">
@@ -74,28 +94,30 @@ export function SecondaryCta({
       />
 
       <div className="relative z-10 mx-auto max-w-[1400px] px-6 md:px-10">
-        <SecondaryCtaCard motivation={motivation} />
+        <SecondaryCtaCard set={set} />
       </div>
     </section>
   );
 }
 
-function SecondaryCtaCard({ motivation }: { motivation: SecondaryMotivation }) {
+function SecondaryCtaCard({ set }: { set: SecondaryCtaSet }) {
+  const { motivation } = set;
+
   return (
     <div className="mx-auto flex max-w-3xl flex-col overflow-hidden bg-surface-light shadow-xl md:max-w-[1100px] md:flex-row">
       {/* Secondary Quotes — left, 45% */}
       <div className="flex flex-col justify-center gap-4 p-8 md:w-[45%] md:p-14">
         <p className="font-mono text-xs tracking-[0.2em] text-black/50">
-          I&apos;M HERE TO SOLVE
+          {set.eyebrow ?? "Eyebrow pending"}
         </p>
         <h2 className="font-display text-4xl font-bold leading-none tracking-tight text-ink md:text-5xl">
-          THE PAIN
+          {set.heading ?? "Heading pending"}
         </h2>
         <a
-          href="#contact"
+          href={set.buttonHref ?? "#"}
           className="mt-2 inline-flex w-fit items-center justify-center rounded-none bg-ink px-6 py-3 font-mono text-sm font-medium text-white transition-opacity duration-200 hover:opacity-90"
         >
-          DM NOW
+          {set.buttonLabel ?? "Button pending"}
         </a>
       </div>
 

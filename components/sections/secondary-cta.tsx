@@ -115,7 +115,7 @@ function SecondaryCtaCard({ set }: { set: SecondaryCtaSet }) {
         </h2>
         <a
           href={set.buttonHref ?? "#"}
-          className="mt-2 inline-flex w-fit items-center justify-center rounded-none bg-accent px-6 py-3 font-mono text-sm font-medium text-white transition-opacity duration-200 hover:opacity-90"
+          className="mt-2 inline-flex w-fit items-center justify-center rounded-none bg-ink px-6 py-3 font-mono text-sm font-medium text-white transition-opacity duration-200 hover:opacity-90"
         >
           {set.buttonLabel ?? "Button pending"}
         </a>

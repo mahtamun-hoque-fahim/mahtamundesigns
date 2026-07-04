@@ -16,29 +16,32 @@ const DEFAULT_GLOW = "160, 83, 242"; // matches --color-accent family used elsew
 export function Availability({ glow = DEFAULT_GLOW }: AvailabilityProps) {
   return (
     <section className="relative isolate overflow-hidden bg-bg py-24 md:py-32">
-      {/* Pattern texture — same asset/treatment as Featured Projects, colorless */}
+      {/* Pattern texture — dedicated asset for this section, colorless by design */}
       <div
-        className="pointer-events-none absolute inset-0 z-0 opacity-[0.15]"
+        className="pointer-events-none absolute inset-0 z-0"
         style={{
-          backgroundImage: "url(/images/featured-projects-bg.webp)",
+          backgroundImage: "url(/images/secondary-cta-bg.webp)",
           backgroundSize: "cover",
           backgroundPosition: "top center",
         }}
       />
 
-      {/* Top glow blob — this is the variable-colored layer */}
+      {/* Tint layer — recolors the pattern via CSS blend mode "color",
+          keeping the image's own luminosity/fade-to-black intact. This is
+          the per-instance variable: same asset, different hue per client. */}
+      <div
+        className="pointer-events-none absolute inset-0 z-0"
+        style={{
+          backgroundColor: `rgb(${glow})`,
+          mixBlendMode: "color",
+        }}
+      />
+
+      {/* Glow — pure CSS, not baked into the image, same primary color */}
       <div
         className="pointer-events-none absolute inset-x-0 top-0 z-0 h-[520px]"
         style={{
           background: `radial-gradient(60% 100% at 50% 0%, rgba(${glow}, 0.55), transparent 70%)`,
-        }}
-      />
-
-      {/* Full-section tint wash so the color reads at the edges too, not just the blob */}
-      <div
-        className="pointer-events-none absolute inset-0 z-0"
-        style={{
-          background: `linear-gradient(180deg, rgba(${glow}, 0.10) 0%, rgba(${glow}, 0.22) 55%, rgba(0,0,0,0.92) 100%)`,
         }}
       />
 

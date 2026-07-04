@@ -115,7 +115,7 @@ export function Reviews() {
 
           <div
             ref={trackRef}
-            className="relative z-10 flex w-max shrink-0 gap-6 pl-6 will-change-transform md:pl-10"
+            className="relative z-10 flex w-max shrink-0 gap-10 pl-6 will-change-transform md:pl-10"
           >
             {REVIEWS.map((review, i) => (
               <ReviewCard key={i} review={review} />

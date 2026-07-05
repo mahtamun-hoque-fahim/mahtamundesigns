@@ -6,10 +6,10 @@ import Link from "next/link";
 import { Menu, X } from "lucide-react";
 
 const NAV_LINKS = [
-  { label: "Home", href: "#home" },
-  { label: "Showcase", href: "#showcase" },
-  { label: "Reviews", href: "#reviews" },
-  { label: "About", href: "#about" },
+  { label: "Home", href: "/" },
+  { label: "Showcase", href: "/#showcase" },
+  { label: "Reviews", href: "/#reviews" },
+  { label: "About", href: "/about" },
 ];
 
 export function Navbar() {
@@ -113,7 +113,7 @@ export function Navbar() {
             href="#contact"
             className="hidden rounded-md bg-accent-dim px-5 py-2.5 text-sm font-medium text-white transition-colors duration-200 hover:bg-accent md:inline-flex"
           >
-            Book Meeting
+            Contact
           </Link>
 
           <button
@@ -170,7 +170,7 @@ export function Navbar() {
             onClick={() => setMenuOpen(false)}
             className="flex items-center justify-center rounded-md bg-accent-dim px-5 py-3 text-sm font-medium text-white transition-colors duration-200 hover:bg-accent"
           >
-            Book Meeting
+            Contact
           </Link>
         </div>
       </div>

@@ -299,7 +299,7 @@ export function ReviewsGrid() {
           style={{
             top: "50%",
             left: "-200px",
-            transform: "translateY(-50%) rotate(90deg)",
+            transform: "translateY(-50%) rotate(180deg)",
             background: `radial-gradient(50% 100% at 50% 0%, rgba(187, 124, 255, 0.8) 0%, rgba(187, 124, 255, 0.3) 35%, transparent 80%)`,
           }}
         />

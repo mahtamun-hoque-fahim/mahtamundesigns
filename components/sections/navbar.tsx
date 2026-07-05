@@ -11,7 +11,7 @@ const NAV_LINKS = [
   { label: "Portfolio", href: "/portfolio" },
   { label: "Reviews", href: "/reviews" },
   { label: "About", href: "/about" },
-  { label: "Contact", href: "#contact" },
+  { label: "Contact", href: "/contact" },
 ];
 
 export function Navbar() {
@@ -85,8 +85,8 @@ export function Navbar() {
           : "md:border-transparent md:bg-transparent md:backdrop-blur-none"
       }`}
     >
-      <nav className="mx-auto flex max-w-[1400px] items-center justify-between px-6 py-6 md:px-10">
-        <Link href="#home" className="shrink-0" aria-label="Mahtamun — home">
+      <nav className="mx-auto flex max-w-[1400px] items-start justify-between gap-8 px-6 py-4 md:px-10 md:py-4">
+        <Link href="#home" className="shrink-0 pt-1" aria-label="Mahtamun — home">
           <Image
             src="/logo/mahtamun-wordmark.svg"
             alt="Mahtamun"
@@ -97,12 +97,12 @@ export function Navbar() {
           />
         </Link>
 
-        <ul className="hidden items-center gap-10 text-sm text-white/80 md:flex">
+        <ul className="hidden items-start gap-8 text-sm text-white/80 md:flex md:pt-1">
           {NAV_LINKS.map((link) => (
             <li key={link.href}>
               <Link
                 href={link.href}
-                className="transition-colors duration-200 hover:text-white"
+                className="block transition-colors duration-200 hover:text-white"
               >
                 {link.label}
               </Link>
@@ -110,7 +110,7 @@ export function Navbar() {
           ))}
         </ul>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-start gap-3 pt-1">
           <button
             type="button"
             onClick={() => setMenuOpen((open) => !open)}

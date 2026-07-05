@@ -3,6 +3,7 @@ import { Metadata } from "next";
 import { getClient } from "@/lib/clients";
 import { Navbar } from "@/components/sections/navbar";
 import { ClientHero } from "@/components/sections/client-hero";
+import { ClientAbout } from "@/components/sections/client-about";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -25,7 +26,8 @@ export default async function ClientPage({ params }: Props) {
     <>
       <Navbar />
       <ClientHero client={client} />
-      {/* About + At a Glance — next section */}
+      <ClientAbout client={client} />
+      {/* Gallery — next section */}
       {/* Gallery — after that */}
       {/* Secondary CTA + Footer — last */}
     </>

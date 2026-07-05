@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { Star, UserRound } from "lucide-react";
+import { useEffect, useState } from "react";
+import Image from "next/image";
+import { Star, UserRound, X } from "lucide-react";
 
 type Review = {
   id: string;
@@ -10,10 +11,11 @@ type Review = {
   quote: string;
   rating: number;
   avatar: string | null;
+  image: string | null; // Product/brand asset shown in modal
 };
 
 // TODO(dashboard): This is a separate list from the homepage Reviews section.
-// All content (names, roles, quotes, ratings, avatars) will be controlled
+// All content (names, roles, quotes, ratings, avatars, images) will be controlled
 // from the admin dashboard. Bulk import via CSV + form input for mass data entry.
 // Currently placeholder — structure only.
 const ALL_REVIEWS: Review[] = [
@@ -25,6 +27,7 @@ const ALL_REVIEWS: Review[] = [
       "Lorem ipsum is simply some text of the printing and typesetting industry. Lorem ipsum has been the industry's standard dummy text ever since, when designers of letterpress and composed it to make some text that's not just random.",
     rating: 5,
     avatar: null,
+    image: null,
   },
   {
     id: "2",
@@ -34,6 +37,7 @@ const ALL_REVIEWS: Review[] = [
       "Lorem ipsum is simply some text of the printing and typesetting industry. Lorem ipsum has been the industry's standard dummy text ever since, when designers of letterpress and composed it to make some text that's not just random.",
     rating: 5,
     avatar: null,
+    image: null,
   },
   {
     id: "3",
@@ -43,6 +47,7 @@ const ALL_REVIEWS: Review[] = [
       "Lorem ipsum is simply some text of the printing and typesetting industry. Lorem ipsum has been the industry's standard dummy text ever since, when designers of letterpress and composed it to make some text that's not just random.",
     rating: 5,
     avatar: null,
+    image: null,
   },
   {
     id: "4",
@@ -52,6 +57,7 @@ const ALL_REVIEWS: Review[] = [
       "Lorem ipsum is simply some text of the printing and typesetting industry. Lorem ipsum has been the industry's standard dummy text ever since, when designers of letterpress and composed it to make some text that's not just random.",
     rating: 5,
     avatar: null,
+    image: null,
   },
   {
     id: "5",
@@ -61,6 +67,7 @@ const ALL_REVIEWS: Review[] = [
       "Lorem ipsum is simply some text of the printing and typesetting industry. Lorem ipsum has been the industry's standard dummy text ever since, when designers of letterpress and composed it to make some text that's not just random.",
     rating: 5,
     avatar: null,
+    image: null,
   },
   {
     id: "6",
@@ -70,6 +77,7 @@ const ALL_REVIEWS: Review[] = [
       "Lorem ipsum is simply some text of the printing and typesetting industry. Lorem ipsum has been the industry's standard dummy text ever since, when designers of letterpress and composed it to make some text that's not just random.",
     rating: 5,
     avatar: null,
+    image: null,
   },
   {
     id: "7",
@@ -79,6 +87,7 @@ const ALL_REVIEWS: Review[] = [
       "Lorem ipsum is simply some text of the printing and typesetting industry. Lorem ipsum has been the industry's standard dummy text ever since, when designers of letterpress and composed it to make some text that's not just random.",
     rating: 5,
     avatar: null,
+    image: null,
   },
   {
     id: "8",
@@ -88,14 +97,132 @@ const ALL_REVIEWS: Review[] = [
       "Lorem ipsum is simply some text of the printing and typesetting industry. Lorem ipsum has been the industry's standard dummy text ever since, when designers of letterpress and composed it to make some text that's not just random.",
     rating: 5,
     avatar: null,
+    image: null,
   },
 ];
 
 const REVIEWS_PER_PAGE = 5;
 
-function ReviewCard({ review }: { review: Review }) {
+function ReviewModal({
+  review,
+  isOpen,
+  onClose,
+}: {
+  review: Review | null;
+  isOpen: boolean;
+  onClose: () => void;
+}) {
+  // Close on Escape key
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose();
+    };
+
+    window.addEventListener("keydown", handleEscape);
+    return () => window.removeEventListener("keydown", handleEscape);
+  }, [isOpen, onClose]);
+
+  // Close on backdrop click
+  const handleBackdropClick = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) onClose();
+  };
+
+  if (!isOpen || !review) return null;
+
   return (
-    <div className="flex flex-col rounded-lg border border-white/10 bg-[#1a1a1a] p-6 md:p-8">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
+      onClick={handleBackdropClick}
+    >
+      <div className="relative w-full max-w-2xl rounded-lg border border-white/10 bg-[#1a1a1a] overflow-hidden">
+        {/* Close button */}
+        <button
+          onClick={onClose}
+          className="absolute right-4 top-4 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-white/10 transition-colors hover:bg-white/20"
+          aria-label="Close"
+        >
+          <X className="h-4 w-4 text-white" strokeWidth={2} />
+        </button>
+
+        {/* Desktop: flex row, Mobile: flex col */}
+        <div className="flex flex-col md:flex-row">
+          {/* Image — 50% on desktop, full width on mobile */}
+          <div className="flex h-[300px] items-center justify-center overflow-hidden bg-black md:h-auto md:w-1/2">
+            {review.image ? (
+              <Image
+                src={review.image}
+                alt={review.name}
+                width={400}
+                height={500}
+                className="h-full w-full object-cover"
+              />
+            ) : (
+              <div className="flex h-full w-full items-center justify-center bg-white/5">
+                <p className="font-mono text-xs text-white/40">No image</p>
+              </div>
+            )}
+          </div>
+
+          {/* Content — 50% on desktop, full width on mobile */}
+          <div className="flex flex-col justify-between p-8 md:w-1/2 md:p-10">
+            {/* Star rating */}
+            <div className="mb-4 flex gap-1 text-yellow-400">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <Star
+                  key={i}
+                  className="h-5 w-5"
+                  strokeWidth={1.5}
+                  fill={i < review.rating ? "currentColor" : "none"}
+                />
+              ))}
+            </div>
+
+            {/* Full quote */}
+            <p className="mb-8 flex-1 font-mono text-sm italic leading-relaxed text-white/80">
+              "{review.quote}"
+            </p>
+
+            {/* Client info */}
+            <div className="mb-6 flex items-center gap-3">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-white/10 text-white/30">
+                <UserRound className="h-6 w-6" strokeWidth={1.5} />
+              </div>
+              <div>
+                <p className="font-display text-base font-bold text-white">
+                  {review.name}
+                </p>
+                <p className="font-mono text-xs text-white/50">{review.role}</p>
+              </div>
+            </div>
+
+            {/* Book Meeting button */}
+            <a
+              href="#contact"
+              className="inline-flex items-center justify-center rounded-none bg-accent px-6 py-3 font-mono text-sm font-medium text-white transition-opacity duration-200 hover:opacity-90"
+            >
+              Book Meeting
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ReviewCard({
+  review,
+  onClick,
+}: {
+  review: Review;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className="flex flex-col rounded-lg border border-white/10 bg-[#1a1a1a] p-6 transition-all duration-200 hover:border-accent/30 hover:bg-[#222222] md:p-8"
+    >
       {/* Star rating badge */}
       <div className="mb-4 inline-flex w-fit rounded-full bg-yellow-500/20 px-3 py-2">
         <div className="flex gap-1 text-yellow-400">
@@ -127,12 +254,13 @@ function ReviewCard({ review }: { review: Review }) {
           <p className="font-mono text-xs text-white/50">{review.role}</p>
         </div>
       </div>
-    </div>
+    </button>
   );
 }
 
 export function ReviewsGrid() {
   const [displayedCount, setDisplayedCount] = useState(REVIEWS_PER_PAGE);
+  const [selectedReview, setSelectedReview] = useState<Review | null>(null);
 
   const visibleReviews = ALL_REVIEWS.slice(0, displayedCount);
   const hasMore = displayedCount < ALL_REVIEWS.length;
@@ -141,15 +269,33 @@ export function ReviewsGrid() {
     setDisplayedCount((prev) => prev + REVIEWS_PER_PAGE);
   };
 
+  const handleOpenModal = (review: Review) => {
+    setSelectedReview(review);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedReview(null);
+  };
+
   return (
-    <section id="reviews-grid" className="relative bg-bg py-16 md:py-24">
+    <>
+      <ReviewModal
+        review={selectedReview}
+        isOpen={selectedReview !== null}
+        onClose={handleCloseModal}
+      />
+      <section id="reviews-grid" className="relative bg-bg py-16 md:py-24">
       <div className="mx-auto max-w-[1400px] px-6 md:px-10">
         {/* Grid layout — 2-1-2 on desktop, single column on mobile */}
         <div className="grid gap-6 md:gap-8">
           {/* First row — 2 cards */}
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
             {visibleReviews.slice(0, 2).map((review) => (
-              <ReviewCard key={review.id} review={review} />
+              <ReviewCard
+                key={review.id}
+                review={review}
+                onClick={() => handleOpenModal(review)}
+              />
             ))}
           </div>
 
@@ -157,7 +303,10 @@ export function ReviewsGrid() {
           {visibleReviews.length > 2 && (
             <div className="flex justify-center">
               <div className="w-full md:max-w-[calc(50%-16px)]">
-                <ReviewCard review={visibleReviews[2]} />
+                <ReviewCard
+                  review={visibleReviews[2]}
+                  onClick={() => handleOpenModal(visibleReviews[2])}
+                />
               </div>
             </div>
           )}
@@ -166,7 +315,11 @@ export function ReviewsGrid() {
           {visibleReviews.length > 3 && (
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
               {visibleReviews.slice(3, 5).map((review) => (
-                <ReviewCard key={review.id} review={review} />
+                <ReviewCard
+                  key={review.id}
+                  review={review}
+                  onClick={() => handleOpenModal(review)}
+                />
               ))}
             </div>
           )}
@@ -185,7 +338,11 @@ export function ReviewsGrid() {
                     {/* 2 cards */}
                     <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
                       {groupReviews.slice(0, 2).map((review) => (
-                        <ReviewCard key={review.id} review={review} />
+                        <ReviewCard
+                          key={review.id}
+                          review={review}
+                          onClick={() => handleOpenModal(review)}
+                        />
                       ))}
                     </div>
 
@@ -193,7 +350,10 @@ export function ReviewsGrid() {
                     {groupReviews.length > 2 && (
                       <div className="flex justify-center">
                         <div className="w-full md:max-w-[calc(50%-16px)]">
-                          <ReviewCard review={groupReviews[2]} />
+                          <ReviewCard
+                            review={groupReviews[2]}
+                            onClick={() => handleOpenModal(groupReviews[2])}
+                          />
                         </div>
                       </div>
                     )}
@@ -202,7 +362,11 @@ export function ReviewsGrid() {
                     {groupReviews.length > 3 && (
                       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
                         {groupReviews.slice(3, 5).map((review) => (
-                          <ReviewCard key={review.id} review={review} />
+                          <ReviewCard
+                            key={review.id}
+                            review={review}
+                            onClick={() => handleOpenModal(review)}
+                          />
                         ))}
                       </div>
                     )}
@@ -226,6 +390,7 @@ export function ReviewsGrid() {
           </div>
         )}
       </div>
-    </section>
+      </section>
+    </>
   );
 }

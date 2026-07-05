@@ -36,7 +36,7 @@ export function ReviewsHero() {
             SEE REVIEWS
           </a>
           <a
-            href="/"
+            href="/portfolio"
             className="flex items-center justify-center gap-2 rounded-none border border-white/30 bg-transparent px-6 py-3 font-mono text-sm font-medium text-white transition-all duration-200 hover:border-white/60 hover:bg-white/5"
           >
             <Eye className="h-4 w-4" strokeWidth={2} />

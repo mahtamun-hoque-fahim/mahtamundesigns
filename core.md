@@ -102,6 +102,14 @@ Switched away from `next/font/google` because this sandbox's bash tool cannot re
    - **License line flagged, not copied.** Reference screenshot had "Contents licensed Under WikiMedia Commons in CC BY-NC-ND 4.0" — Claude deliberately did NOT reproduce this; that license is meant for freely shareable media, not commercial client design work, and would be legally backwards here. Left out pending Fahim's actual license/terms decision.
    - Social URLs (Behance/Dribble/Figma Community) and the "Portfolio" link are all `#` placeholders — no real destinations provided yet.
 
+## About Page Sections (built 2026-07-05)
+
+9. **About Hero** (`components/sections/about-hero.tsx`) — full-bleed background image (`public/images/about-bg.webp`), centered "ABOUT ME" heading (Space Grotesk, `font-display`), subtitle "You're interested about me ?", two CTA buttons: "CONTACT" (white bg with Mail icon) and "READ THE STORY" (outlined border with ArrowRight icon). Uses `h-screen` for full viewport height. Navbar fixed on top, doesn't consume viewport space. Same z-index and background stacking pattern as Homepage Hero (isolate + z-0 for image + z-10 for content).
+
+10. **About Intro** (`components/sections/about-intro.tsx`) — left side portrait (`public/images/face.webp`, rounded corners), right side bio with "MAHTAMUN" heading (accent color, Space Grotesk), role subtitle, 4 bio paragraphs (white/80%), email link with Mail icon. Background: `featured-projects-bg.webp` with 40% black overlay (`bg-black/40`). Layout: side-by-side on desktop (`lg:flex-row`, 40% portrait / 60% bio), stacks vertically on mobile. Content z-20 sits above overlay.
+
+11. **About Timeline** (`components/sections/about-timeline.tsx`) — "HOW IT ALL STARTED" centered heading, vertical timeline with 6 hardcoded milestones (2016 → 2026). Each milestone: year (accent color), title, description. **Desktop:** centered gradient accent line with alternating left/right card layout. **Mobile:** single column vertical stack. **Future refactor needed:** currently 6 milestones are hardcoded in the component; when admin dashboard is built, this section will fetch milestone data dynamically to support variable count, editable titles, and editable descriptions.
+
 ## Mobile Responsiveness Pass (2026-07-04 — ongoing)
 
 **Standing instruction: every homepage instruction from Fahim from this point forward is scoped to phone/mobile only, unless he says otherwise.** Desktop (`md:` and up) styles must not be touched by these instructions.
@@ -159,6 +167,7 @@ Things Fahim has committed to building but that are blocked on a reference image
 | Home | Secondary CTA Section | `SecondaryCtaSet` (eyebrow/heading/button/motivation) | Hardcoded (`HOME_SET`, real approved homepage copy) | Future pages get their own named set, same shape; dashboard assigns which set → which page |
 | Home | Footer | Social URLs (Behance/Dribble/Figma Community) | Placeholder (`#`) | Real URLs needed from Fahim |
 | Home | Footer | "Portfolio" nav link | Placeholder (`#`) | Portfolio page not built yet |
+| About | Timeline | Milestone data (year/title/description) | Hardcoded (6 items: 2016–2026) | **Future:** refactor to fetch from database via dashboard. Support variable number of timestamps, editable titles, editable descriptions via admin dashboard. Currently 6 milestones are hardcoded in component; when dashboard is built, this will become a dynamic data pull. |
 
 ## Loose Anchors (dead/placeholder links — audited 2026-07-03)
 

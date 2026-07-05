@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import Navbar from '@/components/sections/navbar';
+import { Navbar } from '@/components/sections/navbar';
 import ContactHero from '@/components/sections/contact-hero';
 import { TrustedBy } from '@/components/sections/trusted-by';
 import ContactFormSection from '@/components/sections/contact-form';

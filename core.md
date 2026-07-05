@@ -4,7 +4,7 @@ This file exists so neither Claude nor anyone else forgets how this project is b
 
 ---
 
-## Ground Rules (set 2026-07-02)
+## Ground Rules (set 2026-07-02, updated 2026-07-05)
 
 1. **No pipeline.** No auto-triggered skills, no Citadel/Council/Singularity flow for this project. This is a manual, hands-on build.
 2. **Section-by-section.** Fahim hands over one page at a time. Within a page, one section is built at a time.
@@ -15,6 +15,7 @@ This file exists so neither Claude nor anyone else forgets how this project is b
 7. **Future skill use.** These page logs are intended to eventually inform/improve the `cave-man` and `ui-ux-designer` skills. Skills are NEVER modified without Fahim's explicit confirmation, even if the log content clearly suggests an improvement.
 8. **Running audit log.** Across the whole build, maintain a log of loose frontend ends — UI built but not yet wired to backend/data — so nothing gets forgotten before the eventual full audit + dashboard pass.
 9. **Resolution = mark done, never delete.** When a loose end or loose anchor resolves, update its row's Status to `✅ Resolved (date)` with a one-line note on how — do NOT remove the row. The tables are a history, not just a live to-do list.
+10. **Smooth micro-interactions.** (Locked 2026-07-05) Every click, hover, animation, transition, entrance/exit must be smooth. No instant snaps. Proper easing (ease-in-out, not linear defaults), visual feedback on every interaction, scale/fade/translate animations with timing that feels intentional. This applies to every element built now and in future.
 
 ---
 
@@ -41,6 +42,10 @@ This file exists so neither Claude nor anyone else forgets how this project is b
 ## Fonts — self-hosted, not next/font/google
 
 Switched away from `next/font/google` because this sandbox's bash tool cannot reach `fonts.googleapis.com` (not on the allowed-domains list), which broke local builds. Using `@fontsource/space-grotesk` and `@fontsource/jetbrains-mono` instead (imported directly in `app/layout.tsx`, specific weight files only — 500/600/700 for Space Grotesk, 400/500/600/700 for JetBrains Mono). This is now the standing approach for this repo — do not switch back to `next/font/google` without checking network access first.
+
+## Global CSS Rules (LOCKED)
+
+- **Smooth scroll behavior** — `html { scroll-behavior: smooth; }` in `app/globals.css`. Applied globally to every page, every anchor link, every scroll event. DO NOT remove or override. Every new page inherits this automatically. (Locked 2026-07-05)
 
 ## Sections Built So Far
 
@@ -110,6 +115,14 @@ Switched away from `next/font/google` because this sandbox's bash tool cannot re
 
 11. **About Timeline** (`components/sections/about-timeline.tsx`) — "HOW IT ALL STARTED" centered heading, vertical timeline with 6 hardcoded milestones (2016 → 2026). Each milestone: year (accent color), title, description. **Desktop:** centered gradient accent line with alternating left/right card layout. **Mobile:** single column vertical stack. **Future refactor needed:** currently 6 milestones are hardcoded in the component; when admin dashboard is built, this section will fetch milestone data dynamically to support variable count, editable titles, and editable descriptions.
 
+## Reviews Page Sections (built 2026-07-05)
+
+12. **Reviews Hero** (`components/sections/reviews-hero.tsx`) — full-bleed background image (`public/images/review-hero.webp`), centered "REVIEWS" heading + "Are people satisfied with my service ?" subtext. Two CTAs: "SEE REVIEWS" (white bg, star icon → `#reviews-grid` smooth scroll) and "VIEW PROJECTS" (outline border, eye icon → `/portfolio` future page). Uses `h-screen` full viewport height. Same z-index/content layering as homepage Hero.
+
+13. **Reviews Grid** (`components/sections/reviews-grid.tsx`) — 2-1-2 asymmetric layout (desktop), single column (mobile). Each review card clickable → opens modal. Modal: 50/50 desktop split (image left, content right) / stacked vertical (mobile), with smooth entrance animations (`fadeIn` backdrop 300ms, `modalSlideIn` card 300ms ease-out). Star ratings pulled from `review.rating` field. Close via: X button, backdrop click, Escape key. Modal shows: full quote (italic), 5-star rating, client avatar/name/role, "Book Meeting" button (`#contact` placeholder for future contact page). Image field (`review.image`) optional, dashboard-managed. **Pagination:** Load More button adds 5 reviews per click. Separate `ALL_REVIEWS` array (distinct from homepage Reviews section) — TODO(dashboard) bulk CSV + form input for mass data entry.
+
+14. **Secondary CTA Section** (reused component, different set) — `REVIEWS_PAGE_CTA_SET` with "DISCUSS YOUR" eyebrow, "PAIN POINT" heading, "DM NOW" button. Same reusable component as homepage, per-page content set pattern.
+
 ## Mobile Responsiveness Pass (2026-07-04 — ongoing)
 
 **Standing instruction: every homepage instruction from Fahim from this point forward is scoped to phone/mobile only, unless he says otherwise.** Desktop (`md:` and up) styles must not be touched by these instructions.
@@ -127,6 +140,7 @@ Switched away from `next/font/google` because this sandbox's bash tool cannot re
 
 
 - **Homepage** (`/`) — in progress, section by section (current file).
+- **Reviews page** (`/reviews`) — ✅ Built (2026-07-05). Hero section, grid with modal expansion, pagination (load 5 more), secondary CTA, footer. Navbar links updated to point to `/reviews`. All sections built with smooth animations locked in.
 - **Portfolio page** (`/portfolio` — route TBD) — index/grid of every company Fahim has worked with. Card = profile pic + cover image. Same count/source as the Trusted-by strip logos (~31 currently, dashboard-managed list). NOT BUILT YET.
 - **Client Profile page** (`/clients/[slug]` — dynamic route, one per company) — the shared destination for BOTH (a) Featured Projects cards on the homepage, and (b) Portfolio page cards. Contains profile pic + cover (dashboard-uploaded) plus additional case-study-style content ("lots of stuff", not yet spec'd in detail). NOT BUILT YET.
 - **Naming note:** "Client Profile page" is Claude's chosen name (Fahim asked Claude to pick one) — use this term consistently in code (component names, route folders) and future conversation unless Fahim renames it.
@@ -168,17 +182,21 @@ Things Fahim has committed to building but that are blocked on a reference image
 | Home | Footer | Social URLs (Behance/Dribble/Figma Community) | Placeholder (`#`) | Real URLs needed from Fahim |
 | Home | Footer | "Portfolio" nav link | Placeholder (`#`) | Portfolio page not built yet |
 | About | Timeline | Milestone data (year/title/description) | Hardcoded (6 items: 2016–2026) | **Future:** refactor to fetch from database via dashboard. Support variable number of timestamps, editable titles, editable descriptions via admin dashboard. Currently 6 milestones are hardcoded in component; when dashboard is built, this will become a dynamic data pull. |
+| Reviews | Grid | Review data (name/role/quote/rating/avatar/image) | Hardcoded (all null) | Separate list from homepage. Needs dashboard/CMS wiring with CSV + form bulk import option. Data model typed (`Review`) for clean swap. |
+| Reviews | Grid | Review images | Placeholder (null) | Optional per-review, dashboard-assigned. Shows "No image" placeholder if null. |
+| Reviews | Secondary CTA Section | `REVIEWS_PAGE_CTA_SET` (eyebrow/heading/button/motivation) | Hardcoded (real approved copy) | Different from `HOME_SET`, per-page pattern locked. Dashboard manages which set → which page. |
 
-## Loose Anchors (dead/placeholder links — audited 2026-07-03)
+## Loose Anchors (dead/placeholder links — audited 2026-07-05)
 
 | Location | href | Status | Needed |
 |---|---|---|---|
-| Navbar — "Reviews" | `#reviews` | ✅ Resolved (2026-07-03) | Reviews section built with `id="reviews"` |
+| Navbar — "Reviews" | `/reviews` | ✅ Resolved (2026-07-05) | Reviews page built at `/reviews/page.tsx` |
 | Navbar — "About" | `#about` | Dead | Build About section/page with `id="about"` |
 | Navbar — "Book Meeting" | `#contact` | Dead | Contact section AND a confirmed destination (form/Calendly/mailto — Fahim hasn't decided) |
 | Hero — "Contact" button | `#contact` | Dead | Same as above |
 | Featured Projects — 3 project cards | `#` | Placeholder | Case-study pages or external links, once real project content exists |
 | Featured Projects — "SEE ALL" | `#` | Placeholder | Likely a `/portfolio` page — doesn't exist yet |
-| Reviews — "SEE ALL" | `#` | Placeholder | Likely a `/reviews` page — doesn't exist yet |
+| Reviews Hero — "SEE REVIEWS" | `#reviews-grid` | ✅ Resolved (2026-07-05) | Scrolls to Reviews Grid section on same page |
+| Reviews Hero — "VIEW PROJECTS" | `/portfolio` | Placeholder | Portfolio page doesn't exist yet |
 
 Re-audit this list every time a new section/page is built — anchors that were dead may become valid once their target section exists.

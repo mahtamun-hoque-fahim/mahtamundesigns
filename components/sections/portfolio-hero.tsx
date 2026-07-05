@@ -33,7 +33,7 @@ export function PortfolioHero() {
         <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-center">
           <Link
             href="#portfolio-grid"
-            className="inline-flex items-center justify-center gap-2 rounded-none border border-white/40 bg-transparent px-7 py-3 font-mono text-sm font-medium text-white transition-all duration-200 hover:border-white/70 hover:bg-white/5"
+            className="inline-flex items-center justify-center gap-2 rounded-none bg-white px-7 py-3 font-mono text-sm font-medium text-ink transition-all duration-200 hover:bg-white/90"
           >
             <FolderOpen size={16} strokeWidth={2} />
             VIEW PROJECTS

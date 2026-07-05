@@ -8,8 +8,10 @@ import { Menu, X } from "lucide-react";
 const NAV_LINKS = [
   { label: "Home", href: "/" },
   { label: "Showcase", href: "/#showcase" },
+  { label: "Portfolio", href: "/portfolio" },
   { label: "Reviews", href: "/reviews" },
   { label: "About", href: "/about" },
+  { label: "Contact", href: "#contact" },
 ];
 
 export function Navbar() {
@@ -109,13 +111,6 @@ export function Navbar() {
         </ul>
 
         <div className="flex items-center gap-3">
-          <Link
-            href="/contact"
-            className="hidden rounded-md bg-accent-dim px-5 py-2.5 text-sm font-medium text-white transition-colors duration-200 hover:bg-accent md:inline-flex"
-          >
-            Contact
-          </Link>
-
           <button
             type="button"
             onClick={() => setMenuOpen((open) => !open)}
@@ -164,15 +159,6 @@ export function Navbar() {
             </li>
           ))}
         </ul>
-        <div className="px-6 pb-6">
-          <Link
-            href="/contact"
-            onClick={() => setMenuOpen(false)}
-            className="flex items-center justify-center rounded-md bg-accent-dim px-5 py-3 text-sm font-medium text-white transition-colors duration-200 hover:bg-accent"
-          >
-            Contact
-          </Link>
-        </div>
       </div>
     </header>
   );

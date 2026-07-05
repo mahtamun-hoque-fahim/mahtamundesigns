@@ -32,7 +32,9 @@ export default function ContactHero() {
         <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:gap-6">
           {/* Send Message Button */}
           <a
-            href="#send-message"
+            href="https://wa.me/8801795931345"
+            target="_blank"
+            rel="noopener noreferrer"
             className="group relative inline-flex items-center gap-2 bg-white px-8 py-3 font-mono font-semibold text-black transition-all duration-300 ease-out hover:gap-3 focus:outline-none focus:ring-2 focus:ring-white/30"
           >
             <MessageCircle size={20} />

@@ -83,7 +83,7 @@ export default function ContactFormSection() {
               <p>
                 LinkedIn:{' '}
                 <a
-                  href="https://linkedin.com/in/mahtamun-hoque-fahim"
+                  href="https://www.linkedin.com/in/mahtamun-hoque-fahim"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="font-semibold text-white transition-colors duration-300 hover:text-accent"
@@ -104,7 +104,7 @@ export default function ContactFormSection() {
             <div className="mt-6 flex gap-4">
               {/* LinkedIn */}
               <a
-                href="https://linkedin.com/in/mahtamun-hoque-fahim"
+                href="https://www.linkedin.com/in/mahtamun-hoque-fahim"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex h-12 w-12 items-center justify-center rounded-lg bg-surface/50 text-white transition-all duration-300 hover:bg-accent hover:text-black focus:outline-none focus:ring-2 focus:ring-accent/50"
@@ -115,7 +115,9 @@ export default function ContactFormSection() {
 
               {/* Behance */}
               <a
-                href="#behance"
+                href="https://www.behance.net/mahtamunhoquefahim"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex h-12 w-12 items-center justify-center rounded-lg bg-surface/50 text-white transition-all duration-300 hover:bg-accent hover:text-black focus:outline-none focus:ring-2 focus:ring-accent/50"
                 aria-label="Behance"
               >
@@ -130,7 +132,9 @@ export default function ContactFormSection() {
 
               {/* Dribbble */}
               <a
-                href="#dribbble"
+                href="https://dribbble.com/mahtamunhoquefahim"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex h-12 w-12 items-center justify-center rounded-lg bg-surface/50 text-white transition-all duration-300 hover:bg-accent hover:text-black focus:outline-none focus:ring-2 focus:ring-accent/50"
                 aria-label="Dribbble"
               >
@@ -139,7 +143,9 @@ export default function ContactFormSection() {
 
               {/* Figma Community */}
               <a
-                href="#figma"
+                href="https://www.figma.com/@fahim"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex h-12 w-12 items-center justify-center rounded-lg bg-surface/50 text-white transition-all duration-300 hover:bg-accent hover:text-black focus:outline-none focus:ring-2 focus:ring-accent/50"
                 aria-label="Figma Community"
               >
@@ -156,7 +162,9 @@ export default function ContactFormSection() {
             <div className="mt-4 h-0.5 w-20 bg-accent" />
 
             <a
-              href="#whatsapp"
+              href="https://wa.me/8801795931345"
+              target="_blank"
+              rel="noopener noreferrer"
               className="group relative mt-6 inline-flex items-center gap-2 bg-accent-dim px-6 py-4 font-mono font-semibold text-white transition-all duration-300 ease-out hover:bg-accent focus:outline-none focus:ring-2 focus:ring-accent/50"
             >
               <MessageCircle size={20} />

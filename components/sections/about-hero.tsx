@@ -4,7 +4,7 @@ import { Mail, ArrowRight } from "lucide-react";
 
 export function AboutHero() {
   return (
-    <section className="isolate relative w-full overflow-hidden bg-bg pt-[88px]">
+    <section className="isolate relative w-full overflow-hidden bg-bg">
       {/* Background image */}
       <div className="absolute inset-0 z-0">
         <Image
@@ -18,7 +18,7 @@ export function AboutHero() {
       </div>
 
       {/* Content container */}
-      <div className="relative z-10 flex min-h-[100dvh] flex-col items-center justify-center px-6 md:px-10">
+      <div className="relative z-10 flex h-screen flex-col items-center justify-center px-6 md:px-10">
         <div className="text-center">
           {/* Heading */}
           <h1 className="font-display text-5xl font-bold text-white md:text-6xl lg:text-7xl">

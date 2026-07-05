@@ -6,7 +6,7 @@ export function Hero() {
   return (
     <section
       id="home"
-      className="relative isolate flex h-dvh max-h-dvh flex-col justify-center overflow-hidden bg-bg"
+      className="relative isolate flex h-screen flex-col justify-center overflow-hidden bg-bg"
     >
       <div className="absolute inset-0 -z-10">
         <Image

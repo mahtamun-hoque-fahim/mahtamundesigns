@@ -135,8 +135,16 @@ function ReviewModal({
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
       onClick={handleBackdropClick}
+      style={{
+        animation: "fadeIn 300ms ease-out forwards",
+      }}
     >
-      <div className="relative w-full max-w-2xl rounded-lg border border-white/10 bg-[#1a1a1a] overflow-hidden">
+      <div
+        className="relative w-full max-w-2xl rounded-lg border border-white/10 bg-[#1a1a1a] overflow-hidden"
+        style={{
+          animation: "modalSlideIn 300ms ease-out forwards",
+        }}
+      >
         {/* Close button */}
         <button
           onClick={onClose}

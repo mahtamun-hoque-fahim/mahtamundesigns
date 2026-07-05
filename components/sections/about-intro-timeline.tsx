@@ -42,7 +42,7 @@ export function AboutIntroTimeline() {
   ];
 
   return (
-    <section className="isolate relative w-full overflow-hidden bg-bg py-16 md:py-20 lg:py-24">
+    <section className="isolate relative w-full overflow-hidden bg-bg py-16 md:py-20 lg:py-24" id="story">
       {/* Background image */}
       <div className="absolute inset-0 z-0">
         <Image

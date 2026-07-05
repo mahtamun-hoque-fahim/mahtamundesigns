@@ -110,7 +110,7 @@ export function Navbar() {
 
         <div className="flex items-center gap-3">
           <Link
-            href="#contact"
+            href="/contact"
             className="hidden rounded-md bg-accent-dim px-5 py-2.5 text-sm font-medium text-white transition-colors duration-200 hover:bg-accent md:inline-flex"
           >
             Contact
@@ -166,7 +166,7 @@ export function Navbar() {
         </ul>
         <div className="px-6 pb-6">
           <Link
-            href="#contact"
+            href="/contact"
             onClick={() => setMenuOpen(false)}
             className="flex items-center justify-center rounded-md bg-accent-dim px-5 py-3 text-sm font-medium text-white transition-colors duration-200 hover:bg-accent"
           >

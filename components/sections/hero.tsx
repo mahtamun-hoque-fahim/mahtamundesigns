@@ -37,7 +37,7 @@ export function Hero() {
               PORTFOLIO
             </Link>
             <Link
-              href="#contact"
+              href="/contact"
               className="flex items-center gap-2 rounded-md border border-white/20 px-6 py-3 text-sm font-medium text-white transition-colors duration-200 hover:border-white/40 hover:bg-white/5"
             >
               <Mail className="h-4 w-4" strokeWidth={2} />

@@ -33,7 +33,7 @@ export function AboutHero() {
           {/* CTA Buttons */}
           <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-center md:gap-6">
             <Link
-              href="#contact"
+              href="/contact"
               className="inline-flex items-center gap-2 rounded-none bg-white px-8 py-3 text-sm font-medium text-ink transition-colors duration-200 hover:bg-white/90"
             >
               <Mail size={18} />

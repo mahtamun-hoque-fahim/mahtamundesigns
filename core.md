@@ -115,6 +115,16 @@ Switched away from `next/font/google` because this sandbox's bash tool cannot re
 
 11. **About Timeline** (`components/sections/about-timeline.tsx`) — "HOW IT ALL STARTED" centered heading, vertical timeline with 6 hardcoded milestones (2016 → 2026). Each milestone: year (accent color), title, description. **Desktop:** centered gradient accent line with alternating left/right card layout. **Mobile:** single column vertical stack. **Future refactor needed:** currently 6 milestones are hardcoded in the component; when admin dashboard is built, this section will fetch milestone data dynamically to support variable count, editable titles, and editable descriptions.
 
+## Portfolio Page Sections (built 2026-07-05)
+
+15. **Portfolio Hero** (`components/sections/portfolio-hero.tsx`) — full-bleed `portfolio-hero.webp` (tribal pattern + designer at laptop), centered "PORTFOLIO" heading (Space Grotesk), "Memory for me, a checklist for you" subtitle (JetBrains Mono), two CTAs: "VIEW PROJECTS" (solid white/black, FolderOpen icon → `#portfolio-grid`) + "SEE REVIEWS" (outlined, filled star → `/reviews`). `h-screen`, `object-cover`, same z-index stacking as all other heroes.
+
+16. **Portfolio Intro** (`components/sections/portfolio-intro.tsx`) — centered "The journey" eyebrow (italic, JetBrains Mono, `text-white/50`) + "BEGINS" heading (Space Grotesk, large), short `h-px w-24` horizontal rule divider below.
+
+17. **Portfolio Grid** (`components/sections/portfolio-grid.tsx`) — `id="portfolio-grid"`, 2-column grid (1-column mobile). Repeating layout unit: `[half][half][full-width]` — items at `index % 3 === 2` get `col-span-2` (full-width covering card), others `col-span-1`. Full-width cards `min-h-[420px]`, equal cards `min-h-[300px]`. Cards: `rounded-none`, hatch placeholder when `thumbnail: null`, accent `projectType` label, `font-display` title, `ExternalLink` icon top-right. Data: `PORTFOLIO_PROJECTS` array, typed (`PortfolioProject`), `TODO(dashboard)`. **"See More" button** — outlined, `ChevronDown` icon, NO functionality yet — Fahim will explain the full behavior after the page is built. **Grid functionality is also pending Fahim's explanation.**
+
+18. **Secondary CTA** (reused `<SecondaryCta>`) — `PORTFOLIO_CTA_SET`: "DISCUSS YOUR / PAIN POINT / DM NOW". Same copy as Reviews page, separate named set for dashboard flexibility.
+
 ## Reviews Page Sections (built 2026-07-05)
 
 12. **Reviews Hero** (`components/sections/reviews-hero.tsx`) — full-bleed background image (`public/images/review-hero.webp`), centered "REVIEWS" heading + "Are people satisfied with my service ?" subtext. Two CTAs: "SEE REVIEWS" (white bg, star icon → `#reviews-grid` smooth scroll) and "VIEW PROJECTS" (outline border, eye icon → `/portfolio` future page). Uses `h-screen` full viewport height. Same z-index/content layering as homepage Hero.
@@ -181,6 +191,10 @@ Things Fahim has committed to building but that are blocked on a reference image
 | Home | Secondary CTA Section | `SecondaryCtaSet` (eyebrow/heading/button/motivation) | Hardcoded (`HOME_SET`, real approved homepage copy) | Future pages get their own named set, same shape; dashboard assigns which set → which page |
 | Home | Footer | Social URLs (Behance/Dribble/Figma Community) | Placeholder (`#`) | Real URLs needed from Fahim |
 | Home | Footer | "Portfolio" nav link | Placeholder (`#`) | Portfolio page not built yet |
+| Portfolio | Grid | Project data (title/projectType/thumbnail/href) | Hardcoded | `TODO(dashboard)` — full list, ordering, labels, thumbnails dashboard-controlled |
+| Portfolio | Grid | "See More" button + grid functionality | Not wired | Fahim to explain full behavior after page is built |
+| Portfolio | Grid | Thumbnail images | Placeholder (null) | Same pattern as Featured Projects |
+| Portfolio | Secondary CTA | `PORTFOLIO_CTA_SET` motivation card | Hardcoded null | Needs real testimonial data from dashboard |
 | About | Timeline | Milestone data (year/title/description) | Hardcoded (6 items: 2016–2026) | **Future:** refactor to fetch from database via dashboard. Support variable number of timestamps, editable titles, editable descriptions via admin dashboard. Currently 6 milestones are hardcoded in component; when dashboard is built, this will become a dynamic data pull. |
 | Reviews | Grid | Review data (name/role/quote/rating/avatar/image) | Hardcoded (all null) | Separate list from homepage. Needs dashboard/CMS wiring with CSV + form bulk import option. Data model typed (`Review`) for clean swap. |
 | Reviews | Grid | Review images | Placeholder (null) | Optional per-review, dashboard-assigned. Shows "No image" placeholder if null. |
@@ -195,8 +209,8 @@ Things Fahim has committed to building but that are blocked on a reference image
 | Navbar — "Book Meeting" | `#contact` | Dead | Contact section AND a confirmed destination (form/Calendly/mailto — Fahim hasn't decided) |
 | Hero — "Contact" button | `#contact` | Dead | Same as above |
 | Featured Projects — 3 project cards | `#` | Placeholder | Case-study pages or external links, once real project content exists |
-| Featured Projects — "SEE ALL" | `#` | Placeholder | Likely a `/portfolio` page — doesn't exist yet |
+| Featured Projects — "SEE ALL" | `#` | Placeholder | `/portfolio` now exists — update href when Fahim confirms |
 | Reviews Hero — "SEE REVIEWS" | `#reviews-grid` | ✅ Resolved (2026-07-05) | Scrolls to Reviews Grid section on same page |
-| Reviews Hero — "VIEW PROJECTS" | `/portfolio` | Placeholder | Portfolio page doesn't exist yet |
+| Reviews Hero — "VIEW PROJECTS" | `/portfolio` | ✅ Resolved (2026-07-05) | Portfolio page now exists at `/portfolio` |
 
 Re-audit this list every time a new section/page is built — anchors that were dead may become valid once their target section exists.

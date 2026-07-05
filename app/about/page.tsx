@@ -1,5 +1,6 @@
 import { Navbar } from "@/components/sections/navbar";
 import { AboutHero } from "@/components/sections/about-hero";
+import { AboutIntro } from "@/components/sections/about-intro";
 
 export const metadata = {
   title: "About | Mahtamun Designs",
@@ -11,6 +12,7 @@ export default function AboutPage() {
     <main>
       <Navbar />
       <AboutHero />
+      <AboutIntro />
     </main>
   );
 }

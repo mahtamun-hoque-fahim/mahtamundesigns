@@ -1,6 +1,8 @@
 import { Metadata } from "next";
 import { Navbar } from "@/components/sections/navbar";
 import { PortfolioHero } from "@/components/sections/portfolio-hero";
+import { PortfolioIntro } from "@/components/sections/portfolio-intro";
+import { PortfolioGrid } from "@/components/sections/portfolio-grid";
 
 export const metadata: Metadata = {
   title: "Portfolio | Mahtamun",
@@ -12,7 +14,9 @@ export default function PortfolioPage() {
     <>
       <Navbar />
       <PortfolioHero />
-      {/* More sections added section-by-section — do not batch */}
+      <PortfolioIntro />
+      <PortfolioGrid />
+      {/* Secondary CTA + Footer — added section-by-section */}
     </>
   );
 }

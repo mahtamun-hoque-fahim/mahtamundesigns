@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { Navbar } from "@/components/sections/navbar";
 import { ReviewsHero } from "@/components/sections/reviews-hero";
 import { ReviewsGrid } from "@/components/sections/reviews-grid";
 import { SecondaryCta } from "@/components/sections/secondary-cta";
@@ -26,6 +27,7 @@ const REVIEWS_PAGE_CTA_SET = {
 export default function ReviewsPage() {
   return (
     <>
+      <Navbar />
       <ReviewsHero />
       <ReviewsGrid />
       <SecondaryCta set={REVIEWS_PAGE_CTA_SET} />

@@ -292,8 +292,16 @@ export function ReviewsGrid() {
         isOpen={selectedReview !== null}
         onClose={handleCloseModal}
       />
-      <section id="reviews-grid" className="relative bg-bg py-16 md:py-24">
-      <div className="mx-auto max-w-[1400px] px-6 md:px-10">
+      <section id="reviews-grid" className="relative bg-bg py-16 md:py-24 overflow-hidden">
+        {/* Violet glow behind cards */}
+        <div
+          className="pointer-events-none absolute inset-x-0 top-1/4 z-0 h-[600px]"
+          style={{
+            background: `radial-gradient(50% 100% at 50% 0%, rgba(187, 124, 255, 0.8) 0%, rgba(187, 124, 255, 0.3) 35%, transparent 80%)`,
+          }}
+        />
+        
+        <div className="mx-auto max-w-[1400px] px-6 md:px-10 relative z-10">
         {/* Grid layout — 2-1-2 on desktop, single column on mobile */}
         <div className="grid gap-6 md:gap-8">
           {/* First row — 2 cards */}

@@ -1,6 +1,9 @@
 import { Metadata } from 'next';
 import Navbar from '@/components/sections/navbar';
 import ContactHero from '@/components/sections/contact-hero';
+import { TrustedBy } from '@/components/sections/trusted-by';
+import ContactFormSection from '@/components/sections/contact-form';
+import Footer from '@/components/sections/footer';
 
 export const metadata: Metadata = {
   title: 'Contact | Mahtamun',
@@ -12,6 +15,9 @@ export default function ContactPage() {
     <main>
       <Navbar />
       <ContactHero />
+      <TrustedBy />
+      <ContactFormSection />
+      <Footer />
     </main>
   );
 }

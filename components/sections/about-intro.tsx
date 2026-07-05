@@ -15,8 +15,11 @@ export function AboutIntro() {
         />
       </div>
 
+      {/* 40% black overlay */}
+      <div className="absolute inset-0 z-[1] bg-black/40" />
+
       {/* Content container */}
-      <div className="relative z-10 mx-auto flex max-w-7xl flex-col gap-12 px-6 md:px-10 lg:flex-row lg:items-center lg:gap-16">
+      <div className="relative z-20 mx-auto flex max-w-7xl flex-col gap-12 px-6 md:px-10 lg:flex-row lg:items-center lg:gap-16">
         {/* Left: Portrait */}
         <div className="flex-shrink-0 lg:w-2/5">
           <div className="relative aspect-square w-full overflow-hidden rounded-lg">

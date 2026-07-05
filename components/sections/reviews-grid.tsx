@@ -293,10 +293,13 @@ export function ReviewsGrid() {
         onClose={handleCloseModal}
       />
       <section id="reviews-grid" className="relative bg-bg py-16 md:py-24 overflow-hidden">
-        {/* Violet glow below hero section */}
+        {/* Violet glow at left edge, middle height */}
         <div
-          className="pointer-events-none absolute inset-x-0 -top-40 z-0 h-[600px]"
+          className="pointer-events-none absolute z-0 h-[600px] w-[600px]"
           style={{
+            top: "50%",
+            left: "-200px",
+            transform: "translateY(-50%) rotate(90deg)",
             background: `radial-gradient(50% 100% at 50% 0%, rgba(187, 124, 255, 0.8) 0%, rgba(187, 124, 255, 0.3) 35%, transparent 80%)`,
           }}
         />

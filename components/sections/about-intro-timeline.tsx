@@ -130,10 +130,19 @@ export function AboutIntroTimeline() {
                 key={index}
                 className={`flex flex-col md:flex-row md:items-start ${
                   index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
-                } gap-8 md:gap-12`}
+                } gap-4 md:gap-12`}
               >
-                {/* Content */}
+                {/* Content + Year */}
                 <div className="flex-1">
+                  {/* Year - aligned based on position */}
+                  <p
+                    className={`mb-3 font-display text-base font-bold text-accent md:text-lg ${
+                      index % 2 === 0 ? "md:text-right" : "md:text-left"
+                    }`}
+                  >
+                    {milestone.year}
+                  </p>
+                  {/* Message card */}
                   <div className="rounded-lg bg-surface px-6 py-5">
                     <h4 className="font-display text-xl font-bold text-white md:text-2xl">
                       {milestone.title}
@@ -144,18 +153,13 @@ export function AboutIntroTimeline() {
                   </div>
                 </div>
 
-                {/* Center: Dot + Year */}
-                <div className="flex flex-shrink-0 flex-col items-center gap-3">
-                  {/* Dot */}
+                {/* Center: Dot */}
+                <div className="hidden flex-shrink-0 md:flex md:items-start md:pt-12">
                   <div className="h-5 w-5 rounded-full border-4 border-bg bg-accent" />
-                  {/* Year */}
-                  <p className="text-center font-display text-base font-bold text-accent md:text-lg">
-                    {milestone.year}
-                  </p>
                 </div>
 
                 {/* Empty space for right side on left-content items */}
-                <div className="flex-1" />
+                <div className="hidden flex-1 md:block" />
               </div>
             ))}
           </div>

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { Mail } from "lucide-react";
 
 export function AboutIntro() {
   return (
@@ -62,6 +63,7 @@ export function AboutIntro() {
             href="mailto:mahtamunhoquefahim@gmail.com"
             className="inline-flex items-center gap-2 text-accent transition-colors duration-200 hover:text-accent-dim"
           >
+            <Mail size={18} />
             <span className="text-sm font-medium">mahtamunhoquefahim@gmail.com</span>
           </a>
         </div>

@@ -301,6 +301,19 @@ export function ReviewsGrid() {
           }}
         />
         
+        {/* Grid texture background */}
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{
+            zIndex: 1,
+            backgroundImage: `
+              linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px)
+            `,
+            backgroundSize: "40px 40px",
+          }}
+        />
+        
         <div className="mx-auto max-w-[1400px] px-6 md:px-10 relative z-10">
         {/* Grid layout — 2-1-2 on desktop, single column on mobile */}
         <div className="grid gap-6 md:gap-8">

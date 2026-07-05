@@ -85,7 +85,7 @@ export function Navbar() {
           : "md:border-transparent md:bg-transparent md:backdrop-blur-none"
       }`}
     >
-      <nav className="mx-auto flex max-w-[1400px] items-start justify-between gap-8 px-6 py-4 md:px-10 md:py-4">
+      <nav className="mx-auto flex max-w-[1400px] items-start px-6 py-4 md:px-10 md:py-4">
         <Link href="#home" className="shrink-0 pt-1" aria-label="Mahtamun — home">
           <Image
             src="/logo/mahtamun-wordmark.svg"
@@ -97,7 +97,7 @@ export function Navbar() {
           />
         </Link>
 
-        <ul className="hidden items-start gap-8 text-sm text-white/80 md:flex md:pt-1">
+        <ul className="hidden items-start gap-8 text-sm text-white/80 md:ml-auto md:flex md:pt-1">
           {NAV_LINKS.map((link) => (
             <li key={link.href}>
               <Link
@@ -110,7 +110,7 @@ export function Navbar() {
           ))}
         </ul>
 
-        <div className="flex items-start gap-3 pt-1">
+        <div className="ml-auto flex items-start gap-3 pt-1">
           <button
             type="button"
             onClick={() => setMenuOpen((open) => !open)}

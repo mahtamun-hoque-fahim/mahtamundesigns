@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { Mail, ArrowRight } from "lucide-react";
 
 export function AboutHero() {
   return (
@@ -26,22 +27,24 @@ export function AboutHero() {
 
           {/* Subtitle */}
           <p className="mt-4 text-base text-white/70 md:text-lg">
-            You're interested about us ?
+            You're interested about me ?
           </p>
 
           {/* CTA Buttons */}
           <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-center md:gap-6">
             <Link
               href="#contact"
-              className="inline-flex items-center justify-center rounded-none bg-white px-8 py-3 text-sm font-medium text-ink transition-colors duration-200 hover:bg-white/90"
+              className="inline-flex items-center gap-2 rounded-none bg-white px-8 py-3 text-sm font-medium text-ink transition-colors duration-200 hover:bg-white/90"
             >
+              <Mail size={18} />
               CONTACT
             </Link>
             <Link
               href="#story"
-              className="inline-flex items-center justify-center rounded-none border border-white/30 px-8 py-3 text-sm font-medium text-white transition-colors duration-200 hover:border-white hover:bg-white/5"
+              className="inline-flex items-center gap-2 rounded-none border border-white/30 px-8 py-3 text-sm font-medium text-white transition-colors duration-200 hover:border-white hover:bg-white/5"
             >
               READ THE STORY
+              <ArrowRight size={18} />
             </Link>
           </div>
         </div>

@@ -20,7 +20,8 @@ export type GalleryItem = {
 export type ClientData = {
   slug: string;
   name: string;
-  tagline: string;
+  label: string;     // shown on portfolio card e.g. "Brand Setup", "Rebranding"
+  tagline: string;   // brand's own tagline e.g. "Frontier Edtech"
   logo: string | null;          // circular logo image
   accentColor: string;          // hex — drives ALL color on this page
   about: string;
@@ -43,6 +44,7 @@ export const CLIENTS: Record<string, ClientData> = {
   "sulphuric-bench": {
     slug: "sulphuric-bench",
     name: "Sulphuric Bench",
+    label: "Brand Setup",
     tagline: "Frontier Edtech",
     logo: null,
     accentColor: "#00c8a0",

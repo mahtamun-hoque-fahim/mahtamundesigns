@@ -11,7 +11,7 @@ import { CLIENTS } from "@/lib/clients";
 const PORTFOLIO_PROJECTS = Object.values(CLIENTS).map((c) => ({
   id:          c.slug,
   title:       c.name,
-  projectType: c.tagline,
+  projectType: c.label,
   href:        `/clients/${c.slug}`,
   thumbnail:   c.gallery[0]?.image ?? null,
 }));

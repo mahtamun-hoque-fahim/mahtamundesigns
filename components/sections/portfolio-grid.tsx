@@ -3,28 +3,20 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ExternalLink, ImageOff, ChevronDown } from "lucide-react";
+import { CLIENTS } from "@/lib/clients";
 
-export type PortfolioProject = {
-  id: string;
-  title: string;
-  projectType: string;
-  href: string;
-  thumbnail: string | null;
-};
+// Single source of truth — portfolio cards are derived directly from CLIENTS.
+// Dashboard creates one entry → card appears here AND /clients/[slug] page exists.
+// No manual wiring ever needed.
+const PORTFOLIO_PROJECTS = Object.values(CLIENTS).map((c) => ({
+  id:          c.slug,
+  title:       c.name,
+  projectType: c.tagline,
+  href:        `/clients/${c.slug}`,
+  thumbnail:   c.gallery[0]?.image ?? null,
+}));
 
-// TODO(dashboard): full list, ordering, projectType labels, and thumbnails are
-// all dashboard-controlled. Hardcoded placeholders until CMS is wired.
-// Data shape is intentionally identical to the FeaturedProject type so the
-// same dashboard model can drive both this page and the Featured Projects section.
-const PORTFOLIO_PROJECTS: PortfolioProject[] = [
-  { id: "privatune",          title: "Project Privatune",        projectType: "Brand Setup",       href: "#", thumbnail: null },
-  { id: "tana-zuri",          title: "Project Tana Zuri",        projectType: "Rebranding",        href: "#", thumbnail: null },
-  { id: "fahads-tutorial-1",  title: "Project Fahad's Tutorial", projectType: "Thumbnail Design",  href: "#", thumbnail: null },
-  { id: "fahads-tutorial-2",  title: "Project Fahad's Tutorial", projectType: "Thumbnail Design",  href: "#", thumbnail: null },
-  { id: "tana-zuri-2",        title: "Project Tana Zuri",        projectType: "Rebranding",        href: "#", thumbnail: null },
-];
-
-// Grid layout rule (2-column base):
+type PortfolioProject = (typeof PORTFOLIO_PROJECTS)[number];
 //   index % 3 === 0 → col-span-1 (left half of equal pair)
 //   index % 3 === 1 → col-span-1 (right half of equal pair)
 //   index % 3 === 2 → col-span-2 (full-width covering card)

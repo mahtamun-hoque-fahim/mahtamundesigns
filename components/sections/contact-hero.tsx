@@ -43,7 +43,7 @@ export default function ContactHero() {
 
           {/* Book a Meeting Button */}
           <a
-            href="#book-meeting"
+            href="/contact#contact-form"
             className="group relative inline-flex items-center gap-2 border-2 border-white px-8 py-3 font-mono font-semibold text-white transition-all duration-300 ease-out hover:border-white/70 hover:bg-white/5 focus:outline-none focus:ring-2 focus:ring-white/30"
           >
             <Calendar size={20} />

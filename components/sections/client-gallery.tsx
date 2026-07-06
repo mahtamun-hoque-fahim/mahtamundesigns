@@ -3,44 +3,46 @@
 import { useState } from "react";
 import Image from "next/image";
 import { ImageOff, ChevronDown } from "lucide-react";
-import { ClientData, GalleryItem } from "@/lib/clients";
+import { ClientData, GalleryItem, DesignLabel } from "@/lib/clients";
 
 type Props = { client: ClientData };
 
-const PAGE_SIZE = 6;
+const PAGE_SIZE = 9;
 
-// Grid layout — 3-column base, alternating wide pattern:
-//   Group of 2: [wide: col-span-2][narrow: col-span-1]
-//   Next group:  [narrow: col-span-1][wide: col-span-2]
-//   Repeats every 2 items.
-// Within each group item index (0-based across all items):
-//   groupIndex = Math.floor(index / 2)
-//   posInGroup = index % 2
-//   if groupIndex is even: pos 0 → col-span-2, pos 1 → col-span-1
-//   if groupIndex is odd:  pos 0 → col-span-1, pos 1 → col-span-2
-function getColSpan(index: number): string {
-  const groupIndex = Math.floor(index / 2);
-  const posInGroup = index % 2;
-  const isWide =
-    (groupIndex % 2 === 0 && posInGroup === 0) ||
-    (groupIndex % 2 === 1 && posInGroup === 1);
-  return isWide ? "md:col-span-2" : "md:col-span-1";
+// Label → grid span mapping.
+// 3-column grid, grid-auto-rows = 200px base unit.
+// Upload image + pick label → size is automatic, no manual positioning needed.
+type SpanConfig = { colSpan: string; rowSpan: string };
+
+const LABEL_SPANS: Record<string, SpanConfig> = {
+  story:     { colSpan: "md:col-span-1", rowSpan: "md:row-span-3" }, // tall portrait  (600px)
+  poster:    { colSpan: "md:col-span-1", rowSpan: "md:row-span-2" }, // medium portrait (400px)
+  cover:     { colSpan: "md:col-span-1", rowSpan: "md:row-span-1" }, // landscape base  (200px) — 3 per row
+  thumbnail: { colSpan: "md:col-span-1", rowSpan: "md:row-span-1" }, // square base     (200px)
+  logo:      { colSpan: "md:col-span-1", rowSpan: "md:row-span-1" }, // square base     (200px)
+  banner:    { colSpan: "md:col-span-3", rowSpan: "md:row-span-1" }, // full-width strip (200px)
+};
+
+// Fallback for dashboard-added custom labels — treat as standard base unit
+function getSpan(label: DesignLabel): SpanConfig {
+  return LABEL_SPANS[label] ?? { colSpan: "md:col-span-1", rowSpan: "md:row-span-1" };
 }
 
 function GalleryCard({
   item,
-  index,
   accentColor,
 }: {
   item: GalleryItem;
-  index: number;
   accentColor: string;
 }) {
-  const isWide = getColSpan(index).includes("col-span-2");
+  const { colSpan, rowSpan } = getSpan(item.label);
 
   return (
     <div
-      className={`group relative overflow-hidden rounded-none border border-line bg-surface transition-all duration-300 hover:border-white/20 ${getColSpan(index)} ${isWide ? "min-h-[240px] md:min-h-[280px]" : "min-h-[240px]"}`}
+      className={`group relative overflow-hidden rounded-none border border-line bg-surface
+        transition-all duration-300 hover:border-white/20
+        ${colSpan} ${rowSpan}
+        min-h-[200px]`}
     >
       {/* Thumbnail */}
       {item.image ? (
@@ -61,7 +63,7 @@ function GalleryCard({
         </div>
       )}
 
-      {/* Label — bottom-right */}
+      {/* Label badge — bottom-right */}
       <div className="absolute bottom-3 right-3 z-10">
         <span
           className="rounded-none px-2 py-0.5 font-mono text-[10px] font-bold tracking-wider text-black"
@@ -82,8 +84,9 @@ export function ClientGallery({ client }: Props) {
 
   return (
     <section className="bg-bg px-6 py-16 md:px-10 md:py-24">
-      {/* Heading */}
       <div className="mx-auto max-w-[1200px]">
+
+        {/* Heading */}
         <div className="mb-12">
           <p className="font-mono text-sm text-white/50">LET THE DESIGN</p>
           <h2 className="font-display text-4xl font-bold tracking-tight text-white md:text-5xl lg:text-6xl">
@@ -91,19 +94,21 @@ export function ClientGallery({ client }: Props) {
           </h2>
         </div>
 
-        {/* Grid — 3-col desktop, 1-col mobile, alternating wide pattern */}
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3 md:gap-5">
-          {showing.map((item, index) => (
+        {/* Grid — 3 columns, fixed row height, label drives col+row span automatically */}
+        <div
+          className="grid grid-cols-1 gap-4 md:grid-cols-3"
+          style={{ gridAutoRows: "200px" }}
+        >
+          {showing.map((item) => (
             <GalleryCard
               key={item.id}
               item={item}
-              index={index}
               accentColor={accentColor}
             />
           ))}
         </div>
 
-        {/* Load More — TODO(dashboard + functionality): Fahim to specify behavior */}
+        {/* Load More — TODO(dashboard): full behavior spec pending */}
         {hasMore && (
           <div className="mt-14 flex justify-center">
             <button

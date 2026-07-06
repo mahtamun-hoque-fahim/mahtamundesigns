@@ -9,8 +9,8 @@ const NAV_LINKS = [
   { label: "Home", href: "#home" },
   { label: "Portfolio", href: "#" },
   { label: "Reviews", href: "#reviews" },
-  { label: "Contact", href: "#contact" },
-  { label: "Book meeting", href: "#contact" },
+  { label: "Contact", href: "/contact#contact-form" },
+  { label: "Book meeting", href: "/contact#contact-form" },
 ];
 
 // TODO(dashboard): real social URLs needed — Fahim hasn't provided these

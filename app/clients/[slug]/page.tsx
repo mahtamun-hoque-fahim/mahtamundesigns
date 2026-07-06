@@ -31,7 +31,7 @@ export default async function ClientPage({ params }: Props) {
     eyebrow: "DISCUSS YOUR",
     heading: "PAIN POINT",
     buttonLabel: "DM NOW",
-    buttonHref: "#contact",
+    buttonHref: "/contact#contact-form",
     motivation: {
       name: null,
       role: null,

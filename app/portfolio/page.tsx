@@ -17,7 +17,7 @@ const PORTFOLIO_CTA_SET = {
   eyebrow: "DISCUSS YOUR",
   heading: "PAIN POINT",
   buttonLabel: "DM NOW",
-  buttonHref: "#contact",
+  buttonHref: "/contact#contact-form",
   motivation: {
     name: null,
     role: null,

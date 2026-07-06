@@ -46,7 +46,7 @@ const HOME_SET: SecondaryCtaSet = {
   eyebrow: "I'M HERE TO SOLVE",
   heading: "THE PAIN",
   buttonLabel: "DM NOW",
-  buttonHref: "#contact",
+  buttonHref: "/contact#contact-form",
   motivation: {
     name: null,
     role: null,

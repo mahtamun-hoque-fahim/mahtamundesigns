@@ -1,6 +1,10 @@
 // lib/clients.ts
-// TODO(dashboard): all of this will be fetched from the admin dashboard/CMS.
-// The shape here is the contract — every field maps to a dashboard control.
+// Single source of truth for client/portfolio data.
+// All reads come from Neon via Drizzle. Mutations via lib/actions/clients.ts.
+
+import { getDb } from "@/lib/db";
+import { clients, galleryItems } from "@/lib/db/schema";
+import { eq, asc } from "drizzle-orm";
 
 export type DesignLabel =
   | "logo"
@@ -9,73 +13,104 @@ export type DesignLabel =
   | "poster"
   | "banner"
   | "story"
-  | string; // allows dashboard-added custom labels without a code change
+  | string;
 
 export type GalleryItem = {
   id: string;
-  image: string | null; // null = placeholder until asset uploaded
+  image: string | null;
   label: DesignLabel;
 };
 
 export type ClientData = {
-  slug: string;
-  name: string;
-  label: string;     // shown on portfolio card e.g. "Brand Setup", "Rebranding"
-  tagline: string;   // brand's own tagline e.g. "Frontier Edtech"
-  logo: string | null;          // circular logo image
-  accentColor: string;          // hex — drives ALL color on this page
-  about: string;
-  role: string[];               // can be multi-line ("Intern Designer\nJunior Designer")
-  timeline: string;
-  type: string;
-  contributions: string[];
-  rating: number;
+  id:           string;
+  slug:         string;
+  name:         string;
+  label:        string;
+  tagline:      string;
+  logo:         string | null;
+  accentColor:  string;
+  about:        string;
+  role:         string[];
+  timeline:     string;
+  type:         string;
+  contributions:string[];
+  rating:       number;
   stats: {
-    years: number;
-    designs: number;
+    years:    number;
+    designs:  number;
     projects: number;
   };
-  gallery: GalleryItem[];
+  gallery:      GalleryItem[];
 };
 
-// Placeholder data — one company to develop the template against.
-// TODO(dashboard): replace with real fetch by slug.
-export const CLIENTS: Record<string, ClientData> = {
-  "sulphuric-bench": {
-    slug: "sulphuric-bench",
-    name: "Sulphuric Bench",
-    label: "Brand Setup",
-    tagline: "Frontier Edtech",
-    logo: null,
-    accentColor: "#00c8a0",
-    about:
-      "Is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since 1966, when designers at Letraset and James Mosley, the librarian at St Bride Printing Library in London, took a 1914 Cicero translation and scrambled it to make dummy text for Letraset's Body Type sheets. It has survived not only many decades, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised thanks to these sheets and more recently with desktop publishing software like Aldus PageMaker and Microsoft Word including versions of Lorem Ipsum.",
-    role: ["Intern Designer", "Junior Designer"],
-    timeline: "March, 2021 – April, 2025",
-    type: "Part-time",
-    contributions: [
-      "Logo Design",
-      "Brand Identity",
-      "Poster Design",
-      "Social Media Design",
-      "Article Thumbnail Design",
-    ],
-    rating: 3.5,
-    stats: { years: 4, designs: 75, projects: 5 },
-    gallery: [
-      { id: "g1", image: null, label: "cover" },
-      { id: "g2", image: null, label: "story" },
-      { id: "g3", image: null, label: "cover" },
-      { id: "g4", image: null, label: "cover" },
-      { id: "g5", image: null, label: "poster" },
-      { id: "g6", image: null, label: "cover" },
-      { id: "g7", image: null, label: "banner" },
-      { id: "g8", image: null, label: "thumbnail" },
-      { id: "g9", image: null, label: "story" },
-    ],
-  },
-};
+// Split comma-separated string to array, trim whitespace, filter empty
+function splitList(s: string): string[] {
+  return s.split(",").map((x) => x.trim()).filter(Boolean);
+}
 
-export function getClient(slug: string): ClientData | null {
-  return CLIENTS[slug] ?? null;
+function mapRow(
+  row: typeof clients.$inferSelect,
+  items: typeof galleryItems.$inferSelect[]
+): ClientData {
+  return {
+    id:           row.id,
+    slug:         row.slug,
+    name:         row.name,
+    label:        row.label,
+    tagline:      row.tagline,
+    logo:         row.logo ?? null,
+    accentColor:  row.accentColor,
+    about:        row.about,
+    role:         splitList(row.role),
+    timeline:     row.timeline,
+    type:         row.type,
+    contributions:splitList(row.contributions),
+    rating:       Number(row.rating),
+    stats: {
+      years:    row.statYears,
+      designs:  row.statDesigns,
+      projects: row.statProjects,
+    },
+    gallery: items.map((g) => ({
+      id:    g.id,
+      image: g.image ?? null,
+      label: g.label,
+    })),
+  };
+}
+
+export async function getAllClients(): Promise<ClientData[]> {
+  const db = getDb();
+  const rows = await db
+    .select()
+    .from(clients)
+    .orderBy(asc(clients.sortOrder), asc(clients.createdAt));
+
+  const result: ClientData[] = [];
+  for (const row of rows) {
+    const items = await db
+      .select()
+      .from(galleryItems)
+      .where(eq(galleryItems.clientId, row.id))
+      .orderBy(asc(galleryItems.sortOrder));
+    result.push(mapRow(row, items));
+  }
+  return result;
+}
+
+export async function getClient(slug: string): Promise<ClientData | null> {
+  const db = getDb();
+  const [row] = await db
+    .select()
+    .from(clients)
+    .where(eq(clients.slug, slug));
+  if (!row) return null;
+
+  const items = await db
+    .select()
+    .from(galleryItems)
+    .where(eq(galleryItems.clientId, row.id))
+    .orderBy(asc(galleryItems.sortOrder));
+
+  return mapRow(row, items);
 }

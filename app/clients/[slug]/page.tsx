@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import { getClient } from "@/lib/clients";
@@ -12,7 +13,7 @@ type Props = { params: Promise<{ slug: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const client = getClient(slug);
+  const client = await getClient(slug);
   if (!client) return { title: "Not Found" };
   return {
     title: `${client.name} | Mahtamun`,
@@ -20,25 +21,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
+const CLIENT_CTA_SET = {
+  eyebrow: "DISCUSS YOUR",
+  heading: "PAIN POINT",
+  buttonLabel: "DM NOW",
+  buttonHref: "#contact",
+  motivation: { name: null, role: null, quote: null, avatar: null },
+};
+
 export default async function ClientPage({ params }: Props) {
   const { slug } = await params;
-  const client = getClient(slug);
+  const client = await getClient(slug);
   if (!client) notFound();
-
-  // TODO(dashboard): Secondary CTA set per client page — for now uses
-  // the same global copy. Could be per-company in future.
-  const CLIENT_CTA_SET = {
-    eyebrow: "DISCUSS YOUR",
-    heading: "PAIN POINT",
-    buttonLabel: "DM NOW",
-    buttonHref: "/contact#contact-form",
-    motivation: {
-      name: null,
-      role: null,
-      quote: null,
-      avatar: null,
-    },
-  };
 
   return (
     <>

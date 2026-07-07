@@ -86,7 +86,7 @@ export function Footer() {
               license is meant for freely shareable media, not client work.
               Left off until Fahim confirms the actual license/terms he
               wants here. */}
-          <Link href="#" className="hover:text-accent">
+          <Link href="/legal-notice" className="transition-colors duration-200 hover:text-accent">
             Legal Notice
           </Link>
         </div>

@@ -459,7 +459,7 @@ const CARDS: Card[] = [
     icon: Lock,
     title: {
       legal: "No Licensing Available",
-      plain: "No, you can&rsquo;t license it either.",
+      plain: "No, you can\u2019t license it either.",
     },
     body: {
       legal: (
@@ -507,7 +507,7 @@ export function LegalNoticeContent() {
 
           <button
             onClick={() => setMode(mode === "legal" ? "plain" : "legal")}
-            className="group flex items-center gap-2 rounded-none border border-accent/40 bg-accent/5 px-5 py-2.5 font-mono text-xs uppercase tracking-[0.2em] text-accent transition-all duration-300 hover:border-accent/80 hover:bg-accent/10"
+            className="group flex items-center gap-2 rounded-none border border-white bg-white px-5 py-2.5 font-mono text-xs uppercase tracking-[0.2em] text-black transition-all duration-200 hover:bg-white/90"
           >
             {mode === "legal" ? (
               <>

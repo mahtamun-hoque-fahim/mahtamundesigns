@@ -80,37 +80,46 @@ function mapRow(
 }
 
 export async function getAllClients(): Promise<ClientData[]> {
-  const db = getDb();
-  const rows = await db
-    .select()
-    .from(clients)
-    .orderBy(asc(clients.sortOrder), asc(clients.createdAt));
+  try {
+    const db = getDb();
+    const rows = await db
+      .select()
+      .from(clients)
+      .orderBy(asc(clients.sortOrder), asc(clients.createdAt));
 
-  const result: ClientData[] = [];
-  for (const row of rows) {
+    const result: ClientData[] = [];
+    for (const row of rows) {
+      const items = await db
+        .select()
+        .from(galleryItems)
+        .where(eq(galleryItems.clientId, row.id))
+        .orderBy(asc(galleryItems.sortOrder));
+      result.push(mapRow(row, items));
+    }
+    return result;
+  } catch {
+    // DB not configured yet — degrade gracefully rather than crash
+    return [];
+  }
+}
+
+export async function getClient(slug: string): Promise<ClientData | null> {
+  try {
+    const db = getDb();
+    const [row] = await db
+      .select()
+      .from(clients)
+      .where(eq(clients.slug, slug));
+    if (!row) return null;
+
     const items = await db
       .select()
       .from(galleryItems)
       .where(eq(galleryItems.clientId, row.id))
       .orderBy(asc(galleryItems.sortOrder));
-    result.push(mapRow(row, items));
+
+    return mapRow(row, items);
+  } catch {
+    return null;
   }
-  return result;
-}
-
-export async function getClient(slug: string): Promise<ClientData | null> {
-  const db = getDb();
-  const [row] = await db
-    .select()
-    .from(clients)
-    .where(eq(clients.slug, slug));
-  if (!row) return null;
-
-  const items = await db
-    .select()
-    .from(galleryItems)
-    .where(eq(galleryItems.clientId, row.id))
-    .orderBy(asc(galleryItems.sortOrder));
-
-  return mapRow(row, items);
 }

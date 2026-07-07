@@ -126,7 +126,7 @@ export function Reviews() {
 
       <div className="flex justify-center bg-surface-light py-6">
         <a
-          href="#"
+          href="/reviews"
           className="flex items-center gap-2 rounded-none bg-[#6E2FBD] px-6 py-3 font-mono text-sm font-medium text-white transition-opacity duration-200 hover:opacity-90"
         >
           SEE ALL

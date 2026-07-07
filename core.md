@@ -125,6 +125,42 @@ Switched away from `next/font/google` because this sandbox's bash tool cannot re
 
 18. **Secondary CTA** (reused `<SecondaryCta>`) — `PORTFOLIO_CTA_SET`: "DISCUSS YOUR / PAIN POINT / DM NOW". Same copy as Reviews page, separate named set for dashboard flexibility.
 
+## Dashboard (built 2026-07-07)
+
+Stack: Neon + Drizzle + Better Auth + Cloudinary. All routes under `/dashboard/*` protected by `proxy.ts`. Lazy auth singleton (`getAuth()`) to avoid module-level DB call at build time.
+
+- `lib/db/schema.ts` — Drizzle schema: `clients`, `gallery_items`, Better Auth tables (`user`, `session`, `account`, `verification`)
+- `lib/db/index.ts` — Lazy Neon singleton (`getDb()`)
+- `lib/auth.ts` — Lazy Better Auth instance (`getAuth()`)
+- `lib/auth-client.ts` — Client-side `signIn`/`signOut`/`useSession`
+- `lib/cloudinary.ts` — Server-side image upload helper
+- `lib/actions/clients.ts` — Server Actions: `createClient`, `updateClient`, `deleteClient`, `addGalleryItem`, `deleteGalleryItem`, `updateGalleryItemLabel`
+- `lib/clients.ts` — Now reads from Neon via `getAllClients()` / `getClient(slug)` — NOT hardcoded
+- `proxy.ts` — Protects `/dashboard/*`, lets `/dashboard/login` through
+- `app/api/auth/[...all]/route.ts` — Better Auth handler
+- `app/dashboard/login/page.tsx` — Login form (email + password)
+- `app/dashboard/layout.tsx` — Sidebar: Clients / New Client / Sign Out
+- `app/dashboard/page.tsx` — Redirects to `/dashboard/clients`
+- `app/dashboard/clients/page.tsx` — Client list: accent dot, logo, name, label, gallery count, Edit / View links
+- `app/dashboard/clients/new/page.tsx` — Create form: name (required), label, tagline, accentColor, logo upload → auto-creates portfolio card + `/clients/[slug]` page
+- `app/dashboard/clients/[slug]/page.tsx` — Fetch + pass to `ClientEditForm`
+- `app/dashboard/clients/[slug]/client-edit-form.tsx` — Full edit: all client fields + gallery manager (upload image, pick label, delete item, change label live)
+- `.env.example` — All required env vars documented
+- `drizzle.config.ts` — Points to `DATABASE_URL_UNPOOLED` for migrations
+
+**Activation steps (one-time):**
+1. Set all env vars in Vercel dashboard (from `.env.example`)
+2. Add `.env.local` locally with the same vars
+3. Run `npx drizzle-kit generate && npx drizzle-kit migrate`
+4. Create admin account (hit `/api/auth/sign-up` once or use Better Auth CLI)
+
+**Dashboard scope — what's NOT yet covered:**
+Reviews data, About Timeline milestones, Featured Projects cards, Stats bar numbers, Secondary CTA motivation cards. All still hardcoded. These are the next dashboard expansion targets.
+
+## Ground Rule 6 Debt (logged 2026-07-07 audit)
+
+Per-page design logs (`[pagename].md`) have NOT been written for any page. Required by Ground Rule 6 once a page is "fully done." Pages owed a log: homepage, about, portfolio, reviews, contact, clients/[slug]. To be created — not urgent but not forgotten.
+
 ## Reviews Page Sections (built 2026-07-05)
 
 12. **Reviews Hero** (`components/sections/reviews-hero.tsx`) — full-bleed background image (`public/images/review-hero.webp`), centered "REVIEWS" heading + "Are people satisfied with my service ?" subtext. Two CTAs: "SEE REVIEWS" (white bg, star icon → `#reviews-grid` smooth scroll) and "VIEW PROJECTS" (outline border, eye icon → `/portfolio` future page). Uses `h-screen` full viewport height. Same z-index/content layering as homepage Hero.
@@ -163,11 +199,11 @@ Things Fahim has committed to building but that are blocked on a reference image
 
 | Item | What it needs | Blocked on |
 |---|---|---|
-| Portfolio page (`/portfolio`) | Grid of ~31 client cards (profile pic + cover) | Reference image from Fahim, dashboard data model |
-| Client Profile page (`/clients/[slug]`) | Profile pic + cover + case-study content, shared destination for Featured Projects AND Portfolio cards | Reference image from Fahim, content spec ("lots of stuff" not yet detailed) |
-| Dashboard / CMS | Controls: Featured Projects count/order/categories/thumbnails, Trusted-by logo list, Portfolio card list, Reviews content | Not started, no reference yet — this is the backend everything above depends on |
-| Contact destination | Where "Book Meeting" / "Contact" buttons actually go (form? Calendly? mailto?) | Fahim hasn't decided yet — see Loose Anchors |
-| About section/page | Nav link `#about` currently dead | Not designed yet |
+| Portfolio page (`/portfolio`) | Grid of ~31 client cards (profile pic + cover) | ✅ Resolved (2026-07-07) — built at `app/portfolio/page.tsx`, reads from DB via `getAllClients()` |
+| Client Profile page (`/clients/[slug]`) | Profile pic + cover + case-study content, shared destination for Featured Projects AND Portfolio cards | ✅ Resolved (2026-07-07) — built at `app/clients/[slug]/page.tsx`, dynamic route, data from Neon |
+| Dashboard / CMS | Controls: clients, gallery, accent color, logo, all client fields | ✅ Resolved (2026-07-07) — built at `/dashboard`, Neon+Drizzle+BetterAuth+Cloudinary. Scope: clients + gallery only. Reviews/Timeline/Featured Projects/Stats/Motivation cards NOT yet in dashboard (see Loose Ends). |
+| Contact destination | Where "Book Meeting" / "Contact" buttons actually go (form? Calendly? mailto?) | ✅ Resolved (2026-07-07) — `/contact` page built with hero + form. Both buttons → `/contact#contact-form` with flash animation. |
+| About section/page | Nav link `#about` currently dead | ✅ Resolved (2026-07-05) — built at `app/about/page.tsx`, navbar points to `/about` |
 | Reviews section | Testimonial cards, star ratings, scroll-jack horizontal track | ✅ Resolved (2026-07-03) — built as `components/sections/reviews.tsx`, see Sections Built So Far. Content still dashboard-pending. |
 | Stats bar | 6+ Years / 600+ Designs / 11 Clients / 100% Satisfaction | ✅ Resolved (2026-07-04) — built as `components/sections/stats.tsx`. Numbers still need reconfirming as current. |
 | Bottom CTA (now "Secondary CTA Section") | "I'm here to solve THE PAIN" + tilted testimonial card | ✅ Resolved (2026-07-04) — built as `components/sections/secondary-cta.tsx`, real coded card (not image), reusable `SecondaryCtaSet` per page. See Sections Built So Far. |
@@ -190,7 +226,7 @@ Things Fahim has committed to building but that are blocked on a reference image
 | Home | Reviews | Review data (name/role/quote/rating/avatar/count) | Hardcoded (all null) | Needs dashboard/CMS wiring; data model already typed (`Review`) for a clean swap |
 | Home | Secondary CTA Section | `SecondaryCtaSet` (eyebrow/heading/button/motivation) | Hardcoded (`HOME_SET`, real approved homepage copy) | Future pages get their own named set, same shape; dashboard assigns which set → which page |
 | Home | Footer | Social URLs (Behance/Dribble/Figma Community) | Placeholder (`#`) | Real URLs needed from Fahim |
-| Home | Footer | "Portfolio" nav link | Placeholder (`#`) | Portfolio page not built yet |
+| Home | Footer | "Portfolio" nav link | ✅ Resolved (2026-07-07) | Footer now links to `/portfolio` |
 | Portfolio | Grid | Project data (title/projectType/thumbnail/href) | Hardcoded | `TODO(dashboard)` — full list, ordering, labels, thumbnails dashboard-controlled |
 | Portfolio | Grid | "See More" button + grid functionality | Not wired | Fahim to explain full behavior after page is built |
 | Portfolio | Grid | Thumbnail images | Placeholder (null) | Same pattern as Featured Projects |
@@ -199,17 +235,26 @@ Things Fahim has committed to building but that are blocked on a reference image
 | Reviews | Grid | Review data (name/role/quote/rating/avatar/image) | Hardcoded (all null) | Separate list from homepage. Needs dashboard/CMS wiring with CSV + form bulk import option. Data model typed (`Review`) for clean swap. |
 | Reviews | Grid | Review images | Placeholder (null) | Optional per-review, dashboard-assigned. Shows "No image" placeholder if null. |
 | Reviews | Secondary CTA Section | `REVIEWS_PAGE_CTA_SET` (eyebrow/heading/button/motivation) | Hardcoded (real approved copy) | Different from `HOME_SET`, per-page pattern locked. Dashboard manages which set → which page. |
+| Home | Reviews | Scroll section review data | Hardcoded null | No `reviews` DB table yet — dashboard scope gap. Separate from `/reviews` grid. |
+| All pages | Secondary CTA | Motivation card data (name/role/quote/avatar) | Hardcoded null | No DB table for motivation/testimonial cards. Dashboard scope gap. |
+| Home | Featured Projects | 3 project cards (href) | `#` dead | Blocked on real client slugs from dashboard |
+| Home | Featured Projects | Project data (title/type/thumbnail) | Hardcoded | No `featured_projects` DB table yet — dashboard scope gap |
+| Home | Stats bar | Numbers (years/designs/clients/satisfaction) | Hardcoded | No `stats` DB table yet — dashboard scope gap |
+| About | Timeline | Milestone data | Hardcoded 6 items | No `timeline_items` DB table yet — dashboard scope gap |
+| Footer | All pages | Social URLs (Behance/Dribbble/Figma Community) | `#` | Fahim to provide real URLs |
+| Footer | All pages | "Legal Notice" link | `#` | Fahim to decide license/terms page |
+| Navbar | Client pages | CTA button color → company accent | Not implemented | Logged in core.md line 54 as future feature — navbar is currently global/static |
 
 ## Loose Anchors (dead/placeholder links — audited 2026-07-05)
 
 | Location | href | Status | Needed |
 |---|---|---|---|
 | Navbar — "Reviews" | `/reviews` | ✅ Resolved (2026-07-05) | Reviews page built at `/reviews/page.tsx` |
-| Navbar — "About" | `#about` | Dead | Build About section/page with `id="about"` |
-| Navbar — "Book Meeting" | `#contact` | Dead | Contact section AND a confirmed destination (form/Calendly/mailto — Fahim hasn't decided) |
-| Hero — "Contact" button | `#contact` | Dead | Same as above |
-| Featured Projects — 3 project cards | `#` | Placeholder | Case-study pages or external links, once real project content exists |
-| Featured Projects — "SEE ALL" | `#` | Placeholder | `/portfolio` now exists — update href when Fahim confirms |
+| Navbar — "About" | `/about` | ✅ Resolved (2026-07-05) | About page built at `/about/page.tsx` |
+| Navbar — "Contact" / "Book Meeting" | `/contact` / `/contact#contact-form` | ✅ Resolved (2026-07-07) | Contact page built, both buttons wired |
+| Hero — "Contact" button | `/contact` | ✅ Resolved (2026-07-07) | Points to `/contact` |
+| Featured Projects — 3 project cards | `#` | Blocked on real slugs | Will resolve once real clients added via dashboard |
+| Featured Projects — "SEE ALL" | `/portfolio` | ✅ Resolved (2026-07-07) | Fixed in audit pass — `rounded-none` also corrected simultaneously |
 | Reviews Hero — "SEE REVIEWS" | `#reviews-grid` | ✅ Resolved (2026-07-05) | Scrolls to Reviews Grid section on same page |
 | Reviews Hero — "VIEW PROJECTS" | `/portfolio` | ✅ Resolved (2026-07-05) | Portfolio page now exists at `/portfolio` |
 

@@ -6,9 +6,9 @@ import Link from "next/link";
 // still undecided (form? Calendly? mailto?) — both point at #contact for
 // now, same placeholder every other CTA in the site currently uses.
 const NAV_LINKS = [
-  { label: "Home", href: "#home" },
-  { label: "Portfolio", href: "#" },
-  { label: "Reviews", href: "#reviews" },
+  { label: "Home", href: "/" },
+  { label: "Portfolio", href: "/portfolio" },
+  { label: "Reviews", href: "/reviews" },
   { label: "Contact", href: "/contact#contact-form" },
   { label: "Book meeting", href: "/contact#contact-form" },
 ];

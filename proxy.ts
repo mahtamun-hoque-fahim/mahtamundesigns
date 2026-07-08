@@ -1,23 +1,26 @@
-import { NextRequest, NextResponse } from "next/server";
-import { getSessionCookie } from "better-auth/cookies";
+// TEMPORARILY DISABLED — redirect loop on /dashboard/login
+// Once auth is working, re-enable this to protect /dashboard routes
+// 
+// import { NextRequest, NextResponse } from "next/server";
+// import { getSessionCookie } from "better-auth/cookies";
+// 
+// export function proxy(request: NextRequest) {
+//   const { pathname } = request.nextUrl;
+//   if (pathname === "/dashboard/login") return NextResponse.next();
+//   if (pathname.startsWith("/dashboard")) {
+//     const session = getSessionCookie(request);
+//     if (!session) {
+//       return NextResponse.redirect(new URL("/dashboard/login", request.url));
+//     }
+//   }
+//   return NextResponse.next();
+// }
+// 
+// export const config = {
+//   matcher: ["/dashboard/:path*"],
+// };
 
-export function proxy(request: NextRequest) {
-  const { pathname } = request.nextUrl;
-
-  // Let login page through
-  if (pathname === "/dashboard/login") return NextResponse.next();
-
-  // Protect everything under /dashboard
-  if (pathname.startsWith("/dashboard")) {
-    const session = getSessionCookie(request);
-    if (!session) {
-      return NextResponse.redirect(new URL("/dashboard/login", request.url));
-    }
-  }
-
+import { NextResponse } from "next/server";
+export function proxy() {
   return NextResponse.next();
 }
-
-export const config = {
-  matcher: ["/dashboard/:path*"],
-};

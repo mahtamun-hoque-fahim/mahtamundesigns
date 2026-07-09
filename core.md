@@ -259,3 +259,38 @@ Things Fahim has committed to building but that are blocked on a reference image
 | Reviews Hero — "VIEW PROJECTS" | `/portfolio` | ✅ Resolved (2026-07-05) | Portfolio page now exists at `/portfolio` |
 
 Re-audit this list every time a new section/page is built — anchors that were dead may become valid once their target section exists.
+
+## Auth Debug Audit (2026-07-09)
+
+Four bugs found and fixed in one commit (`fc6fb47`). All auth-related.
+
+### Bug 1 — Logout `Content-Type` error (ROOT CAUSE of reported issue)
+**File:** `app/dashboard/layout.tsx`
+**Was:** `<form action="/api/auth/sign-out" method="POST">` — a native HTML form
+**Why it broke:** Native HTML form POST always sends `Content-Type: application/x-www-form-urlencoded`. Better Auth's sign-out handler only accepts `application/json` and explicitly rejects other content types with the error you saw.
+**Fix:** `components/dashboard/sign-out-button.tsx` — a `"use client"` component that calls `authClient.signOut()`. The Better Auth client library sends the correct JSON request. Includes loading state + `router.push("/dashboard/login")` in a `finally` block so redirect happens even if signOut throws.
+
+### Bug 2 — Missing `proxy.ts` (dashboard was completely open)
+**File:** (didn't exist)
+**Was:** `core.md` claimed `/dashboard/*` was protected by `proxy.ts` but that file was never created. Session check in `dashboard/layout.tsx` was commented out. Entire dashboard accessible to anyone.
+**Fix:** Created `proxy.ts` at repo root (Next.js 16 pattern — exports `proxy` function, not `middleware`). Checks `getAuth().api.getSession()` on every `/dashboard/:path*` request. `/dashboard/login` is explicitly bypassed (unconditional `NextResponse.next()`). Catches session check failures and redirects to login rather than 500ing.
+
+### Bug 3 — Redirect loop (why session check was commented out)
+**File:** `app/dashboard/layout.tsx`
+**Was:** Session check → `redirect("/dashboard/login")` → request hits `app/dashboard/layout.tsx` again → session check → redirect → loop
+**Why:** `app/dashboard/login/page.tsx` is INSIDE `app/dashboard/layout.tsx`. Redirecting to `/dashboard/login` re-enters the same layout. The layout didn't exclude the login path, so infinite loop.
+**Fix:** Route protection moved to `proxy.ts`, which explicitly allows `/dashboard/login` before the session check. Layout is now pure UI — no auth logic. No loop possible.
+
+### Bug 4 — `export const dynamic` in a Client Component (low priority)
+**File:** `app/dashboard/login/page.tsx`
+**Was:** `"use client"` + `export const dynamic = "force-dynamic"` in the same file
+**Why it's wrong:** Route segment config (`dynamic`, `runtime`, etc.) in Next.js App Router is read from the module at build time. In practice Next.js may still honor it even from a Client Component, but it's semantically invalid and causes confusion. The login page has no server-side dynamic data fetching — it doesn't need `force-dynamic`.
+**Fix:** Removed the export. Login page is pure CSR now.
+
+### Architecture note (post-audit)
+Session protection pattern going forward:
+- `proxy.ts` — route-level gate (runs before layout, handles the redirect, no loop possible)
+- `dashboard/layout.tsx` — UI shell only (sidebar, nav, sign-out button)
+- Individual dashboard pages — `export const dynamic = "force-dynamic"` where they fetch DB data (clients page, slug page, new page)
+- Do NOT add session check back to `layout.tsx` — it will loop.
+

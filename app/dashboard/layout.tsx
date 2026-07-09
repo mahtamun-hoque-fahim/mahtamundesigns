@@ -1,12 +1,16 @@
 export const dynamic = "force-dynamic";
 
 import Link from "next/link";
-import { LayoutGrid, LogOut, Plus } from "lucide-react";
+import { LayoutGrid, Plus } from "lucide-react";
+import { SignOutButton } from "@/components/dashboard/sign-out-button";
 
-export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
-  // TODO: Re-enable session check once Better Auth is stable
-  // const session = await getAuth().api.getSession({ headers: await headers() });
-  // if (!session) redirect("/dashboard/login");
+export default async function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  // Session protection is handled by proxy.ts at the edge.
+  // Layout is UI-only — no auth check here to avoid redirect loops.
 
   return (
     <div className="flex min-h-screen bg-[#080808]">
@@ -38,17 +42,9 @@ export default async function DashboardLayout({ children }: { children: React.Re
           </Link>
         </nav>
 
-        {/* Sign out — disabled until auth works */}
+        {/* Sign out */}
         <div className="border-t border-white/10 p-3">
-          <form action="/api/auth/sign-out" method="POST">
-            <button
-              type="submit"
-              className="flex w-full items-center gap-3 rounded-none px-3 py-2.5 font-mono text-xs text-white/40 transition-colors hover:bg-white/5 hover:text-white/70"
-            >
-              <LogOut className="h-4 w-4" />
-              Sign out
-            </button>
-          </form>
+          <SignOutButton />
         </div>
       </aside>
 

@@ -1,45 +1,19 @@
 import Image from "next/image";
 import { Mail } from "lucide-react";
 
-export function AboutIntroTimeline() {
-  const milestones = [
-    {
-      year: "2016",
-      title: "Started Learning",
-      description:
-        "Started learning graphic design as a hobby while taking up web & Technology office applications and graphic design.",
-    },
-    {
-      year: "2018",
-      title: "First Competition",
-      description:
-        "Completed a creative project for a design competition. Got recognized for bold logo of course community.",
-    },
-    {
-      year: "2020",
-      title: "First Appearance",
-      description:
-        "Designed fresh logo for client website. Published case study on my e-portfolio page.",
-    },
-    {
-      year: "2022",
-      title: "First Client",
-      description:
-        "Started working for a digital agency. Led brand identity projects for multiple clients.",
-    },
-    {
-      year: "2025",
-      title: "First 10K",
-      description:
-        "Milestone in earnings crossed the first quarter — Top freelancer in the community.",
-    },
-    {
-      year: "2026",
-      title: "Gaining Velocity",
-      description:
-        "Started selling services directly. First product design ideation complete with solid team and platform.",
-    },
-  ];
+type Milestone = { year: string; title: string; description: string };
+
+const DEFAULT_MILESTONES: Milestone[] = [
+  { year: "2016", title: "Started Learning", description: "Started learning graphic design as a hobby while taking up web & Technology office applications and graphic design." },
+  { year: "2018", title: "First Competition", description: "Completed a creative project for a design competition. Got recognized for bold logo of course community." },
+  { year: "2020", title: "First Appearance", description: "Designed fresh logo for client website. Published case study on my e-portfolio page." },
+  { year: "2022", title: "First Client", description: "Started working for a digital agency. Led brand identity projects for multiple clients." },
+  { year: "2025", title: "First 10K", description: "Milestone in earnings crossed the first quarter — Top freelancer in the community." },
+  { year: "2026", title: "Gaining Velocity", description: "Started selling services directly. First product design ideation complete with solid team and platform." },
+];
+
+export function AboutIntroTimeline({ milestones: propMilestones }: { milestones?: Milestone[] }) {
+  const milestones = propMilestones && propMilestones.length > 0 ? propMilestones : DEFAULT_MILESTONES;
 
   return (
     <section className="isolate relative w-full overflow-hidden bg-bg py-16 md:py-20 lg:py-24" id="story">

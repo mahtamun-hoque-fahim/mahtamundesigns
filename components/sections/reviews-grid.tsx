@@ -14,93 +14,6 @@ type Review = {
   image: string | null; // Product/brand asset shown in modal
 };
 
-// TODO(dashboard): This is a separate list from the homepage Reviews section.
-// All content (names, roles, quotes, ratings, avatars, images) will be controlled
-// from the admin dashboard. Bulk import via CSV + form input for mass data entry.
-// Currently placeholder — structure only.
-const ALL_REVIEWS: Review[] = [
-  {
-    id: "1",
-    name: "Ahsan F. Nahan",
-    role: "Client, Company",
-    quote:
-      "Lorem ipsum is simply some text of the printing and typesetting industry. Lorem ipsum has been the industry's standard dummy text ever since, when designers of letterpress and composed it to make some text that's not just random.",
-    rating: 5,
-    avatar: null,
-    image: null,
-  },
-  {
-    id: "2",
-    name: "Ahsan F. Nahan",
-    role: "Client, Company",
-    quote:
-      "Lorem ipsum is simply some text of the printing and typesetting industry. Lorem ipsum has been the industry's standard dummy text ever since, when designers of letterpress and composed it to make some text that's not just random.",
-    rating: 5,
-    avatar: null,
-    image: null,
-  },
-  {
-    id: "3",
-    name: "Ahsan F. Nahan",
-    role: "Client, Company",
-    quote:
-      "Lorem ipsum is simply some text of the printing and typesetting industry. Lorem ipsum has been the industry's standard dummy text ever since, when designers of letterpress and composed it to make some text that's not just random.",
-    rating: 5,
-    avatar: null,
-    image: null,
-  },
-  {
-    id: "4",
-    name: "Ahsan F. Nahan",
-    role: "Client, Company",
-    quote:
-      "Lorem ipsum is simply some text of the printing and typesetting industry. Lorem ipsum has been the industry's standard dummy text ever since, when designers of letterpress and composed it to make some text that's not just random.",
-    rating: 5,
-    avatar: null,
-    image: null,
-  },
-  {
-    id: "5",
-    name: "Ahsan F. Nahan",
-    role: "Client, Company",
-    quote:
-      "Lorem ipsum is simply some text of the printing and typesetting industry. Lorem ipsum has been the industry's standard dummy text ever since, when designers of letterpress and composed it to make some text that's not just random.",
-    rating: 5,
-    avatar: null,
-    image: null,
-  },
-  {
-    id: "6",
-    name: "Ahsan F. Nahan",
-    role: "Client, Company",
-    quote:
-      "Lorem ipsum is simply some text of the printing and typesetting industry. Lorem ipsum has been the industry's standard dummy text ever since, when designers of letterpress and composed it to make some text that's not just random.",
-    rating: 5,
-    avatar: null,
-    image: null,
-  },
-  {
-    id: "7",
-    name: "Ahsan F. Nahan",
-    role: "Client, Company",
-    quote:
-      "Lorem ipsum is simply some text of the printing and typesetting industry. Lorem ipsum has been the industry's standard dummy text ever since, when designers of letterpress and composed it to make some text that's not just random.",
-    rating: 5,
-    avatar: null,
-    image: null,
-  },
-  {
-    id: "8",
-    name: "Ahsan F. Nahan",
-    role: "Client, Company",
-    quote:
-      "Lorem ipsum is simply some text of the printing and typesetting industry. Lorem ipsum has been the industry's standard dummy text ever since, when designers of letterpress and composed it to make some text that's not just random.",
-    rating: 5,
-    avatar: null,
-    image: null,
-  },
-];
-
 const REVIEWS_PER_PAGE = 5;
 
 function ReviewModal({
@@ -266,12 +179,12 @@ function ReviewCard({
   );
 }
 
-export function ReviewsGrid() {
+export function ReviewsGrid({ reviews = [] }: { reviews?: Review[] }) {
   const [displayedCount, setDisplayedCount] = useState(REVIEWS_PER_PAGE);
   const [selectedReview, setSelectedReview] = useState<Review | null>(null);
 
-  const visibleReviews = ALL_REVIEWS.slice(0, displayedCount);
-  const hasMore = displayedCount < ALL_REVIEWS.length;
+  const visibleReviews = reviews.slice(0, displayedCount);
+  const hasMore = displayedCount < reviews.length;
 
   const handleLoadMore = () => {
     setDisplayedCount((prev) => prev + REVIEWS_PER_PAGE);

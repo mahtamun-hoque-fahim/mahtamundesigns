@@ -8,14 +8,12 @@ type Stat = {
   label: string;
 };
 
-// TODO(dashboard): confirm these numbers are current — flagged in core.md
-// as needing reconfirmation, not yet dashboard-wired.
-const STATS: Stat[] = [
-  { target: 6, suffix: "+", label: "Years" },
-  { target: 600, suffix: "+", label: "Designs" },
-  { target: 11, suffix: "", label: "Clients" },
-  { target: 100, suffix: "%", label: "Satisfaction" },
-];
+type StatsData = {
+  yearsExperience: number;
+  totalDesigns: number;
+  clientCount: number;
+  satisfaction: number;
+};
 
 const DURATION_MS = 1600;
 
@@ -63,9 +61,16 @@ function StatItem({ stat, active }: { stat: Stat; active: boolean }) {
   );
 }
 
-export function Stats() {
+export function Stats({ stats }: { stats?: StatsData }) {
   const sectionRef = useRef<HTMLElement>(null);
   const [active, setActive] = useState(false);
+
+  const STATS: Stat[] = [
+    { target: stats?.yearsExperience ?? 6,   suffix: "+", label: "Years" },
+    { target: stats?.totalDesigns    ?? 600, suffix: "+", label: "Designs" },
+    { target: stats?.clientCount     ?? 11,  suffix: "",  label: "Clients" },
+    { target: stats?.satisfaction    ?? 100, suffix: "%", label: "Satisfaction" },
+  ];
 
   useEffect(() => {
     const section = sectionRef.current;

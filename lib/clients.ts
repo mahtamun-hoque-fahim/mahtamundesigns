@@ -123,3 +123,30 @@ export async function getClient(slug: string): Promise<ClientData | null> {
     return null;
   }
 }
+
+// Featured clients — for the homepage Featured Projects section.
+// Returns clients with isFeatured=true, sorted by featuredOrder asc.
+// Includes gallery items to derive the thumbnail image.
+export async function getFeaturedClients(): Promise<ClientData[]> {
+  try {
+    const db = getDb();
+    const rows = await db
+      .select()
+      .from(clients)
+      .where(eq(clients.isFeatured, true))
+      .orderBy(asc(clients.featuredOrder), asc(clients.createdAt));
+
+    const result: ClientData[] = [];
+    for (const row of rows) {
+      const items = await db
+        .select()
+        .from(galleryItems)
+        .where(eq(galleryItems.clientId, row.id))
+        .orderBy(asc(galleryItems.sortOrder));
+      result.push(mapRow(row, items));
+    }
+    return result;
+  } catch {
+    return [];
+  }
+}

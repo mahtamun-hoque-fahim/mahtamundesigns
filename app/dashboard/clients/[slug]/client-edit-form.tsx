@@ -137,6 +137,19 @@ export function ClientEditForm({ client }: { client: ClientData }) {
           <NumberField name="sortOrder" label="Sort Order" defaultValue={0} />
         </div>
 
+        {/* Featured on homepage */}
+        <div className="flex items-center gap-6 border border-white/10 bg-white/[0.02] px-4 py-3">
+          <label className="flex items-center gap-2 cursor-pointer">
+            <input name="isFeatured" type="checkbox" className="h-4 w-4 accent-[#bb7cff]" />
+            <span className="font-mono text-xs text-white/70">Show in Featured Projects (homepage)</span>
+          </label>
+          <div className="flex items-center gap-2">
+            <span className="font-mono text-[11px] text-white/40">Order</span>
+            <input name="featuredOrder" type="number" min={0} defaultValue={0}
+              className="w-16 rounded-none border border-white/15 bg-white/5 px-2 py-1 font-mono text-xs text-white outline-none focus:border-accent" />
+          </div>
+        </div>
+
         {/* Logo upload */}
         <div className="flex flex-col gap-1.5">
           <label className="font-mono text-[11px] tracking-wider text-white/50">

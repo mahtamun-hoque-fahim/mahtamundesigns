@@ -10,29 +10,11 @@ type FeaturedProject = {
   featured?: boolean;
 };
 
-// TODO(dashboard): this list, its length, ordering, project type labels, and
-// thumbnails will eventually be controlled from the admin dashboard.
-// Hardcoded to exactly 3 for now per Fahim's instruction.
-const FEATURED_PROJECTS: FeaturedProject[] = [
-  {
-    title: "Fahad's Tutorial",
-    projectType: "Brand Identity",
-    href: "#",
-    thumbnail: null,
-    featured: true,
-  },
-  {
-    title: "Motovessel",
-    projectType: "Brand Identity",
-    href: "#",
-    thumbnail: null,
-  },
-  {
-    title: "Interting",
-    projectType: "Brand Identity",
-    href: "#",
-    thumbnail: null,
-  },
+// Fallback shown when no featured clients exist in the database yet.
+const PLACEHOLDER_PROJECTS: FeaturedProject[] = [
+  { title: "Featured Project", projectType: "Brand Identity", href: "#", thumbnail: null },
+  { title: "Project Two",      projectType: "Brand Identity", href: "#", thumbnail: null },
+  { title: "Project Three",    projectType: "Brand Identity", href: "#", thumbnail: null },
 ];
 
 function ProjectCard({
@@ -86,8 +68,9 @@ function ProjectCard({
   );
 }
 
-export function FeaturedProjects() {
-  const [featured, ...rest] = FEATURED_PROJECTS;
+export function FeaturedProjects({ projects }: { projects?: FeaturedProject[] }) {
+  const list = projects && projects.length > 0 ? projects : PLACEHOLDER_PROJECTS;
+  const [featured, ...rest] = list;
 
   return (
     <section id="showcase" className="relative isolate overflow-hidden bg-black px-6 py-24 md:px-10 md:py-32">

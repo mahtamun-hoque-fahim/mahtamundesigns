@@ -11,10 +11,8 @@ type Review = {
   avatar: string | null;
 };
 
-// TODO(dashboard): all review content (name, role, quote, rating, avatar)
-// and the number of featured reviews will be controlled from the admin
-// dashboard. Placeholder/empty for now — structure only.
-const REVIEWS: Review[] = [
+// Shown when no featured reviews exist in the database yet.
+const PLACEHOLDER_REVIEWS: Review[] = [
   { name: null, role: null, quote: null, rating: null, avatar: null },
   { name: null, role: null, quote: null, rating: null, avatar: null },
   { name: null, role: null, quote: null, rating: null, avatar: null },
@@ -61,7 +59,8 @@ function ReviewCard({ review }: { review: Review }) {
   );
 }
 
-export function Reviews() {
+export function Reviews({ reviews }: { reviews?: Review[] }) {
+  const list = reviews && reviews.length > 0 ? reviews : PLACEHOLDER_REVIEWS;
   const sectionRef = useRef<HTMLElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
 
@@ -117,7 +116,7 @@ export function Reviews() {
             ref={trackRef}
             className="relative z-10 flex w-max shrink-0 gap-10 pl-6 will-change-transform md:pl-10"
           >
-            {REVIEWS.map((review, i) => (
+            {list.map((review, i) => (
               <ReviewCard key={i} review={review} />
             ))}
           </div>

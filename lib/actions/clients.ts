@@ -46,7 +46,9 @@ export async function createClient(formData: FormData) {
     statYears:   Number(formData.get("statYears"))   || 0,
     statDesigns: Number(formData.get("statDesigns")) || 0,
     statProjects:Number(formData.get("statProjects"))|| 0,
-    sortOrder:   Number(formData.get("sortOrder"))   || 0,
+    sortOrder:     Number(formData.get("sortOrder"))     || 0,
+    isFeatured:    formData.get("isFeatured") === "on",
+    featuredOrder: Number(formData.get("featuredOrder")) || 0,
   });
 
   revalidateTag("clients", "max");
@@ -78,9 +80,11 @@ export async function updateClient(slug: string, formData: FormData) {
       statYears:    Number(formData.get("statYears")),
       statDesigns:  Number(formData.get("statDesigns")),
       statProjects: Number(formData.get("statProjects")),
-      sortOrder:    Number(formData.get("sortOrder")),
+      sortOrder:     Number(formData.get("sortOrder")),
+      isFeatured:    formData.get("isFeatured") === "on",
+      featuredOrder: Number(formData.get("featuredOrder")) || 0,
       ...(logoUrl ? { logo: logoUrl } : {}),
-      updatedAt:    new Date(),
+      updatedAt:     new Date(),
     })
     .where(eq(clients.slug, slug));
 

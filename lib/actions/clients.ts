@@ -16,6 +16,14 @@ function slugify(name: string): string {
     .replace(/-+/g, "-");
 }
 
+function cloudinaryConfigured(): boolean {
+  return !!(
+    process.env.CLOUDINARY_CLOUD_NAME &&
+    process.env.CLOUDINARY_API_KEY &&
+    process.env.CLOUDINARY_API_SECRET
+  );
+}
+
 // ── Client Actions ────────────────────────────────────────────────────────
 
 export async function createClient(formData: FormData) {
@@ -23,35 +31,40 @@ export async function createClient(formData: FormData) {
   const name = formData.get("name") as string;
   const slug = slugify(name);
 
-  // Upload logo if provided
+  // Upload logo if provided and Cloudinary is configured
   let logoUrl: string | null = null;
   const logoFile = formData.get("logo") as File | null;
   if (logoFile && logoFile.size > 0) {
+    if (!cloudinaryConfigured()) {
+      throw new Error(
+        "Cloudinary is not configured. Add CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET to your Vercel environment variables."
+      );
+    }
     logoUrl = await uploadImage(logoFile, "mahtamundesigns/logos");
   }
 
   await db.insert(clients).values({
     slug,
     name,
-    label:       (formData.get("label")       as string) || "",
-    tagline:     (formData.get("tagline")      as string) || "",
-    logo:        logoUrl,
-    accentColor: (formData.get("accentColor")  as string) || "#bb7cff",
-    about:       (formData.get("about")        as string) || "",
-    role:        (formData.get("role")         as string) || "",
-    timeline:    (formData.get("timeline")     as string) || "",
-    type:        (formData.get("type")         as string) || "",
-    contributions:(formData.get("contributions")as string) || "",
-    rating:      (formData.get("rating")       as string) || "0",
-    statYears:   Number(formData.get("statYears"))   || 0,
-    statDesigns: Number(formData.get("statDesigns")) || 0,
-    statProjects:Number(formData.get("statProjects"))|| 0,
+    label:        (formData.get("label")        as string) || "",
+    tagline:      (formData.get("tagline")       as string) || "",
+    logo:         logoUrl,
+    accentColor:  (formData.get("accentColor")   as string) || "#bb7cff",
+    about:        (formData.get("about")         as string) || "",
+    role:         (formData.get("role")          as string) || "",
+    timeline:     (formData.get("timeline")      as string) || "",
+    type:         (formData.get("type")          as string) || "",
+    contributions:(formData.get("contributions") as string) || "",
+    rating:       (formData.get("rating")        as string) || "0",
+    statYears:    Number(formData.get("statYears"))    || 0,
+    statDesigns:  Number(formData.get("statDesigns"))  || 0,
+    statProjects: Number(formData.get("statProjects")) || 0,
     sortOrder:     Number(formData.get("sortOrder"))     || 0,
     isFeatured:    formData.get("isFeatured") === "on",
     featuredOrder: Number(formData.get("featuredOrder")) || 0,
   });
 
-  revalidateTag("clients", "max");
+  revalidateTag("clients");
   redirect(`/dashboard/clients/${slug}`);
 }
 
@@ -61,40 +74,45 @@ export async function updateClient(slug: string, formData: FormData) {
   let logoUrl: string | undefined = undefined;
   const logoFile = formData.get("logo") as File | null;
   if (logoFile && logoFile.size > 0) {
+    if (!cloudinaryConfigured()) {
+      throw new Error(
+        "Cloudinary is not configured. Add CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET to your Vercel environment variables."
+      );
+    }
     logoUrl = await uploadImage(logoFile, "mahtamundesigns/logos");
   }
 
   await db
     .update(clients)
     .set({
-      name:         (formData.get("name")         as string),
-      label:        (formData.get("label")         as string),
-      tagline:      (formData.get("tagline")       as string),
-      accentColor:  (formData.get("accentColor")   as string),
-      about:        (formData.get("about")         as string),
-      role:         (formData.get("role")          as string),
-      timeline:     (formData.get("timeline")      as string),
-      type:         (formData.get("type")          as string),
-      contributions:(formData.get("contributions") as string),
-      rating:       (formData.get("rating")        as string),
-      statYears:    Number(formData.get("statYears")),
-      statDesigns:  Number(formData.get("statDesigns")),
-      statProjects: Number(formData.get("statProjects")),
-      sortOrder:     Number(formData.get("sortOrder")),
-      isFeatured:    formData.get("isFeatured") === "on",
-      featuredOrder: Number(formData.get("featuredOrder")) || 0,
+      name:          (formData.get("name")          as string),
+      label:         (formData.get("label")          as string),
+      tagline:       (formData.get("tagline")        as string),
+      accentColor:   (formData.get("accentColor")    as string),
+      about:         (formData.get("about")          as string),
+      role:          (formData.get("role")           as string),
+      timeline:      (formData.get("timeline")       as string),
+      type:          (formData.get("type")           as string),
+      contributions: (formData.get("contributions")  as string),
+      rating:        (formData.get("rating")         as string),
+      statYears:     Number(formData.get("statYears")),
+      statDesigns:   Number(formData.get("statDesigns")),
+      statProjects:  Number(formData.get("statProjects")),
+      sortOrder:      Number(formData.get("sortOrder")),
+      isFeatured:     formData.get("isFeatured") === "on",
+      featuredOrder:  Number(formData.get("featuredOrder")) || 0,
       ...(logoUrl ? { logo: logoUrl } : {}),
-      updatedAt:     new Date(),
+      updatedAt:      new Date(),
     })
     .where(eq(clients.slug, slug));
 
-  revalidateTag("clients", "max");
+  revalidateTag("clients");
 }
 
 export async function deleteClient(slug: string) {
   const db = getDb();
   await db.delete(clients).where(eq(clients.slug, slug));
-  revalidateTag("clients", "max");
+  revalidateTag("clients");
   redirect("/dashboard/clients");
 }
 
@@ -106,12 +124,16 @@ export async function addGalleryItem(clientId: string, formData: FormData) {
   let imageUrl: string | null = null;
   const imageFile = formData.get("image") as File | null;
   if (imageFile && imageFile.size > 0) {
+    if (!cloudinaryConfigured()) {
+      throw new Error(
+        "Cloudinary is not configured. Add CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY, and CLOUDINARY_API_SECRET to your Vercel environment variables."
+      );
+    }
     imageUrl = await uploadImage(imageFile, "mahtamundesigns/gallery");
   }
 
   const label = (formData.get("label") as string) || "cover";
 
-  // Get next sort order
   const existing = await db
     .select({ sortOrder: galleryItems.sortOrder })
     .from(galleryItems)
@@ -127,13 +149,13 @@ export async function addGalleryItem(clientId: string, formData: FormData) {
     sortOrder: nextOrder,
   });
 
-  revalidateTag("clients", "max");
+  revalidateTag("clients");
 }
 
 export async function deleteGalleryItem(id: string) {
   const db = getDb();
   await db.delete(galleryItems).where(eq(galleryItems.id, id));
-  revalidateTag("clients", "max");
+  revalidateTag("clients");
 }
 
 export async function updateGalleryItemLabel(id: string, label: string) {
@@ -142,5 +164,5 @@ export async function updateGalleryItemLabel(id: string, label: string) {
     .update(galleryItems)
     .set({ label })
     .where(eq(galleryItems.id, id));
-  revalidateTag("clients", "max");
+  revalidateTag("clients");
 }

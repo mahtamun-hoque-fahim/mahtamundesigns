@@ -24,7 +24,7 @@ export default function NewClientPage() {
       if (err instanceof Error && err.message.includes("NEXT_REDIRECT")) {
         return; // redirect is success
       }
-      setError("Something went wrong. Please try again.");
+      setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
       setLoading(false);
     }
   }

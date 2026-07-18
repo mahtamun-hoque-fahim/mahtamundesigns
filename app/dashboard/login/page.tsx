@@ -1,12 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { signIn } from "@/lib/auth-client";
 import { Eye, EyeOff } from "lucide-react";
 
 export default function LoginPage() {
-  const router = useRouter();
   const [email, setEmail]       = useState("");
   const [password, setPassword] = useState("");
   const [showPw, setShowPw]     = useState(false);
@@ -26,7 +24,9 @@ export default function LoginPage() {
       return;
     }
 
-    router.push("/dashboard/clients");
+    // Hard redirect — ensures browser sends session cookie on the next request
+    // so the proxy can verify the session correctly.
+    window.location.href = "/dashboard/clients";
   }
 
   return (

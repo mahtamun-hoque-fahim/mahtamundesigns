@@ -52,8 +52,8 @@ export function ClientEditForm({ client }: { client: ClientData }) {
       await addGalleryItem(client.id, fd);
       (e.target as HTMLFormElement).reset();
       router.refresh();
-    } catch {
-      setError("Upload failed.");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Upload failed.");
     } finally {
       setUploading(false);
     }

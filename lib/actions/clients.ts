@@ -64,7 +64,7 @@ export async function createClient(formData: FormData) {
     featuredOrder: Number(formData.get("featuredOrder")) || 0,
   });
 
-  revalidateTag("clients");
+  revalidateTag("clients", "max");
   redirect(`/dashboard/clients/${slug}`);
 }
 
@@ -106,13 +106,13 @@ export async function updateClient(slug: string, formData: FormData) {
     })
     .where(eq(clients.slug, slug));
 
-  revalidateTag("clients");
+  revalidateTag("clients", "max");
 }
 
 export async function deleteClient(slug: string) {
   const db = getDb();
   await db.delete(clients).where(eq(clients.slug, slug));
-  revalidateTag("clients");
+  revalidateTag("clients", "max");
   redirect("/dashboard/clients");
 }
 
@@ -149,13 +149,13 @@ export async function addGalleryItem(clientId: string, formData: FormData) {
     sortOrder: nextOrder,
   });
 
-  revalidateTag("clients");
+  revalidateTag("clients", "max");
 }
 
 export async function deleteGalleryItem(id: string) {
   const db = getDb();
   await db.delete(galleryItems).where(eq(galleryItems.id, id));
-  revalidateTag("clients");
+  revalidateTag("clients", "max");
 }
 
 export async function updateGalleryItemLabel(id: string, label: string) {
@@ -164,5 +164,5 @@ export async function updateGalleryItemLabel(id: string, label: string) {
     .update(galleryItems)
     .set({ label })
     .where(eq(galleryItems.id, id));
-  revalidateTag("clients");
+  revalidateTag("clients", "max");
 }
